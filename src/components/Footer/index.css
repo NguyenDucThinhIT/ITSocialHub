@@ -1,0 +1,72 @@
+/* Phần CSS cho phần Footer */
+.footer {
+  background-color: #333;
+  color: #ccc;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.footer a, .footer a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.footer ul li {
+  line-height: 1.6;
+  padding: 5px 0;
+  border-bottom: none; 
+  margin-bottom: 5px;
+}
+.footer ul li a{
+  color: #ccc;
+}
+.footer ul li:last-child {
+  border-bottom: none;
+}
+
+.footer ul li svg {
+  margin-right: 5px;
+}
+
+.footer h4 {
+  color: #fff;
+}
+
+.footer-bottom {
+  background-color: #222;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Phần CSS cho biểu tượng mạng xã hội */
+.social-icons {
+  display: flex;
+  align-items: center;
+}
+
+.social-list {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 0; 
+  padding: 0; 
+}
+
+.social-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.social-list a {
+  text-decoration: none;
+  color: #fff;
+}
+.social-list a:hover {
+  color: #00f; /* Màu xanh khi hover */
+}

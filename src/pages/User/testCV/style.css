@@ -1,0 +1,95 @@
+.form-group.names input {
+  height: 55px !important; 
+}
+#testCV input {
+  height: 39px ;
+}
+.container.cv {
+  border: 2px solid #ccc ;
+}
+h2 {
+  color: rgba(0,131,177,1) !important;
+  font-weight: bold !important;
+  font-size:25px !important;
+}
+#name{
+    color: #007acc;
+    font-size: 30px;
+    font-weight: bold;
+}
+#job {
+font-size:20px
+}
+
+.infor-jobs input {
+  display: block;
+  margin: 0 auto; 
+  padding: 5px; 
+  width: 70%; 
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(217,237,243,1);
+}
+.form-groupp.information {
+  margin-top:20px;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-row-gap: 10px;
+  align-items: center;
+  border-bottom: 3px solid #a0cfff;
+}
+.form-groupp.tools, .form-groupp.language  {
+    margin-bottom: 20px;
+padding-bottom: 30px;
+border-bottom: 3px solid #a0cfff;
+}
+.form-groupp  {
+    margin-bottom: 20px;
+padding-bottom: 30px;
+border-bottom: 3px solid #a0cfff;
+}
+.form-groupp.tools textarea, .form-groupp.language textarea {
+    background-color: rgba(217,237,243,1);
+}
+textarea.no-border {
+    margin-top: 10px;
+  width: 100%; 
+  resize: none;
+  overflow: hidden;
+
+}
+textarea {
+  border: none;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-line;
+}
+.auto-resize-textarea {
+  height: 2em; 
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: #007acc;
+  margin-right: 10px;
+}
+
+.infor {
+  display: flex;
+  align-items: center;
+}
+.information input{
+    background-color: rgba(217,237,243,1);
+    width: 100%;
+}
+.col-md-5 {
+  width: 5%;
+  background-color: rgba(217,237,243,1);
+  border-right: 3px solid #ccc;
+}
+.col-md-7 {
+  margin-top:20px;
+}
