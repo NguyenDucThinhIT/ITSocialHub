@@ -1,0 +1,25 @@
+.text-center .profile-pic {
+  transition: transform 0.3s ease;
+}
+.profile-pic {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  position: relative;
+}
+#upAvatar {
+  padding: 5px 10px;
+  background-color: yellow;
+  border-color: yellow;
+  margin-top: 20px;
+  border-radius: 20px;
+  min-width: 150px;
+  font-weight: bold;
+  color: black;
+}
+.profile-pic:hover {
+  transform: scale(1.1);
+  background-color: #e9edef;
+}
