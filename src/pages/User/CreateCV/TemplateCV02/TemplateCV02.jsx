@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../../../components/ConfirmModal";
-import AlertModal from "../../../components/AlertModal";
+import ConfirmModal from "../../../../components/ConfirmModal";
+import AlertModal from "../../../../components/AlertModal";
 import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,18 +15,42 @@ import {
   faLink,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import ProfilePic from "../../../components/Avatar/ProfilePic";
-import { validateImage } from "../../../components/Validated/Validated";
+import ProfilePic from "../../../../components/Avatar/ProfilePic";
+import {
+  validateGender,
+  validateName,
+  validateImage,
+  validateJob,
+  validateBirthday,
+  validateEmail,
+  validatePhone,
+  validateAddress,
+} from "../../../../components/Validated/Validated";
+import Input from "../../../../components/InputFileds/InputFileds";
 import "./style.css";
 
-function TestCV() {
+function TemplateCV02() {
   const navigate = useNavigate();
   const { t } = useTranslation("common");
   const imageFormControl = useRef();
   const [photo, setPhoto] = useState("");
+  const [name, setName] = useState("");
+  const [job, setJob] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [gender, setGender] = useState("None");
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [confirmCancelModal, setConfirmCancelModal] = useState(false);
   const [invalidImageModal, setInvalidImageModal] = useState(false);
+  const [invalidNameModal, setInvalidNameModal] = useState(false);
+  const [invalidJobModal, setInvalidJobModal] = useState(false);
+  const [invalidBirthdayModal, setInvalidBirthdayModal] = useState(false);
+  const [invalidEmailModal, setInvalidEmailModal] = useState(false);
+  const [invalidPhoneModal, setInvalidPhoneModal] = useState(false);
+  const [invalidAddressModal, setInvalidAddressModal] = useState(false);
+  const [invalidGenderModal, setInvalidGenderModal] = useState(false);
   const openFileDialog = (e) => {
     e.preventDefault();
     imageFormControl.current.click();
@@ -65,12 +89,12 @@ function TestCV() {
     const cancelButton = document.getElementById("cancelButton");
     saveButton.style.display = "none";
     cancelButton.style.display = "none";
-    const element = document.getElementById("testCV");
+    const element = document.getElementById("CV02");
     const opt = {
-      margin: [10, 10, 10, 10],
+      //margin: [10, 10, 10, 10],
       filename: `${jobValue}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
+      //html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a3", orientation: "portrait" },
     };
     await html2pdf().set(opt).from(element).save();
@@ -116,7 +140,40 @@ function TestCV() {
   }, []);
   const onSubmit = (e) => {
     e.preventDefault();
-
+    if (
+      !validateGender(gender)
+    ) {
+      setInvalidGenderModal(true);
+      return;
+    }
+    if (!validateName(name)) {
+      setInvalidNameModal(true);
+      return;
+    }
+    if (!validateJob(job)) {
+      setInvalidJobModal(true);
+      return;
+    }
+    if (!validateJob(job)) {
+      setInvalidJobModal(true);
+      return;
+    }
+    if (!validateBirthday(birthday)) {
+      setInvalidBirthdayModal(birthday);
+      return;
+    }
+    if (!validatePhone(phone)) {
+      setInvalidPhoneModal(true);
+      return;
+    }
+    if (!validateEmail(email)) {
+      setInvalidEmailModal(true);
+      return;
+    }
+    if (!validateAddress(address)) {
+      setInvalidAddressModal(true);
+      return;
+    }
     handleConfirmSaveCV();
   };
   const onCancel = () => {
@@ -133,32 +190,12 @@ function TestCV() {
   return (
     <>
       <Form onSubmit={onSubmit}>
-        <div id="testCV" className="container cv">
+        <div id="CV02" className="container cv">
           <div className="row">
             <div className="col-md-5">
-              <div className="infor-jobs">
-                <div className="form-group names" style={{height: "45px"}}>
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="name"
-                    placeholder="Nhập họ tên"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="job"
-                    placeholder="Nhập tên job"
-                    required
-                  />
-                </div>
-              </div>
               <div
                 className="image-container"
-                style={{ marginTop: "15px", marginBottom: "20px" }}
+                style={{ marginTop: "50px", marginBottom: "30px" }}
               >
                 <ProfilePic
                   photo={photo}
@@ -170,7 +207,7 @@ function TestCV() {
                 />
               </div>
 
-              <h2>Thông tin cá nhân</h2>
+              <h2 className="header-cus">{t("candidate.profile.profile")}</h2>
               <div className="form-groupp information">
                 <div className="icon">
                   <FontAwesomeIcon icon={faCalendarDays} />
@@ -178,9 +215,13 @@ function TestCV() {
                 <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="date"
-                    placeholder="Nhập ngày sinh"
+                    placeholder={t("candidate.create.dateP")}
+                    value={birthday}
+                    onChange={(e) => {
+                      setBirthday(e.target.value);
+                    }}
                     required
                   />
                 </div>
@@ -188,11 +229,12 @@ function TestCV() {
                   <FontAwesomeIcon icon={faUser} />
                 </div>
                 <div className="infor">
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="gender"
-                    placeholder="Nhập giới tính"
+                  <Input
+                    className="gender"
+                    inputType="gender"
+                    classStyle="gender"
+                    data={gender}
+                    setData={setGender}
                     required
                   />
                 </div>
@@ -202,9 +244,13 @@ function TestCV() {
                 <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="phone"
-                    placeholder="Nhập sđt"
+                    placeholder={t("candidate.create.phoneP")}
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
                     required
                   />
                 </div>
@@ -214,9 +260,13 @@ function TestCV() {
                 <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="email"
-                    placeholder="Nhập email"
+                    placeholder={t("candidate.create.emailP")}
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                     required
                   />
                 </div>
@@ -226,9 +276,9 @@ function TestCV() {
                 <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="fb"
-                    placeholder="Nhập link FB"
+                    placeholder={t("candidate.create.linkFB")}
                     required
                   />
                 </div>
@@ -238,81 +288,126 @@ function TestCV() {
                 <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="address"
-                    placeholder="Nhập địa chỉ"
+                    placeholder={t("candidate.create.addressP")}
+                    value={address}
+                    onChange={(e) => {
+                      setAddress(e.target.value);
+                    }}
                     required
                   />
                 </div>
               </div>
-              <h2>Các kỹ năng mềm</h2>
-              <div className="form-groupp tools">
+              <h2 className="header-cus">{t("candidate.create.academic")}</h2>
+              <div className="form-groupp education">
                 <textarea
-                  className="no-border auto-resize-textarea"
-                  id="careerObjective"
-                  placeholder="Nhập mục tiêu nghề nghiệp"
+                  className="no-border textarea-80-percent"
+                  id="education"
+                  placeholder={t("candidate.create.academicP")}
                   required
                 ></textarea>
               </div>
-              <h2>Ngoại ngữ</h2>
-              <div className="form-groupp language">
+              <h2 className="header-cus">{t("candidate.create.skill")}</h2>
+              <div className="form-groupp skills">
                 <textarea
-                  className="no-border"
-                  id="education"
-                  placeholder="Nhập thông tin về học vấn"
+                  className="no-border textarea-80-percent"
+                  id="skills"
+                  placeholder={t("candidate.create.skillDescriptionP")}
                   required
                 ></textarea>
               </div>
             </div>
             <div className="col-md-7" style={{ marginTop: "10px" }}>
-              <h2>Mục tiêu nghề nghiệp</h2>
+              
+            <div className="name-job">
+                <div className="form-group names">
+                  <input
+                    type="text"
+                    className="no-border"
+                    id="name"
+                    placeholder={t("candidate.create.fullname")}
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <input
+                    type="text"
+                    className="no-border"
+                    id="job"
+                    placeholder={t("candidate.create.jobTitleP")}
+                    value={job}
+                    onChange={(e) => {
+                      setJob(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="text-line">
+              <h2 className="bt-cus">{t("candidate.create.shortBio")}</h2>
+              <div className="line"></div>
+              </div>
               <div className="form-groupp ">
                 <textarea
                   className="no-border"
                   id="careerObjective"
-                  placeholder="Nhập mục tiêu nghề nghiệp"
+                  placeholder={t("candidate.create.shortBioP")}
                   required
                 ></textarea>
               </div>
-              <h2>Học vấn</h2>
-              <div className="form-groupp">
+              <div className="text-line">
+              <h2 className="bt-cus">{t("candidate.create.tools")}</h2>
+              <div className="line"></div>
+              </div>
+              <div className="form-groupp tools">
+                <textarea
+                  className="no-border auto-resize-textarea"
+                  id="careerObjective"
+                  placeholder={t("candidate.create.toolsP")}
+                  required
+                ></textarea>
+              </div>
+              <div className="text-line">
+              <h2 className="bt-cus">{t("candidate.create.language")}</h2>
+              <div className="line"></div>
+              </div>
+              <div className="form-groupp ">
                 <textarea
                   className="no-border"
-                  id="education"
-                  placeholder="Nhập thông tin về học vấn"
+                  id="language"
+                  placeholder={t("candidate.create.languageP")}
                   required
                 ></textarea>
               </div>
-              <h2>Kỹ năng</h2>
-              <div className="form-groupp">
-                <textarea
-                  className="no-border"
-                  id="skills"
-                  placeholder="Nhập kỹ năng của bạn"
-                  required
-                ></textarea>
+              <div className="text-line">
+              <h2 className="bt-cus">{t("candidate.create.project")}</h2>
+              <div className="line"></div>
               </div>
-              <h2>Dự án đã thực hiện</h2>
               <div className="form-groupp">
                 <textarea
                   className="no-border"
                   id="projects"
-                  placeholder="Nhập thông tin về dự án đã thực hiện"
+                  placeholder={t("candidate.create.projectP")}
                   required
                 ></textarea>
               </div>
               <Row className="gutters" style={{ marginTop: "20px" }}>
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                  <div className="d-flex">
+                  <div className="d-flex justify-content-end">
                     <Button
                       id="cancelButton"
                       variant="secondary"
-                      className="ms-auto me-2 cancel-button"
+                      className="me-2 cancel-button"
                       onClick={onCancel}
                     >
                       {t("candidate.create.cancel")}
                     </Button>
-                    <Button id="saveButton" variant="secondary" type="submit">
+                    <Button id="saveButton" type="submit">
                       {t("candidate.create.save")}
                     </Button>
                   </div>
@@ -321,11 +416,53 @@ function TestCV() {
             </div>
           </div>
           {showAlert(
-        invalidImageModal,
-        setInvalidImageModal,
-        "candidate.modal.error",
-        "candidate.modal.image"
-      )}
+            invalidImageModal,
+            setInvalidImageModal,
+            "candidate.modal.error",
+            "candidate.modal.image"
+          )}
+          {showAlert(
+            invalidGenderModal,
+            setInvalidGenderModal,
+            "candidate.modal.error",
+            "candidate.modal.gender"
+          )}
+          {showAlert(
+            invalidNameModal,
+            setInvalidNameModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.fullName"
+          )}
+          {showAlert(
+            invalidJobModal,
+            setInvalidJobModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.job"
+          )}
+          {showAlert(
+            invalidBirthdayModal,
+            setInvalidBirthdayModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.date"
+          )}
+          {showAlert(
+            invalidEmailModal,
+            setInvalidEmailModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.email"
+          )}
+          {showAlert(
+            invalidPhoneModal,
+            setInvalidPhoneModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.phone"
+          )}
+          {showAlert(
+            invalidAddressModal,
+            setInvalidAddressModal,
+            "candidate.modal.notiCV",
+            "candidate.modal.address"
+          )}
           <ConfirmModal
             visible={confirmSaveModal}
             setVisible={setConfirmSaveModal}
@@ -351,4 +488,4 @@ function TestCV() {
   );
 }
 
-export default TestCV;
+export default TemplateCV02;

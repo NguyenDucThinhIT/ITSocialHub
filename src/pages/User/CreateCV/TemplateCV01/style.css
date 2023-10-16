@@ -1,0 +1,117 @@
+#CV01 .form-group.names input {
+  height: 55px !important;
+}
+#CV01 input {
+  height: 39px;
+}
+.container.cv {
+  border: 3px solid #fff;
+}
+#CV01 h2 {
+  color: rgba(0, 131, 177, 1) ;
+  font-weight: bold ;
+  font-size: 25px ;
+}
+#CV01 .image-avatar {
+  border: 5px solid rgba(0, 131, 177, 1) ; 
+  border-radius: 50%; 
+}
+#CV01 #name {
+  color: #007acc;
+  font-size: 30px;
+  font-weight: bold;
+}
+#CV01 #job {
+  font-size: 20px;
+}
+
+#CV01 .infor-jobs input {
+  display: block;
+  margin: 0 auto;
+  padding: 5px;
+  width: 70%;
+  margin-bottom: 10px;
+  text-align: center;
+  background-color: rgba(217, 237, 243, 1);
+}
+#CV01 .form-groupp.information {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-row-gap: 10px;
+  align-items: center;
+  border-bottom: 3px solid #a0cfff;
+}
+#CV01 .form-groupp.tools,
+.form-groupp.language {
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  border-bottom: 3px solid #a0cfff;
+}
+#CV01 .form-groupp {
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  border-bottom: 3px solid #a0cfff;
+}
+#CV01 .form-groupp.tools textarea,
+.form-groupp.language textarea {
+  background-color: rgba(217, 237, 243, 1);
+}
+#CV01 textarea.no-border {
+  margin-top: 10px;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+}
+#CV01 textarea {
+  border: none;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+#CV01 .auto-resize-textarea {
+  height: 2em;
+}
+
+#CV01 .icon {
+  display: flex;
+  align-items: center;
+  color: #007acc;
+  margin-right: 10px;
+}
+
+#CV01 .infor {
+  display: flex;
+  align-items: center;
+}
+#CV01 .information input {
+  background-color: rgba(217, 237, 243, 1);
+  width: 100%;
+}
+#CV01 .col-md-5 {
+  background-color: rgba(217, 237, 243, 1);
+  border-right: 3px solid #fff;
+}
+#CV01 .col-md-7 {
+  margin-top: 20px;
+}
+#CV01 #saveButton{
+  border-radius: 10px;
+  background-color: rgba(0, 170, 0, 1);
+}
+#CV01 #cancelButton{
+  border-radius: 10px;
+  background-color: rgba(250, 80, 84, 1);
+}
+#CV01 #cancelButton:hover{
+  background-color: rgba(240, 2, 7, 1);
+}
+#CV01 #saveButton:hover{
+  background-color: rgba(0, 135, 0, 1);
+}
+#CV01 .gender {
+  background-color: rgba(217, 237, 243, 1);
+  height: 40px;
+}

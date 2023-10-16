@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import html2pdf from "html2pdf.js";
+import { Preview, print } from "react-html2pdf";
 import Swal from "sweetalert2";
 import ConfirmModal from "../../../components/ConfirmModal";
 import ProfilePic from "../../../components/Avatar/ProfilePic";
@@ -290,6 +291,7 @@ const CreateCV = () => {
     <div id="createCV" className="form-container">
       <Container style={{ marginTop: "30px", marginBottom: "30px" }}>
         <Form onSubmit={onSubmit}>
+          <Preview id={"abc"}>
           <Row>
             <Col xl={6} lg={6} md={6} sm={12} xs={12}>
               <div className="image-container" style={{ marginTop: "65px" }}>
@@ -376,6 +378,8 @@ const CreateCV = () => {
               />
             </Col>
           </Row>
+          </Preview>
+         
           <Row className="gutters" style={{ marginTop: "20px" }}>
             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="d-flex">
@@ -384,10 +388,11 @@ const CreateCV = () => {
                   variant="secondary"
                   className="ms-auto me-2 cancel-button"
                   onClick={onCancel}
+                  
                 >
                   {t("candidate.create.cancel")}
                 </Button>
-                <Button id="saveButton" variant="secondary" type="submit">
+                <Button id="saveButton" variant="secondary" type="submit"> 
                   {t("candidate.create.save")}
                 </Button>
               </div>

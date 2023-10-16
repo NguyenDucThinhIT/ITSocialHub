@@ -7,7 +7,10 @@ import { useRoutes } from "react-router-dom";
 import Profile from "./pages/User/Profile/Profile.jsx";
 import EditProfile from "./pages/User/Profile/EditProfile.jsx";
 import CreateCV from "./pages/User/CreateCV/CreateCV.jsx";
-import TestCV from "./pages/User/testCV/testCV.jsx";
+import TemplateCV01 from "./pages/User/CreateCV/TemplateCV01/TemplateCV01.jsx";
+import TemplateCV02 from "./pages/User/CreateCV/TemplateCV02/TemplateCV02.jsx";
+
+
 
 function useRouteElements() {
   const routeElements = useRoutes([
@@ -40,8 +43,12 @@ function useRouteElements() {
           element: <CreateCV />,
         },
         {
-          path: "testCV",
-          element: <TestCV />,
+          path: "templateCV01",
+          element: <TemplateCV01 />,
+        },
+        {
+          path: "templateCV02",
+          element: <TemplateCV02 />,
         },
       ],
     },

@@ -1,0 +1,144 @@
+#CV02 .form-group.names input {
+  height: 65px !important;
+}
+#CV02 input {
+  height: 39px;
+}
+#CV02 .container.cv {
+  border: 3px solid #fff;
+}
+#CV02 h2 {
+  color: #000;
+  font-weight: bold;
+  font-size: 30px;
+  text-transform: uppercase;
+}
+#CV02 .header-cus {
+  background-color: rgba(68, 68, 64, 1);
+  color: white;
+  padding: 10px;
+  margin-left: 80px;
+  text-align: center;
+  border-radius: 40px;
+  width: 350px;
+}
+#CV02 .text-line {
+  display: flex;
+  align-items: center;
+}
+#CV02 .bt-cus {
+  flex-grow: 1;
+}
+
+#CV02 .line {
+  flex-grow: 15;
+  border-top: 3px solid #000;
+  margin-bottom: 5px;
+}
+#CV02 .name-job {
+  padding-top: 100px;
+  padding-bottom: 125px;
+}
+#CV02 .names {
+  color: rgba(51, 49, 50, 1);
+  font-size: 45px;
+  font-weight: bold;
+}
+#CV02 #job {
+  font-size: 30px;
+}
+#CV02 .textarea-80-percent {
+  width: 80% !important;
+}
+.CV02 input.no-border {
+  display: block;
+  margin: 0 auto;
+  padding: 5px;
+  width: 70%;
+  margin-bottom: 10px;
+  text-align: center;
+}
+#CV02 .form-groupp.information {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 80px;
+  padding-bottom: 30px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-row-gap: 10px;
+  align-items: center;
+}
+#CV02 .form-groupp.education,
+.form-groupp.skills {
+  margin-left: 80px;
+}
+#CV02 .form-groupp.tools,
+.form-groupp.language {
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+
+#CV02 .form-groupp {
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+#CV02 .form-groupp.education textarea,
+.form-groupp.skills textarea {
+  background-color: rgba(244, 244, 244, 1);
+}
+#CV02 textarea.no-border {
+  margin-top: 10px;
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+}
+#CV02 textarea {
+  border: none;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-line;
+}
+#CV02 .auto-resize-textarea {
+  height: 2em;
+}
+
+#CV02 .icon {
+  display: flex;
+  align-items: center;
+  color: #000;
+  margin-right: 10px;
+}
+
+#CV02 .infor {
+  display: flex;
+  align-items: center;
+}
+#CV02 .information input {
+  background-color: rgba(244, 244, 244, 1);
+  width: 100%;
+}
+#CV02 .col-md-5 {
+  background-color: rgba(244, 244, 244, 1);
+  border-right: 3px solid #fff;
+}
+#CV02 .col-md-7 {
+  margin-top: 20px;
+}
+#CV02 #saveButton {
+  border-radius: 10px;
+  background-color: rgba(0, 170, 0, 1);
+}
+#CV02 #cancelButton {
+  border-radius: 10px;
+  background-color: rgba(250, 80, 84, 1);
+}
+#CV02 #cancelButton:hover {
+  background-color: rgba(240, 2, 7, 1);
+}
+#CV02 #saveButton:hover {
+  background-color: rgba(0, 135, 0, 1);
+}
+#CV02 .gender {
+  background-color: rgba(244, 244, 244, 1);
+  height: 40px;
+}

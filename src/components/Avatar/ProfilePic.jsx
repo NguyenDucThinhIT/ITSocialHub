@@ -16,7 +16,7 @@ const ProfilePic = ({
       <Row className="justify-content-center align-items-center">
         <Col xl={6} lg={6} md={6} sm={8} xs={10} className="text-center">
           <img
-            className="profile-pic p-0"
+            className="profile-pic p-0 image-avatar"
             src={photo || "/assets/images/user.png"}
             onClick={openFileDialog}
             alt=""
