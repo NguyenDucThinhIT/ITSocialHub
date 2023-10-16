@@ -115,6 +115,10 @@ const validateImage = (file) => {
   const fileExtension = file.name.split(".").pop().toLowerCase();
   return validImageExtensions.includes(fileExtension);
 };
+const validateGender = (gender) => {
+  
+  return gender === "MALE" || gender === "FEMALE" || gender === "OTHER" || gender === "UNKNOWN";
+};
 
 export {
   validateName,
@@ -131,4 +135,5 @@ export {
   validateEndYear,
   validateYearRange,
   validateGPA,
+  validateGender,
 };
