@@ -6,8 +6,6 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import AlertModal from "../../../../components/AlertModal";
 import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
-import ReactHTMLToPDF from "react-html2pdf";
-import { Preview, print } from "react-html2pdf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
@@ -15,7 +13,6 @@ import {
   faPhone,
   faEnvelope,
   faLink,
-  faLocationDot,
   
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../../../../components/Avatar/ProfilePic";
@@ -31,8 +28,9 @@ import {
 } from "../../../../components/Validated/Validated";
 import Input from "../../../../components/InputFileds/InputFileds";
 import "./style.css";
+import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 
-function TemplateCV01() {
+function TemplateCV03() {
   const navigate = useNavigate();
   const { t } = useTranslation("common");
   const imageFormControl = useRef();
@@ -92,18 +90,27 @@ function TemplateCV01() {
     const cancelButton = document.getElementById("cancelButton");
     saveButton.style.display = "none";
     cancelButton.style.display = "none";
-    const element = document.getElementById("CV01");
+    const element = document.getElementById("CV03");
     const opt = {
-      margin: [10, 10, 10, 10],
+      margin: [5, 5, 10, 5],
       filename: `${jobValue}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a3", orientation: "portrait" },
     };
-    const h2Elements = document.querySelectorAll("#CV01 h2");
+    const h2Elements = document.querySelectorAll("#CV03 h2");
     h2Elements.forEach((h2) => {
-      h2.style.marginTop = "-20px";
+      h2.style.marginBottom = "35px";
     });
+    const headerCusElements = document.querySelectorAll("#CV03 .header-cus");
+    headerCusElements.forEach((headerCusElement) => {
+      headerCusElement.style.backgroundPosition = "center 5px";
+    });
+    const textareaElements = document.querySelectorAll("#CV03 textarea");
+    textareaElements.forEach((textarea) => {
+      textarea.style.marginTop = "-20px";
+    });
+
     await html2pdf().set(opt).from(element).save();
     setConfirmSaveModal(false);
     Swal.mixin({
@@ -146,19 +153,17 @@ function TemplateCV01() {
     });
   }, []);
   const onSubmit = (e) => {
+    e.preventDefault();
+    // if (!validateGender(gender)) {
+    //   setInvalidGenderModal(true);
+    //   return;
+    // }
     if (!photo) {
       Swal.fire({
         icon: "question",
         title: t("candidate.modal.error"),
         text: t("candidate.modal.image1"),
       });
-      return;
-    }
-    e.preventDefault();
-    if (
-      !validateGender(gender)
-    ) {
-      setInvalidGenderModal(true);
       return;
     }
     if (!validateName(name)) {
@@ -173,10 +178,10 @@ function TemplateCV01() {
       setInvalidJobModal(true);
       return;
     }
-    if (!validateBirthday(birthday)) {
-      setInvalidBirthdayModal(birthday);
-      return;
-    }
+    // if (!validateBirthday(birthday)) {
+    //   setInvalidBirthdayModal(birthday);
+    //   return;
+    // }
     if (!validatePhone(phone)) {
       setInvalidPhoneModal(true);
       return;
@@ -185,10 +190,10 @@ function TemplateCV01() {
       setInvalidEmailModal(true);
       return;
     }
-    if (!validateAddress(address)) {
-      setInvalidAddressModal(true);
-      return;
-    }
+    // if (!validateAddress(address)) {
+    //   setInvalidAddressModal(true);
+    //   return;
+    // }
     handleConfirmSaveCV();
   };
   const onCancel = () => {
@@ -205,14 +210,26 @@ function TemplateCV01() {
   return (
     <>
       <Form onSubmit={onSubmit}>
-        <div id="CV01" className="container cvs">
+        <div id="CV03" className="container cvs">
           <div className="row">
             <div className="col-md-5">
-              <div className="infor-jobs">
-                <div className="form-group names" style={{ height: "45px" }}>
+              <div className="image-container">
+                <ProfilePic
+                  photo={photo}
+                  openFileDialog={openFileDialog}
+                  changeHandler={changeHandler}
+                  imageFormControl={imageFormControl}
+                  showUploadButton={false}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-7">
+              <div className="name-job">
+                <div className="form-group names">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-80-percent"
                     id="name"
                     placeholder={t("candidate.create.fullname")}
                     value={name}
@@ -222,7 +239,7 @@ function TemplateCV01() {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-groupp">
                   <input
                     type="text"
                     className="no-border"
@@ -236,58 +253,12 @@ function TemplateCV01() {
                   />
                 </div>
               </div>
-              <div
-                className="image-container"
-                style={{ marginTop: "15px", marginBottom: "20px" }}
-              >
-                <ProfilePic
-                  photo={photo}
-                  openFileDialog={openFileDialog}
-                  changeHandler={changeHandler}
-                  imageFormControl={imageFormControl}
-                  showUploadButton={false}
-                  required
-                />
-              </div>
-
-              <h2>{t("candidate.profile.profile")}</h2>
-              <div className="form-groupp information">
-                <div className="icon">
-                  <FontAwesomeIcon icon={faCalendarDays} />
-                </div>
+              <div className="contact">
                 <div className="infor">
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="date"
-                    placeholder={t("candidate.create.dateP")}
-                    value={birthday}
-                    onChange={(e) => {
-                      setBirthday(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
-                <div className="icon">
-                  <FontAwesomeIcon icon={faUser} />
-                </div>
-                <div className="infor">
-                  <Input
-                    className="gender"
-                    inputType="gender"
-                    classStyle="gender"
-                    data={gender}
-                    setData={setGender}
-                    required
-                  />
-                </div>
-                <div className="icon">
                   <FontAwesomeIcon icon={faPhone} />
-                </div>
-                <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-30-percent"
                     id="phone"
                     placeholder={t("candidate.create.phoneP")}
                     value={phone}
@@ -296,14 +267,10 @@ function TemplateCV01() {
                     }}
                     required
                   />
-                </div>
-                <div className="icon">
                   <FontAwesomeIcon icon={faEnvelope} />
-                </div>
-                <div className="infor">
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-40-percent"
                     id="email"
                     placeholder={t("candidate.create.emailP")}
                     value={email}
@@ -313,36 +280,66 @@ function TemplateCV01() {
                     required
                   />
                 </div>
-                <div className="icon">
-                  <FontAwesomeIcon icon={faLink} />
-                </div>
-                <div className="infor">
+               
+                <div>
+                <FontAwesomeIcon icon={faSquareFacebook} />
                   <input
                     type="text"
-                    className="no-border"
+                    className="no-border textarea-60-percent"
                     id="fb"
                     placeholder={t("candidate.create.linkFB")}
                     required
                   />
                 </div>
-                <div className="icon">
-                  <FontAwesomeIcon icon={faLocationDot} />
-                </div>
-                <div className="infor">
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="address"
-                    placeholder={t("candidate.create.addressP")}
-                    value={address}
-                    onChange={(e) => {
-                      setAddress(e.target.value);
-                    }}
-                    required
-                  />
-                </div>
               </div>
-              <h2>{t("candidate.create.tools")}</h2>
+              
+            </div>
+            <div className="line"></div>            
+            <div className="col-md-4 header-custom">
+              <h2 className="header-cus">{t("candidate.create.academic")}</h2>
+                <div className="form-groupp education">
+                  <textarea
+                    className="no-border textarea-80-percent"
+                    id="education"
+                    placeholder={t("candidate.create.academicP")}
+                    required
+                  ></textarea>
+                </div>
+                <h2 className="header-cus">{t("candidate.create.skill")}</h2>
+                <div className="form-groupp ">
+                  <textarea
+                    className="no-border textarea-80-percent"
+                    id="skills"
+                    placeholder={t("candidate.create.skillDescriptionP")}
+                    required
+                  ></textarea>
+                </div>
+                <h2 className="header-cus">{t("candidate.create.language")}</h2>
+              <div className="form-groupp ">
+                <textarea
+                  className="no-border textarea-80-percent"
+                  id="language"
+                  placeholder={t("candidate.create.languageP")}
+                  required
+                ></textarea>
+              </div>
+              
+            </div>
+            <div className="col-md-1 line-right"></div>
+            <div className="col-md-7 header-tom">
+              
+            <h2 className="bio">{t("candidate.create.shortBio")}</h2>
+              <div className="form-groupp careerObjective">
+                <textarea
+                  className="no-border textarea-80-percent"
+                  id="careerObjective"
+                  placeholder={t("candidate.create.shortBioP")}
+                  required
+                ></textarea>
+              </div>
+              <div className="text-line">
+                <h2 className="bt-cus">{t("candidate.create.tools")}</h2>
+              </div>
               <div className="form-groupp tools">
                 <textarea
                   className="no-border auto-resize-textarea"
@@ -351,45 +348,9 @@ function TemplateCV01() {
                   required
                 ></textarea>
               </div>
-              <h2>{t("candidate.create.language")}</h2>
-              <div className="form-groupp language">
-                <textarea
-                  className="no-border"
-                  id="language"
-                  placeholder={t("candidate.create.languageP")}
-                  required
-                ></textarea>
+              <div className="text-line">
+                <h2 className="bt-cus">{t("candidate.create.project")}</h2>
               </div>
-            </div>
-            <div className="col-md-7" style={{ marginTop: "10px" }}>
-              <h2>{t("candidate.create.shortBio")}</h2>
-              <div className="form-groupp ">
-                <textarea
-                  className="no-border"
-                  id="careerObjective"
-                  placeholder={t("candidate.create.shortBioP")}
-                  required
-                ></textarea>
-              </div>
-              <h2>{t("candidate.create.academic")}</h2>
-              <div className="form-groupp">
-                <textarea
-                  className="no-border"
-                  id="education"
-                  placeholder={t("candidate.create.academicP")}
-                  required
-                ></textarea>
-              </div>
-              <h2>{t("candidate.create.skill")}</h2>
-              <div className="form-groupp">
-                <textarea
-                  className="no-border"
-                  id="skills"
-                  placeholder={t("candidate.create.skillDescriptionP")}
-                  required
-                ></textarea>
-              </div>
-              <h2>{t("candidate.create.project")}</h2>
               <div className="form-groupp">
                 <textarea
                   className="no-border"
@@ -398,24 +359,25 @@ function TemplateCV01() {
                   required
                 ></textarea>
               </div>
-              <Row className="gutters" style={{ marginTop: "20px",marginBottom: "20px" }}>
-                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                  <div className="d-flex justify-content-end">
-                    <Button
-                      id="cancelButton"
-                      variant="secondary"
-                      className="me-2 cancel-button"
-                      onClick={onCancel}
-                    >
-                      {t("candidate.create.cancel")}
-                    </Button>
-                    <Button id="saveButton" type="submit">
-                      {t("candidate.create.save")}
-                    </Button>
-                  </div>
+              
+              </div>          
+            <Row className="gutters" style={{ marginTop: "20px", marginBottom: "20px" }}>
+              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div className="d-flex justify-content-end">
+                  <Button
+                    id="cancelButton"
+                    variant="secondary"
+                    className="me-2 cancel-button"
+                    onClick={onCancel}
+                  >
+                    {t("candidate.create.cancel")}
+                  </Button>
+                  <Button id="saveButton" type="submit">
+                    {t("candidate.create.save")}
+                  </Button>
                 </div>
-              </Row>
-            </div>
+              </div>
+            </Row>
           </div>
           {showAlert(
             invalidImageModal,
@@ -423,12 +385,12 @@ function TemplateCV01() {
             "candidate.modal.error",
             "candidate.modal.image"
           )}
-          {showAlert(
+          {/* {showAlert(
             invalidGenderModal,
             setInvalidGenderModal,
             "candidate.modal.error",
             "candidate.modal.gender"
-          )}
+          )} */}
           {showAlert(
             invalidNameModal,
             setInvalidNameModal,
@@ -459,12 +421,12 @@ function TemplateCV01() {
             "candidate.modal.notiCV",
             "candidate.modal.phone"
           )}
-          {showAlert(
+          {/* {showAlert(
             invalidAddressModal,
             setInvalidAddressModal,
             "candidate.modal.notiCV",
             "candidate.modal.address"
-          )}
+          )} */}
           <ConfirmModal
             visible={confirmSaveModal}
             setVisible={setConfirmSaveModal}
@@ -490,4 +452,4 @@ function TemplateCV01() {
   );
 }
 
-export default TemplateCV01;
+export default TemplateCV03;

@@ -20,7 +20,7 @@ import "./index.css";
 function Footer() {
   const { t, i18n } = useTranslation("common");
   return (
-    <footer className="footer">
+    <footer className="footer-job">
       <div className="container">
         <div className="row">
           <div className="col-lg-3 col-md-6">

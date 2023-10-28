@@ -1,6 +1,7 @@
 import { useState } from "react"; 
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import { faFacebookF, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faUser, faEnvelope, faPhone, faLock, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -99,7 +100,7 @@ const Register = () => {
                     <div className="my-4">
                             <button className="btn text-white w-100 signup">{t("account.signUp")}</button>
                             <p className="small fw-bold mt-2 pt-1 mb-0">{t("account.haveAccount")}
-                            <a href="/login" className="link-danger"> {t("account.login")}</a></p>
+                            <Link to="/login" className="link-danger">{t("account.login")}</Link></p>
                         </div>
                 </form>
 

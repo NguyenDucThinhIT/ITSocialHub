@@ -1,0 +1,171 @@
+.info-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.info-title {
+  flex: 1;
+}
+
+.info-status {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-left: 10px;
+}
+.info-count {
+  margin-left: 15px;
+  font-weight: bold;
+  padding-bottom:20px;
+}
+.filter-label {
+  margin-right: 10px;
+}
+.custom-menu {
+  font-weight: bold;
+}
+
+.custom-dropdown-button.dropdown-toggle {
+  background-color: #000 !important;
+  color: #000 !important;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.custom-dropdown-button {
+  font-weight: bold !important;
+}
+.dropdown-toggle::after {
+  margin-left: 0.25rem;
+}
+
+.search-input input {
+  padding-right: 30px;
+}
+.custom-input.form-control {
+  width: 350px;
+  text-align: center;
+}
+.search-input {
+  align-items: center;
+  display: flex;
+  position: relative;
+  margin-bottom:20px;
+}
+.custom-input {
+  width: 350px;
+  text-align: center;
+  padding-left: 30px;
+}
+.search-icon {
+  position: absolute;
+  left: 10px; 
+}
+.btn-group > .btn,
+.btn-group-vertical > .btn {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.cv-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+.cv-list {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+}
+.cv-list .list-group-item {
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.attached-cv {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.attached-cv span {
+  font-weight: bold;
+}
+
+.no-file-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-file-icon svg {
+  margin-bottom: 10px;
+}
+.cv {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+.cv > button {
+  margin-left: 5px;
+}
+
+.cv-buttons {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+.cv-buttons > button {
+  margin-left: 5px;
+}
+.no-cv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  color: #a5a5b2;
+}
+
+.no-cv-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+.cv-description {
+  height: 570px;
+}
+.btn.btn-danger {
+  color: white;
+}
+.btn.btn-warning {
+  color: white;
+}
+#upAndCreateButton {
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  background-color: green;
+  border-color: green;
+  margin-top: 20px;
+  border-radius: 20px;
+  width: auto;
+  color: white;
+  font-weight: bold;
+}
+#cardForm {
+  height: calc(110vh - 170px);
+  overflow-y: auto;
+  margin-bottom: 30px;
+}
+body {
+  overflow-x: hidden;
+}

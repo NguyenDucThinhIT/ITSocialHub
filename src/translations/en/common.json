@@ -183,6 +183,7 @@
       "address": "Invalid address",
       "phone": "Invalid phone number",
       "image": "Please only choose the image file with JPG, JPEG, PNG or GIF",
+      "image1": "It looks like you forgot to upload your profile picture",
       "job": "Invalid Job",
       "gender":"Please choose your gender",
       "major": "Invalid major",
@@ -677,7 +678,9 @@
     "jobList": "Jobs List",
     "appliedCV": "Applied CVs",
     "cvList": "CVs",
-    "writeCV": "Write CV",
+    "writeCV": "Resume & CV",
+    "management":"CV Management",
+    "templates": "CV Templates",
     "home": "Home",
     "findJob": "Jobs",
     "company": "Companies"

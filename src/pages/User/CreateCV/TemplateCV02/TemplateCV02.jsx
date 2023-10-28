@@ -14,6 +14,7 @@ import {
   faEnvelope,
   faLink,
   faLocationDot,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../../../../components/Avatar/ProfilePic";
 import {
@@ -91,12 +92,26 @@ function TemplateCV02() {
     cancelButton.style.display = "none";
     const element = document.getElementById("CV02");
     const opt = {
-      //margin: [10, 10, 10, 10],
+      margin: [5, 5, 10, 5],
       filename: `${jobValue}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      //html2canvas: { scale: 2 },
+      html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a3", orientation: "portrait" },
     };
+    const h2Elements = document.querySelectorAll("#CV02 h2");
+    h2Elements.forEach((h2) => {
+      h2.style.marginBottom = "35px";
+    });
+    const headerCusElements = document.querySelectorAll("#CV02 .header-cus");
+    headerCusElements.forEach((headerCusElement) => {
+      headerCusElement.style.backgroundPosition = "center 5px";
+    });
+    const textareaElements = document.querySelectorAll("#CV02 textarea");
+    textareaElements.forEach((textarea) => {
+      textarea.style.marginTop = "-20px";
+    });
+    
+    
     await html2pdf().set(opt).from(element).save();
     setConfirmSaveModal(false);
     Swal.mixin({
@@ -109,7 +124,7 @@ function TemplateCV02() {
       icon: "success",
       text: t("candidate.tags.createCV"),
     });
-    navigate("/candidate/viewCV");
+    navigate("/CVs");
   };
   const handleCancelSaveCV = () => {
     setConfirmSaveModal(false);
@@ -140,9 +155,15 @@ function TemplateCV02() {
   }, []);
   const onSubmit = (e) => {
     e.preventDefault();
-    if (
-      !validateGender(gender)
-    ) {
+    if (!photo) {
+      Swal.fire({
+        icon: "question",
+        title: t("candidate.modal.error"),
+        text: t("candidate.modal.image1"),
+      });
+      return;
+    }
+    if (!validateGender(gender)) {
       setInvalidGenderModal(true);
       return;
     }
@@ -190,7 +211,7 @@ function TemplateCV02() {
   return (
     <>
       <Form onSubmit={onSubmit}>
-        <div id="CV02" className="container cv">
+        <div id="CV02" className="container cvs">
           <div className="row">
             <div className="col-md-5">
               <div
@@ -319,8 +340,7 @@ function TemplateCV02() {
               </div>
             </div>
             <div className="col-md-7" style={{ marginTop: "10px" }}>
-              
-            <div className="name-job">
+              <div className="name-job">
                 <div className="form-group names">
                   <input
                     type="text"
@@ -334,7 +354,7 @@ function TemplateCV02() {
                     required
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-groupp">
                   <input
                     type="text"
                     className="no-border"
@@ -349,10 +369,10 @@ function TemplateCV02() {
                 </div>
               </div>
               <div className="text-line">
-              <h2 className="bt-cus">{t("candidate.create.shortBio")}</h2>
-              <div className="line"></div>
+                <h2 className="bt-cus">{t("candidate.create.shortBio")}</h2>
+                <div className="line"></div>
               </div>
-              <div className="form-groupp ">
+              <div className="form-groupp careerObjective">
                 <textarea
                   className="no-border"
                   id="careerObjective"
@@ -361,8 +381,8 @@ function TemplateCV02() {
                 ></textarea>
               </div>
               <div className="text-line">
-              <h2 className="bt-cus">{t("candidate.create.tools")}</h2>
-              <div className="line"></div>
+                <h2 className="bt-cus">{t("candidate.create.tools")}</h2>
+                <div className="line"></div>
               </div>
               <div className="form-groupp tools">
                 <textarea
@@ -373,8 +393,8 @@ function TemplateCV02() {
                 ></textarea>
               </div>
               <div className="text-line">
-              <h2 className="bt-cus">{t("candidate.create.language")}</h2>
-              <div className="line"></div>
+                <h2 className="bt-cus">{t("candidate.create.language")}</h2>
+                <div className="line"></div>
               </div>
               <div className="form-groupp ">
                 <textarea
@@ -385,8 +405,8 @@ function TemplateCV02() {
                 ></textarea>
               </div>
               <div className="text-line">
-              <h2 className="bt-cus">{t("candidate.create.project")}</h2>
-              <div className="line"></div>
+                <h2 className="bt-cus">{t("candidate.create.project")}</h2>
+                <div className="line"></div>
               </div>
               <div className="form-groupp">
                 <textarea
@@ -396,7 +416,7 @@ function TemplateCV02() {
                   required
                 ></textarea>
               </div>
-              <Row className="gutters" style={{ marginTop: "20px" }}>
+              <Row className="gutters" style={{ marginTop: "20px",marginBottom: "20px" }}>
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="d-flex justify-content-end">
                     <Button

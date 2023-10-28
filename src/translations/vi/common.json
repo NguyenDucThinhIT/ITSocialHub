@@ -183,6 +183,7 @@
       "address": "Địa chỉ không hợp lệ",
       "phone": "Số điện thoại không hợp lệ",
       "image": "Vui lòng chỉ chọn file ảnh có đuôi jpg, jpeg, png hoặc gif",
+      "image1": "Có vẻ như bạn quên tải ảnh đại diện lên",
       "job": "Chức vụ không hợp lệ",
       "gender":"Vui lòng chọn giới tính",
       "major": "Ngành học không hợp lệ",
@@ -678,7 +679,9 @@
     "jobList": "Công việc",
     "appliedCV": "CV đã nộp",
     "cvList": "CV có sẵn",
-    "writeCV": "Tạo CV",
+    "writeCV": "Hồ sơ & CV",
+    "management":"Quản lý CV",
+    "templates": "Mẫu CV",
     "home": "Trang chủ",
     "findJob": "Tìm việc làm",
     "company": "Danh sách công ty"
