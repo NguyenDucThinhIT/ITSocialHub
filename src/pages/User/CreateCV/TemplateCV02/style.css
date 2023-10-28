@@ -1,27 +1,41 @@
 #CV02 .form-group.names input {
-  height: 65px !important;
+  height: 55px !important;
 }
 #CV02 input {
   height: 39px;
 }
-#CV02 .container.cv {
+#CV02 {
+  border: 3px solid black;
+}
+#CV02 .image-avatar {
+  border: 5px solid rgba(40,40,40, 0.9) ; 
+  border-radius: 50%; 
+}
+#CV02 .container.cvs {
   border: 3px solid #fff;
 }
 #CV02 h2 {
   color: #000;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 28px;
   text-transform: uppercase;
 }
 #CV02 .header-cus {
-  background-color: rgba(68, 68, 64, 1);
+  //box-sizing: border-box;
+  //background-color: rgba(68, 68, 64, 1);
+  background-image: url('/assets/images/bg.png'); 
+  background-repeat: no-repeat; 
+  background-size: cover;
   color: white;
-  padding: 10px;
-  margin-left: 80px;
+  padding: 10px 10px 20px 10px;
+  margin: 0 auto;
   text-align: center;
   border-radius: 40px;
-  width: 350px;
+  width: 370px;
+  height: 400;
+  background-position: center -8px; 
 }
+
 #CV02 .text-line {
   display: flex;
   align-items: center;
@@ -37,15 +51,16 @@
 }
 #CV02 .name-job {
   padding-top: 100px;
-  padding-bottom: 125px;
+  padding-bottom: 86px;
 }
-#CV02 .names {
+
+#CV02 #name {
   color: rgba(51, 49, 50, 1);
-  font-size: 45px;
+  font-size: 35px;
   font-weight: bold;
 }
 #CV02 #job {
-  font-size: 30px;
+  font-size: 28px;
 }
 #CV02 .textarea-80-percent {
   width: 80% !important;
@@ -83,20 +98,25 @@
   padding-bottom: 30px;
 }
 #CV02 .form-groupp.education textarea,
-.form-groupp.skills textarea {
+#CV02 .form-groupp.skills textarea {
   background-color: rgba(244, 244, 244, 1);
 }
 #CV02 textarea.no-border {
   margin-top: 10px;
   width: 100%;
   resize: none;
-  overflow: hidden;
+  overflow: auto;
 }
 #CV02 textarea {
   border: none;
   resize: none;
-  overflow: hidden;
-  white-space: pre-line;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+.line-break {
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 #CV02 .auto-resize-textarea {
   height: 2em;
@@ -116,6 +136,7 @@
 #CV02 .information input {
   background-color: rgba(244, 244, 244, 1);
   width: 100%;
+  font-size:18px;
 }
 #CV02 .col-md-5 {
   background-color: rgba(244, 244, 244, 1);
@@ -123,6 +144,7 @@
 }
 #CV02 .col-md-7 {
   margin-top: 20px;
+  background-color: #fff;
 }
 #CV02 #saveButton {
   border-radius: 10px;

@@ -6,9 +6,12 @@ import FindAccount from "./pages/User/FindAccount/findAccount.jsx";
 import { useRoutes } from "react-router-dom";
 import Profile from "./pages/User/Profile/Profile.jsx";
 import EditProfile from "./pages/User/Profile/EditProfile.jsx";
-import CreateCV from "./pages/User/CreateCV/CreateCV.jsx";
+import TemplateCV from "./pages/User/CreateCV/Template/TemplateCV.jsx";
 import TemplateCV01 from "./pages/User/CreateCV/TemplateCV01/TemplateCV01.jsx";
 import TemplateCV02 from "./pages/User/CreateCV/TemplateCV02/TemplateCV02.jsx";
+import MyCV from "./pages/User/CreateCV/MyCV/index.js";
+import TemplateCV03 from "./pages/User/CreateCV/TemplateCV03/TemplateCV03.jsx";
+
 
 
 
@@ -39,8 +42,12 @@ function useRouteElements() {
           element: <Profile />,
         },
         {
-          path: "createCV",
-          element: <CreateCV />,
+          path: "templateCV",
+          element: <TemplateCV />,
+        },
+        {
+          path: "CVs",
+          element: <MyCV />,
         },
         {
           path: "templateCV01",
@@ -49,6 +56,10 @@ function useRouteElements() {
         {
           path: "templateCV02",
           element: <TemplateCV02 />,
+        },
+        {
+          path: "templateCV03",
+          element: <TemplateCV03 />,
         },
       ],
     },

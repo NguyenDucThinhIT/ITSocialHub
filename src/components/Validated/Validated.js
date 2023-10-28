@@ -1,5 +1,5 @@
 const validateName = (firstName) => {
-  return /^[a-zA-Z\u00C0-\u1EF9\s]{2,15}$/u.test(firstName);
+  return /^[a-zA-Z\u00C0-\u1EF9\s]{2,30}$/u.test(firstName);
 };
 const validateEmail = (email) => {
   return /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email);

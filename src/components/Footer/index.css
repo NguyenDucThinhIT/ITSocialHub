@@ -1,39 +1,39 @@
 /* Phần CSS cho phần Footer */
-.footer {
+.footer-job {
   background-color: #333;
   color: #ccc;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.footer a, .footer a:hover {
+.footer-job a, .footer-job  a:hover {
   color: #fff;
   text-decoration: none;
 }
 
-.footer ul {
+.footer-job  ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
-.footer ul li {
+.footer-job  ul li {
   line-height: 1.6;
   padding: 5px 0;
   border-bottom: none; 
   margin-bottom: 5px;
 }
-.footer ul li a{
+.footer-job  ul li a{
   color: #ccc;
 }
-.footer ul li:last-child {
+.footer-job  ul li:last-child {
   border-bottom: none;
 }
 
-.footer ul li svg {
+.footer-job  ul li svg {
   margin-right: 5px;
 }
 
-.footer h4 {
+.footer-job  h4 {
   color: #fff;
 }
 

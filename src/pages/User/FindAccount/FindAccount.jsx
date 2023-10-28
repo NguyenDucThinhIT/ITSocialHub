@@ -29,7 +29,7 @@ const FindAccount = () => {
                         <button className="btn btn-dark text-white w-100">{t("account.recover")}</button>
                         <div className="text-center mt-2">
                             <p className="small fw-bold mt-2 pt-1 mb-0">{t("account.noAccounts")}
-                                <a href="/register" className="link-danger"> {t("account.signUp")}</a>
+                            <Link to="/register" className="link-danger">{t("account.signUp")}</Link>
                             </p>
 
                         </div>

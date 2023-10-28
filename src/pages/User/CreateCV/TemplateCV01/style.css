@@ -1,16 +1,20 @@
 #CV01 .form-group.names input {
   height: 55px !important;
+  width: 100%;
 }
 #CV01 input {
   height: 39px;
 }
-.container.cv {
+#CV01 {
+  border: 3px solid rgba(0, 131, 177, 1);
+}
+.container.cvs {
   border: 3px solid #fff;
 }
 #CV01 h2 {
   color: rgba(0, 131, 177, 1) ;
   font-weight: bold ;
-  font-size: 25px ;
+  font-size: 30px ;
 }
 #CV01 .image-avatar {
   border: 5px solid rgba(0, 131, 177, 1) ; 
@@ -18,11 +22,12 @@
 }
 #CV01 #name {
   color: #007acc;
-  font-size: 30px;
+  font-size: 35px;
   font-weight: bold;
 }
 #CV01 #job {
-  font-size: 20px;
+  font-size: 28px;
+  height: 45px;
 }
 
 #CV01 .infor-jobs input {
@@ -89,6 +94,7 @@
 #CV01 .information input {
   background-color: rgba(217, 237, 243, 1);
   width: 100%;
+  font-size:18px;
 }
 #CV01 .col-md-5 {
   background-color: rgba(217, 237, 243, 1);
@@ -96,6 +102,7 @@
 }
 #CV01 .col-md-7 {
   margin-top: 20px;
+  background-color: #fff;
 }
 #CV01 #saveButton{
   border-radius: 10px;
@@ -114,4 +121,5 @@
 #CV01 .gender {
   background-color: rgba(217, 237, 243, 1);
   height: 40px;
+  font-size: 18px;
 }
