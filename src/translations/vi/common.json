@@ -204,6 +204,7 @@
       "attachedCV": "CV đính kèm",
       "noFile": "Không có tệp đính kèm",
       "noJob": "Không có công việc ứng tuyển",
+      "active":"vị trí đang tuyển",
       "status": {
         "status": "Trạng thái",
         "allStatus": "Tất cả",
@@ -574,6 +575,26 @@
     "selectRightDate":"Vui lòng chọn ngày thích hợp! "
 
   },
+  "findJob":{
+    "salary":"Lương",
+    "jobType":"Loại công việc",
+    "daily":"Theo ngày",
+    "internship":"Thực tập",
+    "fullTime":"Làm việc full-time",
+    "partTime":"Làm việc part-time",
+    "contract":"Hợp đồng",
+    "experience":"Kinh nghiệm",
+    "no":"Ít hơn 1 năm",
+    "no1":"Từ 1 – 3 năm",
+    "no2":"Từ 3 – 5 năm",
+    "no3":"Từ 5 – 10 năm",
+    "no4":"Hơn 10 năm",
+    "lastUpdate":"Cập nhật lần cuối",
+    "time1":"24 giờ trước",
+    "time2":"Tuần trước",
+    "time3":"Tháng trước",
+    "time4":"Bất cứ khi nào"
+  },
   "status": {
     "allStatus": "Tất cả trạng thái",
     "notOpen": "Chưa xem",
@@ -746,6 +767,8 @@
     "sort": "Sắp xếp theo",
     "prev": "Trước",
     "next": "Sau",
+    "page":"Trang",
+    "of":"của",
     "applyJob": "Ứng Tuyển Công Việc",
     "jobTitle": "Chức vụ",
     "jobDescription": "Mô tả",
