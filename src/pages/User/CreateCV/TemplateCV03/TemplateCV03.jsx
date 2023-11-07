@@ -297,7 +297,7 @@ function TemplateCV03() {
             <div className="line"></div>            
             <div className="col-md-4 header-custom">
               <h2 className="header-cus">{t("candidate.create.academic")}</h2>
-                <div className="form-groupp education">
+                <div className="form-groupp educations">
                   <textarea
                     className="no-border textarea-80-percent"
                     id="education"

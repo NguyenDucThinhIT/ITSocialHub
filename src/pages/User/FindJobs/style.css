@@ -1,0 +1,120 @@
+.cus-pre-next {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.name-job {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  max-width: auto; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.salary{
+  margin-left:10px;
+  margin-top:-5px;
+}
+.company-info {
+  font-size: 16px;
+}
+.card-lg {
+  width: 450px;
+}
+.company-detail {
+  margin-top:-3px;
+  display: inline;
+  font-size: 18px;
+}
+.job-type,
+.experience,
+.education {
+  font-weight: 550;
+  margin-left:10px;
+  display: inline-block;
+  background-color: #ccc;
+  padding: 2px 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  max-width: 150px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.cus-pre-next:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
+.company-image {
+  margin-right: 10px;
+  width: 50px;
+  height: 50px;
+}
+.company-details {
+  margin: 10px;
+  font-size: 18px;
+}
+.fa-building,
+.fa-briefcase {
+  margin-right: 10px;
+  weight: 20px;
+  height: 20px;
+}
+.sort-type-job label {
+  display: block; 
+  margin-bottom: 5px; 
+}
+#toggleLabel {
+  cursor: pointer;
+  font-size:22px;
+  position: relative;
+}
+#toggleLabel:hover {
+  color: blue;
+}
+.line{
+  border-bottom: 2px solid #000;
+  margin: 10px 5px;
+}
+.col-sort {
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #ddd;
+  position: sticky;
+  top: 94px;
+  height: 100%;
+  z-index: 1;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.sort-type-job input {
+  width: 20px;
+  height:20px;
+  border: 1px solid #ddd;
+}
+
+.sort-type-job input + label {
+  color: #333;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+#toggleLabel .chevron-icon{
+  font-size:20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.time-line{
+  color: green;
+  font-size:17px;
+  margin-left:10px;
+}

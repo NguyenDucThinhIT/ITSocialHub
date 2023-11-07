@@ -83,7 +83,7 @@
   grid-row-gap: 10px;
   align-items: center;
 }
-#CV02 .form-groupp.education,
+#CV02 .form-groupp.educations,
 .form-groupp.skills {
   margin-left: 80px;
 }
@@ -97,7 +97,7 @@
   margin-bottom: 20px;
   padding-bottom: 30px;
 }
-#CV02 .form-groupp.education textarea,
+#CV02 .form-groupp.educations textarea,
 #CV02 .form-groupp.skills textarea {
   background-color: rgba(244, 244, 244, 1);
 }

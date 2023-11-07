@@ -204,6 +204,7 @@
       "attachedCV": "Attached CV",
       "noFile": "No File Attached",
       "noJob": "No Job Applied",
+      "active":"active jobs",
       "status": {
         "status": "Status",
         "allStatus": "All Status",
@@ -573,6 +574,26 @@
     "cantAddAndEdit":"You cannot create or edit past calendars.",
     "selectRightDate":"Please select the appropriate date"
   },
+  "findJob":{
+    "salary":"Salary",
+    "jobType":"Job Type",
+    "daily":"Daily",
+    "internship":"Internship",
+    "fullTime":"Full-Time",
+    "partTime":"Part-Time",
+    "contract":"Contract",
+    "experience":"Experience",
+    "no":"Less than a year",
+    "no1":"1 – 3 years",
+    "no2":"3 – 5 years",
+    "no3":"5 – 10 years",
+    "no4":"More than 10 years",
+    "lastUpdate":"Last Updated",
+    "time1":"Past 24 Hours",
+    "time2":"Past Week",
+    "time3":"Past Month",
+    "time4":"Any Time"
+  },
   "status": {
     "allStatus": "All Status",
     "notOpen": "Not Open",
@@ -745,6 +766,8 @@
     "sort": "Sort by",
     "prev": "Prev",
     "next": "Next",
+    "page":"Page",
+    "of":"of",
     "applyJob": "Apply Job",
     "jobTitle": "Job Title",
     "jobDescription": "Job Description",
