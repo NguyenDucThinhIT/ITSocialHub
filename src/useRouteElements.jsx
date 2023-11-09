@@ -13,6 +13,7 @@ import MyCV from "./pages/User/CreateCV/MyCV/index.js";
 import TemplateCV03 from "./pages/User/CreateCV/TemplateCV03/TemplateCV03.jsx";
 import ListCompanies from "./pages/User/ListCompanies/ListCompanies.jsx";
 import FindJobs from "./pages/User/FindJobs/FindJobs.jsx";
+import ApplyCV from "./pages/User/CreateCV/ApplyCV/index.js";
 
 
 
@@ -50,6 +51,10 @@ function useRouteElements() {
         {
           path: "CVs",
           element: <MyCV />,
+        },
+        {
+          path: "applications",
+          element: <ApplyCV />,
         },
         {
           path: "templateCV01",

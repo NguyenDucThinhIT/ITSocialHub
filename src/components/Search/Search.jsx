@@ -36,7 +36,7 @@ function Search() {
   });
 
   return (
-    <div className="search-wrapped">
+    <div className="search-wrapped bg-white">
       <div className="search-container">
         <div className="search-form">
           <div className="search-box mb-5">

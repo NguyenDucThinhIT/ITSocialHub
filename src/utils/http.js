@@ -10,7 +10,7 @@ class Http {
     this.accessToken = getAccessTokenFromLS();
     this.instance = axios.create({
       baseURL:
-        "http://jobportal-env-1.eba-pbtzihfd.ap-southeast-2.elasticbeanstalk.com/api/v1/",
+        "https://talenthabour.onrender.com/api/v1/",
       timeout: 15000,
       headers: {
         "Content-Type": "application/json",

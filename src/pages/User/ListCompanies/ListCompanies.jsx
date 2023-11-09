@@ -81,7 +81,7 @@ function ListCompanies() {
   const renderCompanies = () => {
     return companies.map((company) => (
       <Col key={company.id} className="col-md-4">
-        <div className="card border-0 search-categories">
+        <div className="card border-1 search-categories">
           <div className="d-flex">
             <img src={company.image} alt={company.name} className="company-image" />
             <div className="company-info">

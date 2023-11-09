@@ -1,7 +1,10 @@
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import { faFacebookF, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import {
   faEnvelope,
@@ -9,6 +12,8 @@ import {
   faEye,
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { loginSlice } from "@/redux/auth.slice";
+import { loginAccount } from "@/services/auth.api";
 
 import "./index.css";
 
@@ -22,7 +27,42 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = () => {};
+  const loginMutation = useMutation({
+    mutationFn: (body) => loginAccount(body),
+  });
+  const handleSubmit = (body) => {
+    if (!body.username || !body.password) {
+      Swal.fire({
+        icon: "error",
+        title: t("jobPage.failed"),
+        text: t("login.validate"),
+      });
+      return;
+    }
+    loginMutation.mutate(body, {
+      onSuccess: (data) => {
+        dispatch(loginSlice(data.data.data));
+        navigate(from, { replace: true });
+        Swal.mixin({
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        }).fire({
+          icon: "success",
+          text: t("login.loginSuccess"),
+        });
+      },
+      onError: () => {
+        Swal.fire({
+          icon: "error",
+          title: t("jobPage.failed"),
+          text: t("login.loginFail"),
+        });
+      },
+    });
+  };
 
   return (
     <div className="row my-3 justify-content-center w-100">
@@ -37,7 +77,7 @@ const Login = () => {
           </button>
         </div>
         <div className="divider d-flex align-items-center my-4">
-          <p className="text-center fw-bold mx-3 mb-0">{t("account.or")}</p>
+          <p className="cus-or text-center fw-bold mx-3">{t("account.or")}</p>
         </div>
 
         <form action="#">
