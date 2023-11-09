@@ -6,7 +6,7 @@ import useRouteElements from "./useRouteElements.jsx";
 function App() {
   const routeElements = useRouteElements();
   return (
-    <div className="App">
+    <div className="App bg-white">
        
       <Suspense fallback={Loading}>{routeElements}</Suspense> 
      

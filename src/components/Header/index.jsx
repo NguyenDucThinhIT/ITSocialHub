@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { faGlobe, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import "./index.css";
+import HeaderUser from "../ManaHeader";
 
 const Header = () => {
   const { t, i18n } = useTranslation("common");
@@ -97,6 +98,9 @@ const Header = () => {
             <Link to="/register" className="header-btn">
               {t("header.signUp")}
             </Link>
+          </div>
+          <div>
+            <HeaderUser/>
           </div>
         </div>
       </div>

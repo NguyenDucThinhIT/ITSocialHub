@@ -31,7 +31,7 @@ const Register = () => {
                             </button>
                         </div>
                         <div className="divider d-flex align-items-center my-4">
-                            <p className="text-center fw-bold mx-3 mb-0">{t("account.or")}</p>
+                            <p className="cus-or text-center fw-bold mx-3">{t("account.or")}</p>
                         </div>
                 <form action="#">
                     <div className="row">
