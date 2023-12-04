@@ -204,7 +204,7 @@ function TemplateCV01() {
   );
   return (
     <>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} className="pt-3">
         <div id="CV01" className="container cvs">
           <div className="row">
             <div className="col-md-5">

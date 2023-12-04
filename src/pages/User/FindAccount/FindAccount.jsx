@@ -7,7 +7,7 @@ import "./index.css"
 const FindAccount = () => {
     const { t } = useTranslation("common");
     return (
-        <div className="row my-3 justify-content-center w-100">
+        <div className="row my-3 justify-content-center w-100 pt-5">
             
             <div className="col col-3 box-shadow px-5">
                 

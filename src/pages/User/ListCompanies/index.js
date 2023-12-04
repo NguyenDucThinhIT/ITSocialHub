@@ -1,3 +1,3 @@
 import ListCompanies from "./ListCompanies";
-
-export default ListCompanies;
+import ProfileCompany from "./ListCompanies";
+export  {ListCompanies, ProfileCompany};

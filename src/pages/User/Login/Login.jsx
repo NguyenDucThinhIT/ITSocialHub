@@ -14,14 +14,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { loginSlice } from "@/redux/auth.slice";
 import { loginAccount } from "@/services/auth.api";
-
+import { validateEmail } from "@/components/Validated/Validated";
 import "./index.css";
 
 const Login = () => {
   const { t } = useTranslation("common");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const handlePasswordToggle = () => {
     setShowPassword(!showPassword);
@@ -30,44 +36,46 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: (body) => loginAccount(body),
   });
-  const handleSubmit = (body) => {
-    if (!body.username || !body.password) {
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!validateEmail(email)) {
       Swal.fire({
         icon: "error",
         title: t("jobPage.failed"),
-        text: t("login.validate"),
+        text: t("candidate.modal.email"),
       });
       return;
     }
-    loginMutation.mutate(body, {
-      onSuccess: (data) => {
-        dispatch(loginSlice(data.data.data));
-        navigate(from, { replace: true });
-        Swal.mixin({
-          toast: true,
-          position: "top-end",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        }).fire({
-          icon: "success",
-          text: t("login.loginSuccess"),
-        });
-      },
-      onError: () => {
-        Swal.fire({
-          icon: "error",
-          title: t("jobPage.failed"),
-          text: t("login.loginFail"),
-        });
-      },
-    });
+
+    loginMutation.mutate(
+      { email: email, password },
+      {
+        onSuccess: (data) => {
+          dispatch(loginSlice(data.data.user));
+          navigate(from, { replace: true });
+          Swal.fire({
+            icon: "success",
+            //title: t("login.success"),
+            text: t("login.loginSuccess"),
+          });
+        },
+        onError: (error) => {
+          Swal.fire({
+            icon: "error",
+            title: t("jobPage.failed"),
+            text: t("login.loginFail"),
+          });
+          console.log("Error during login:", error);
+        },
+      }
+    );
   };
 
   return (
-    <div className="row my-3 justify-content-center w-100">
+    <div className="row my-3 justify-content-center w-100 pt-5">
       <div className="col col-4 box-shadow px-5">
-        <div className="social mt-5 d-flex flex-row align-items-center justify-content-lg-start">
+        {/* <div className="social mt-5 d-flex flex-row align-items-center justify-content-lg-start">
           <p className="lead fw-normal mb-0 me-3">{t("account.loginW")}</p>
           <button type="button" className="btn btn-floating mx-1">
             <FontAwesomeIcon icon={faFacebookF} className="img-fb" />
@@ -78,10 +86,13 @@ const Login = () => {
         </div>
         <div className="divider d-flex align-items-center my-4">
           <p className="cus-or text-center fw-bold mx-3">{t("account.or")}</p>
+        </div> */}
+        <div className=" text-center pt-4">
+          <h1>{t("account.title")}</h1>
+          <p className="font-italic text-muted mb-0">{t("account.titleL")}</p>
         </div>
-
-        <form action="#">
-          <div className="my-3 input-group flex-nowrap">
+        <form onSubmit={handleSubmit} className="cus-form">
+          <div className="my-3 input-group flex-nowrap pt-4">
             <span className="input-group-text">
               <FontAwesomeIcon icon={faEnvelope} />
             </span>
@@ -91,6 +102,9 @@ const Login = () => {
               className="form-control"
               id="floatingInput"
               placeholder={t("account.email")}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
           </div>
           <div className="my-3 input-group flex-nowrap">
@@ -103,6 +117,9 @@ const Login = () => {
               className="form-control"
               id="floatingPassword"
               placeholder={t("account.password")}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
             <span
               className="input-group-text cursor-pointer"
@@ -147,9 +164,7 @@ const Login = () => {
         </form>
       </div>
       <div className="col col-1"></div>
-      <div className="col col-4 text-center">
-        <h1>{t("account.title")}</h1>
-        <p className="font-italic text-muted mb-0">{t("account.titleL")}</p>
+      <div className="col col-4">
         <img src="assets/images/login.gif" alt="Image" className="img-fluid" />
       </div>
     </div>

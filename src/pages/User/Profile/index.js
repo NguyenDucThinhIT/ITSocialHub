@@ -1,3 +1,3 @@
-import EditProfile from "./EditProfile";
+import ProfileUser from "./ProfileUser";
 
-export default EditProfile;
+export default ProfileUser;

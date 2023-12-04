@@ -107,7 +107,7 @@ const AppliedCV= () => {
   }, [initialData, filterOption, searchQuery]);
 
   return (
-    <div className="mx-3 mb-3">
+    <div className="mx-3 mb-3 pt-5">
       <div className="container">
       <Row className="align-items-center">
         <Col sm={4}>

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import "./style.css";
 
 const ProfilePic = ({
+  className,
   photo,
   openFileDialog,
   changeHandler,
@@ -14,9 +15,9 @@ const ProfilePic = ({
   return (
     <>
       <Row className="justify-content-center align-items-center">
-        <Col xl={6} lg={6} md={6} sm={8} xs={10} className="text-center">
+        <Col xl={6} lg={6} md={6} sm={8} xs={10}>
           <img
-            className="profile-pic p-0 image-avatar"
+            className={`profile-pic image-avatar ${className}`} 
             src={photo || "/assets/images/user.png"}
             onClick={openFileDialog}
             alt=""

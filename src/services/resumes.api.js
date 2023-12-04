@@ -1,29 +1,29 @@
 import http from "../utils/http";
 
 export const viewResume = (id) =>
-  http.get(`resumes/${id}/view`, { responseType: "blob" });
+  http.get(`resumes/${id}`);
 
-export const getResume = (id, name, page = 1, size = 30) =>
+export const getResume = (limit, page, column, order) =>
   http.get(`resumes`, {
     params: {
-      id: id,
-      name: name,
+      limit: limit,
       page: page,
-      size: size,
+      column: column,
+      order: order,
     },
   });
 
-export function postResume(file) {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("resumeName", file.name);
-  return http.post(`resumes/upload`, formData, {
-    headers: {
-      "Content-Type ": "multipart/form-data"
-    },
+export const postResume = (data) => {
+  return http.post(`resumes`, {
+    name: data.name,
+    file_url: data.file_url,
   });
-}
+};
+export const editResume = (id,data) => http.put(`resumes/${id}`,data);
 
-export const downloadResume = (id) => http.get(`resumes/${id}/download`, { responseType: "blob" });
 
-export const deleteResume = (id) => http.delete(`resumes/${id}`);
+export const deleteResume = (id) => http.delete(`resumes`,{data:{ids: [id]}});
+
+
+export const downloadResume = (id) =>
+  http.get(`resumes/${id}/download`, { responseType: "blob" });

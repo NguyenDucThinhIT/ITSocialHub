@@ -8,7 +8,9 @@
 .info-title {
   flex: 1;
 }
-
+.delete-cv{
+  
+}
 .info-status {
   display: inline-block;
   padding: 2px 6px;
@@ -45,29 +47,37 @@
   margin-left: 0.25rem;
 }
 
-.search-input input {
+.input-name input {
   padding-right: 30px;
 }
 .custom-input.form-control {
   width: 350px;
   text-align: center;
 }
-.search-input {
+.input-name {
   align-items: center;
   display: flex;
   position: relative;
   margin-left:10px;
   margin-bottom:-10px;
 }
+.save-button-cv{
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  background-color: green;
+  border-color: green;
+  margin-top: 20px;
+  border-radius: 10px;
+  width: auto;
+  color: white;
+  font-weight: bold;
+}
 .custom-input {
   width: 350px;
   text-align: center;
   padding-left: 30px;
 }
-.search-icon {
-  position: absolute;
-  left: 10px; 
-}
+
 .btn-group > .btn,
 .btn-group-vertical > .btn {
   font-weight: bold;
@@ -156,11 +166,13 @@
   background-color: green;
   border-color: green;
   margin-top: 20px;
-  border-radius: 20px;
+  margin-right:20px;
+  border-radius: 10px;
   width: auto;
   color: white;
   font-weight: bold;
 }
+
 #cardForm {
   height: calc(110vh - 170px);
   overflow-y: auto;

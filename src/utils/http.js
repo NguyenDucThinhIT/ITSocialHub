@@ -9,9 +9,8 @@ class Http {
   constructor() {
     this.accessToken = getAccessTokenFromLS();
     this.instance = axios.create({
-      baseURL:
-        "https://talenthabour.onrender.com/api/v1/",
-      timeout: 15000,
+      baseURL: "https://talenthabour.onrender.com/api/",
+      timeout: 30000,
       headers: {
         "Content-Type": "application/json",
       },
@@ -34,10 +33,10 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config;
-        if (url === "auth/login" || url === "auth/register") {
-          this.accessToken = response.data.data.token;
+        if (url === "login" || url === "register") {
+          this.accessToken = response.data.access_token;
           setAccessTokenToLS(this.accessToken);
-          setProfileToLS(response.data.data);
+          setProfileToLS(response.data.user);
         }
         return response;
       },

@@ -35,7 +35,7 @@ function TemplateCV03() {
   const { t } = useTranslation("common");
   const imageFormControl = useRef();
   const [photo, setPhoto] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); 
   const [job, setJob] = useState("");
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
@@ -209,7 +209,7 @@ function TemplateCV03() {
   );
   return (
     <>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} className="pt-3">
         <div id="CV03" className="container cvs">
           <div className="row">
             <div className="col-md-5">

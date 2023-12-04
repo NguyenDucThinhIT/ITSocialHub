@@ -1,21 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-
-import Input from "../../../components/InputFileds/InputFileds";
-import AlertModal from "../../../components/AlertModal";
-import ProfilePic from "../../../components/Avatar/ProfilePic";
-//import { editProfile } from "@/services/profile.api";
-import { setEdit, editSlice } from "../../../redux/auth.slice";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Input from "@/components/InputFileds/InputFileds";
+import AlertModal from "@/components/AlertModal";
+import ProfilePic from "@/components/Avatar/ProfilePic";
+import { upload } from "@/services/upload.api";
+import { editProfile } from "@/services/profile.api";
+import { setEdit, editSlice } from "@/redux/auth.slice";
 import {
   validateName,
   validatePhone,
-  validateBirthday,
   validateImage,
   validateRequiredFields,
-} from "../../../components/Validated/Validated";
+} from "@/components/Validated/Validated";
 
 import "./styles.css";
 
@@ -24,12 +25,12 @@ const EditProfile = () => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const email = user.email;
-  const [firstName, setFirstName] = useState(user.firstName);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [birthday, setBirthday] = useState(user.dob);
+  const [firstName, setFirstName] = useState(user.first_name);
+  const [lastName, setLastName] = useState(user.last_name);
+  const [birthday, setBirthday] = useState(user.date_of_birth ? new Date(user.date_of_birth) : null);
   const [gender, setGender] = useState(user.gender);
-  const [phone, setPhone] = useState(user.phoneNumber);
-  const [photo, setPhoto] = useState(user.avatarImageUrl);
+  const [phone, setPhone] = useState(user.phonenumber);
+  const [photo, setPhoto] = useState(user.image_url);
   const [fileImg, setFileImg] = useState();
   const imageFormControl = useRef();
   const isEmailDisabled = true;
@@ -41,20 +42,19 @@ const EditProfile = () => {
   const [fillRequiredFieldsModal, setFillRequiredFieldsModal] = useState(false);
   const changeHandler = (e) => {
     const file = e.target.files[0];
-    setFileImg(file);
     const reader = new FileReader();
     if (!validateImage(file)) {
       setInvalidImageModal(true);
       return;
     }
-
+    setFileImg(file);
     reader.onloadend = () => {
       setPhoto(reader.result);
     };
     if (file) {
       reader.readAsDataURL(file);
     } else {
-      setPhoto("/img/ava.png");
+      setPhoto("/assets/images/ava.png");
     }
     Swal.mixin({
       toast: true,
@@ -71,10 +71,10 @@ const EditProfile = () => {
     e.preventDefault();
     imageFormControl.current.click();
   };
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (
-      !validateRequiredFields([firstName, lastName, birthday,gender, phone])
+      !validateRequiredFields([firstName, lastName, birthday, gender, phone])
     ) {
       setFillRequiredFieldsModal(true);
       return;
@@ -89,31 +89,38 @@ const EditProfile = () => {
       return;
     }
 
-    if (!validateBirthday(birthday)) {
-      setInvalidBirthdayModal(true);
-      return;
-    }
-
     if (!validatePhone(phone)) {
       setInvalidPhoneModal(true);
       return;
     }
     dispatch(setEdit(false));
-    // const updatedUser = {
-    //   firstName: firstName,
-    //   lastName: lastName,
-    //   dob: birthday,
-    //   gender: gender,
-    //   phoneNumber: phone,
-    //   avatarImageUrl: fileImg,
-    // };
-    // editProfile(updatedUser)
-    //   .then((res) => {
-    //     dispatch(editSlice(res.data.data));
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
+    let imageUrl = {};
+    if (fileImg) {
+      try {
+        imageUrl = await upload(fileImg);
+        setPhoto(imageUrl.url);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        return;
+      }
+    }
+    const updatedUser = {
+      first_name: firstName,
+      last_name: lastName,
+      date_of_birth: birthday,
+      gender: gender,
+      phonenumber: phone,
+      image_url: imageUrl.url, 
+    };
+    console.log(updatedUser);
+    editProfile(updatedUser)
+      .then((res) => {
+        dispatch(editSlice(res.data));
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
     Swal.mixin({
       toast: true,
       position: "top-end",
@@ -125,6 +132,7 @@ const EditProfile = () => {
       text: t("candidate.tags.saveInformation"),
     });
   };
+  
   const handleCancel = () => {
     dispatch(setEdit(false));
   };
@@ -140,9 +148,10 @@ const EditProfile = () => {
     <div className="full-height">
       <Container style={{ marginTop: "30px", marginBottom: "30px" }}>
         <Form onSubmit={onSubmit}>
-          <Row className="justify-content-center align-items-center">
-            <Col xl={6} lg={6} md={6} className="text-center">
+          <Row className="align-items-center">
+            <Col xl={6} lg={6} md={6}>
               <ProfilePic
+                className="ava-profile"
                 photo={photo}
                 openFileDialog={openFileDialog}
                 changeHandler={changeHandler}
@@ -155,9 +164,7 @@ const EditProfile = () => {
                   <Card.Body>
                     <Row className="gutters">
                       <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-                        <h4 className="mb-3">
-                          {t("candidate.profile.profile")}
-                        </h4>
+                      <h2 className="mb-3 font-bold">{t("candidate.profile.profile")}</h2>
                       </Col>
 
                       <Col xl={8} lg={8} md={8} sm={12} xs={12}>
@@ -186,15 +193,17 @@ const EditProfile = () => {
                       </Col>
                       <Col xl={8} lg={8} md={8} sm={12} xs={12}>
                         <div className="form-group mb-3">
-                          <Input
-                            classStyle={`form-control ${
+                          <label>{t("candidate.profile.date")}</label>
+                          <DatePicker
+                            selected={birthday} 
+                            onChange={(date) => setBirthday(date)} 
+                            dateFormat="dd-MM-yyyy" 
+                            showYearDropdown
+                            scrollableYearDropdown
+                            yearDropdownItemNumber={30}
+                            className={`form-control ${
                               invalidBirthdayModal ? "is-invalid" : ""
                             }${!birthday ? "is-invalid" : ""}`}
-                            inputType="date"
-                            label={t("candidate.profile.date")}
-                            placeholder={t("candidate.create.dateP")}
-                            data={birthday}
-                            setData={setBirthday}
                           />
                         </div>
                       </Col>
