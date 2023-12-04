@@ -42,10 +42,10 @@
       "forgot":"Bạn quên mật khẩu?",
       "titleP":"Không thành vấn đề! Chỉ cần nhập địa chỉ email mà bạn đã đăng ký để đặt lại. ",
       "recover":"Khôi phục mật khẩu",
-      "":"",
-      "":"",
-      "":"",
-      "":"",
+      "active":"Bạn cần kích hoạt tài khoản!",
+      "titleA":"Vui lòng kiểm tra hộp thư email và tiến hành nhập mã code để kích hoạt tài khoản.",
+      "codeA":"Nhập mã code",
+      "activeA":"Kích hoạt tài khoản",
       "":""
   },
   "admin": {
@@ -178,6 +178,8 @@
       "firstName": "Tên không hợp lệ",
       "lastName": "Họ không hợp lệ",
       "fullName": "Họ và tên không hợp lệ",
+      "salary":"Giá trị Lương không hợp lệ",
+      "expired":"Thời hạn ứng tuyển không hợp lệ",
       "date": "Ngày sinh không hợp lệ",
       "email": "Email không hợp lệ",
       "address": "Địa chỉ không hợp lệ",
@@ -201,9 +203,11 @@
     "appliedJob": {
       "appliedJob": "Công việc ứng tuyển",
       "searchJob": "Tìm kiếm công việc",
+      "searchPost": "Tìm kiếm bài tuyển dụng",
       "attachedCV": "CV đính kèm",
       "noFile": "Không có tệp đính kèm",
       "noJob": "Không có công việc ứng tuyển",
+      "noPost":"Không có bài tuyển dụng",
       "active":"vị trí đang tuyển",
       "status": {
         "status": "Trạng thái",
@@ -229,7 +233,8 @@
       "uploadAvatar": "Tải ảnh đại diện lên thành công",
       "downloadCV": "Tải CV về thành công",
       "createCV": "Tạo CV thành công",
-      "saveInformation": "Đã cập nhập thông tin cá nhân"
+      "saveInformation": "Đã cập nhập thông tin cá nhân",
+      "editPost":"Đã cập nhật bài tuyển dụng"
     }
   },
   "recruiter": {
@@ -250,7 +255,16 @@
       "openPositions": "Vị Trí Mở",
       "acceptance": "Quyết định Chấp nhận",
       "accepted": "Đã chấp nhận",
-      "rejected": "Đã từ chối"
+      "rejected": "Đã từ chối",
+      "profileCompany":"Đã cập nhật thông tin công ty"
+    },
+    "time": {
+      "seconds":"giây",
+      "minutes":"phút",
+      "hours":"giờ",
+      "days":"ngày",
+      "ago":"trước",
+      "posted":"Đã đăng"
     },
     "jobs": {
       "total": "Bài đăng",
@@ -593,7 +607,23 @@
     "time1":"24 giờ trước",
     "time2":"Tuần trước",
     "time3":"Tháng trước",
-    "time4":"Bất cứ khi nào"
+    "time4":"Bất cứ khi nào",
+    "titleNew":"Tin tuyển dụng, việc làm nhanh cập nhật 24/7"
+  },
+  "company":{
+    "businessAreas":"Lĩnh vực kinh doanh:",
+    "location":"Địa điểm:",
+    "size":"Quy mô công ty:",
+    "information":"Thông tin công ty",
+    "introduction":"Giới thiệu công ty",
+    "address":"Địa chỉ văn phòng",
+    "culture":"Văn hóa công ty",
+    "jobs":"Việc làm",
+    "":"",
+    "":"",
+    "":"",
+    "":""
+
   },
   "status": {
     "allStatus": "Tất cả trạng thái",
@@ -706,7 +736,8 @@
     "templates": "Mẫu CV",
     "home": "Trang chủ",
     "findJob": "Tìm việc làm",
-    "company": "Danh sách công ty"
+    "company": "Danh sách công ty",
+    "recruitment":"Đăng tin tuyển dụng"
   },
   "footer": {
     "detail":"Khám phá cơ hội nghề nghiệp mơ ước với chúng tôi. TalentHarbor là điểm đến duy nhất để tìm kiếm cơ hội công việc hoàn hảo phù hợp với kỹ năng và hoài bão của bạn.",
@@ -758,7 +789,7 @@
   },
   "jobPage": {
     "all": "Tất cả",
-    "searchTitle": "Nhập từ khóa theo chức vụ công việc...",
+    "searchTitle": "Nhập từ khóa ",
     "searchButton": "Tìm kiếm",
     "time": "Thời gian",
     "salary": "Mức lương",
@@ -798,15 +829,21 @@
     "password": "Mật khẩu",
     "loginFooter": "Bạn chưa có tài khoản?",
     "loginLink": "Đăng ký ngay!",
+    "user":"Người lao động",
+    "employer":"Nhà tuyển dụng",
+    "titleR":"Bắt đầu tạo hồ sơ TalentHarbor của bạn ",
     "register": "Đăng ký",
     "registerTitle": "Tạo tài khoản",
     "registerButton": "Đăng ký",
     "registerFooter": "Bạn đã có tài khoản?",
     "registerLink": "Đăng nhập ngay!",
     "loginSuccess": "Đăng Nhập Thành Công",
+    "activeSuccess": "Kích Hoạt Thành Công! Vui lòng đăng nhập lại",
     "registerSuccess": "Đăng Ký Thành Công",
     "loginFail": "Sai Tài khoản hoặc Mật khẩu",
+    "activeFail": "Email hoặc Mã Kích Hoạt không đúng! Vui lòng nhập lại",
     "validate": "Vui lòng điền đầy đủ thông tin.",
+    "errorPassword":"Mật khẩu không chính xác",
     "emailError": "Email này đã tồn tại",
     "usernameError": "Tài khoản này đã tồn tại",
     "passwordError": "Mật khẩu phải có ít nhất 6 ký tự, một chữ cái viết hoa, không được có khoảng trắng và các ký tự đặc biệt",
@@ -816,5 +853,22 @@
     "errorAccessMeetingDB":"Gặp lỗi khi truy cập dữ liệu của cuộc phỏng vấn",
     "errorAccessJobAndJobName":"Lỗi khi truy cập vào dữ liệu công việc ứng tuyển hoặc hồ sơ tuyển dụng",
     "errorAccesAvailableInterviewers":"Lỗi khi truy cập vào dữ liệu những người phỏng vấn có sẵn"
+  },
+  "post":{
+    "post":"Đăng tin tuyển dụng",
+    "required":"Đây là phần bắt buộc",
+    "role":"Vai trò công việc",
+    "title":"Tiêu đề công việc",
+    "address":"Địa chỉ làm việc",
+    "type":"Loại hình công việc",
+    "salary":"Lương (VND)",
+    "salaryy":"Lương thỏa thuận",
+    "description":"Mô tả công việc",
+    "requirements":"Yêu cầu công việc",
+    "education":"Yêu Cầu Trình Độ Học Vấn",
+    "experience":"Yêu cầu kinh nghiệm",
+    "deadline":"Thời hạn ứng tuyển",
+    "days":"Thời hạn tối thiểu 3 ngày",
+    "done":"Hoàn tất"
   }
 }

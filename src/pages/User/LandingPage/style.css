@@ -1,0 +1,185 @@
+/* LandingPage.css */
+
+
+
+.landing-box {
+  border: 2px solid #000000;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 10px;
+  width: max-content;
+  margin-bottom: 10px;
+}
+
+.landing-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.landing-description {
+  font-weight: lighter;
+  margin-bottom: 5px;
+}
+
+.landing-item,
+.landing-itemm,
+.landing-itemmm {
+  height: 150px;
+  background-color: #white;
+  color: rgba(1, 126, 185, 1);
+  text-decoration: none;
+  padding: 10px;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.landing-itemm {
+  height: 300px;
+}
+.landing-itemmm {
+  height: 70px;
+}
+.fa-arrow-right {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+.landing-item:hover,
+.landing-itemm:hover {
+  background-color: #white;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+}
+.landing-itemmm:hover {
+  background-color: #white;
+  cursor: pointer;
+}
+.row > .no-pad {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+.cus-list {
+  padding: 0 110px;
+}
+.cus-border {
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.cus-borderB {
+  border-bottom: 1px solid #ccc;
+}
+.cus-dec {
+  text-decoration: none;
+  font-weight: 530;
+}
+.cus-search{
+    padding-top:30px;
+    background-color: yellow;
+}
+.text-ld {
+  font-size: 30px;
+  font-weight: bold;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: -20px;
+}
+.image1:hover,
+.image2:hover,
+.image3:hover,
+.image4:hover,
+.image5:hover,
+.image6:hover,
+.image7:hover,
+.image8:hover,
+.image9:hover,
+.image10:hover,
+.image11:hover,
+.image12:hover {
+  background-size: cover;
+  background-position: center;
+  opacity: 0.7;
+  position: relative;
+}
+.image1:hover {
+  background-image: url("assets/ldJob/a1.png");
+}
+.image2:hover {
+  background-image: url("assets/ldJob/a2.png");
+}
+.image3:hover {
+  background-image: url("assets/ldJob/a3.png");
+}
+.image4:hover {
+  background-image: url("assets/ldJob/a4.png");
+}
+.image5:hover {
+  background-image: url("assets/ldJob/a5.png");
+}
+.image6:hover {
+  background-image: url("assets/ldJob/a6.png");
+}
+.image7:hover {
+  background-image: url("assets/ldJob/a7.png");
+}
+.image8:hover {
+  background-image: url("assets/ldJob/a8.png");
+}
+.image9:hover {
+  background-image: url("assets/ldJob/a9.png");
+}
+.image10:hover {
+  background-image: url("assets/ldJob/a10.png");
+}
+.image11:hover {
+  background-image: url("assets/ldJob/a11.png");
+}
+.image12:hover {
+  background-image: url("assets/ldJob/a12.png");
+}
+.mid-LP {
+  padding-top: 100px;
+}
+.text-lp1 {
+  font-size: 30px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0 0px 10px 10px;
+}
+.text-lp2 {
+  font-size: 20px;
+  margin: -10px 0 10px 10px;
+}
+.image-lp {
+    width: 100%; 
+    height: auto; 
+    margin: 0 auto;
+    margin-top: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+.image-lp1 {
+    padding-top: 60px;
+}
+.image-lp2 {
+    padding-top: 40px;
+}
+.image-lp4 {
+    padding-top: 65px;
+}
+.line-lp {
+  border: 3px solid yellow;
+  width: 5%; 
+  display: inline-block;
+  margin: 20px 10px;
+}
+.text-mid-ld {
+    font-size: 35px;
+    font-weight: 550;
+    text-transform: uppercase;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 30px;
+  }

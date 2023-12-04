@@ -101,15 +101,32 @@ const validateYearRange = (graduationIn, graduationOut) => {
 const validateGPA = (gpa) => {
   return /^([0-3](\.\d{1,2})?|4(\.0{1,2})?)$/.test(gpa);
 };
+const validateSalary = (salary) => {
+  return /^[0-9]*$/.test(salary);
+};
 const validateRequiredFields = (fields) => {
   for (const field of fields) {
-    if (!field || field.trim() === "") {
+    if (!field || field === "") {
       return false;
     }
   }
   return true;
 };
-
+const validateDateExpired = (inputDate) => {
+  const currentDate = new Date();
+  try {
+    const inputDateTime = new Date(inputDate);
+    const targetDate = new Date(currentDate);
+    targetDate.setDate(currentDate.getDate() + 3);
+    if (inputDateTime >= targetDate) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+};
 const validImageExtensions = ["jpg", "jpeg", "png", "gif"];
 const validateImage = (file) => {
   const fileExtension = file.name.split(".").pop().toLowerCase();
@@ -136,4 +153,6 @@ export {
   validateYearRange,
   validateGPA,
   validateGender,
+  validateSalary,
+  validateDateExpired,
 };

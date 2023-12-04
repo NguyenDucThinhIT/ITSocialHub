@@ -1,3 +1,3 @@
 import FindJobs from "./FindJobs";
-
-export default FindJobs;
+import InforJobs from "./FindJobs";
+export  {FindJobs, InforJobs};

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Search from "../../../components/Search/Search.jsx";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { Col, Container, Row, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,28 +10,23 @@ import {
   faLocationDot,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/components/Loading/Loading";
+import TimeAgo from "@/components/TimeAgo";
+import { getAllPostRecruitment } from "@/services/recruitment.api.js";
 import "./style.css";
-
 function FindJobs() {
   const { t } = useTranslation("common");
+  const [postData, setPostData] = useState({});
   const [companies, setCompanies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const companiesPerPage = 10;
-  const [jobTypeOptions, setJobTypeOptions] = useState({
-    fullTime: false,
-    partTime: false,
-    daily: false,
-    internship: false,
-    contract: false,
-    experience1: false,
-    experience2: false,
-    experience3: false,
-    experience4: false,
-    experience5: false,
-  });
+  const [search, setSearch] = useState("");
+  const [jobTypeFilter, setJobTypeFilter] = useState([]);
+  const [experienceFilter, setExperienceFilter] = useState([]);
+  const [updateFilter, setUpdateFilter] = useState(null);
   const [showSortOptions, setShowSortOptions] = useState(true);
   const [showSortOption, setShowSortOption] = useState(true);
   const [showSortOptionz, setShowSortOptionz] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const handleToggleSortOptions = () => {
     setShowSortOptions(!showSortOptions);
     setIsIconRotatedType(!isIconRotatedType);
@@ -43,259 +39,117 @@ function FindJobs() {
     setShowSortOptionz(!showSortOptionz);
     setIsIconRotatedTime(!isIconRotatedTime);
   };
-  // Mock data
-  const mockFindJobs = [
-    {
-      id: 1,
-      nameJob: "Nhân viên tư vấn khách hàng",
-      name: "Công ty CP Xuất nhập khẩu Thương mại Đài Linh",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Từ 1-3 năm",
-      salary: "10.000.000 VND",
-      jobType: "Full-Time",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/1.png",
-      time:"55 phút trước",
-    },
-    {
-      id: 2,
-      nameJob: "Nhân viên chăm sóc khách hàng",
-      name: "ADVIETNAM",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Ít hơn 1 năm",
-      salary: "4.000.000 VND",
-      jobType: "Daily",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/2.png",
-      time:"15 phút trước",
-    },
-    {
-      id: 3,
-      nameJob: "Việc làm thêm parttime/Fulltime tại quận Cầu Giấy",
-      name: "Công ty Cổ phần Công nghệ KiotViet",
-      address: "Hà Nội",
-      experience: "Ít hơn 1 năm",
-      salary: "5.000.000 VND",
-      jobType: "Internship",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/3.png",
-      time:"4 giờ trước",
-    },
-    {
-      id: 4,
-      nameJob: "Content Creator/Livestream Host",
-      name: "Công ty TNHH Nature Story",
-      address: "Long An",
-      experience: "Ít hơn 1 năm",
-      salary: "6.000.000 VND",
-      jobType: "Part-Time",
-      education: "Tối thiểu Cử nhân",
-      image: "/assets/cty/4.png",
-      time:"10 giờ trước",
-    },
-    {
-      id: 5,
-      nameJob: "Nhân viên tư vấn khách hàng",
-      name: "Công ty CP Xuất nhập khẩu Thương mại Đài Linh",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Từ 1-3 năm",
-      salary: "10.000.000 VND",
-      jobType: "Full-Time",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/1.png",
-      time:"2 ngày trước",
-    },
-    {
-      id: 6,
-      nameJob: "Nhân viên chăm sóc khách hàng",
-      name: "ADVIETNAM",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Ít hơn 1 năm",
-      salary: "4.000.000 VND",
-      jobType: "Daily",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/2.png",
-      time:"1 ngày trước",
-    },
-    {
-      id: 7,
-      nameJob: "Việc làm thêm parttime/Fulltime tại quận Cầu Giấy",
-      name: "Công ty Cổ phần Công nghệ KiotViet",
-      address: "Hà Nội",
-      experience: "Ít hơn 1 năm",
-      salary: "5.000.000 VND",
-      jobType: "Internship",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/3.png",
-      time:"14 giờ trước",
-    },
-    {
-      id: 8,
-      nameJob: "Content Creator/Livestream Host",
-      name: "Công ty TNHH Nature Story",
-      address: "Long An",
-      experience: "Từ 3-5 năm",
-      salary: "6.000.000 VND",
-      jobType: "Part-Time",
-      education: "Tối thiểu Cử nhân",
-      image: "/assets/cty/4.png",
-      time:"7 phút trước",
-    },
-    {
-      id: 9,
-      nameJob: "Nhân viên tư vấn khách hàng",
-      name: "Công ty CP Xuất nhập khẩu Thương mại Đài Linh",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Từ 5-10 năm",
-      salary: "10.000.000 VND",
-      jobType: "Full-Time",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/1.png",
-      time:"3 ngày trước",
-    },
-      {
-      id: 10,
-      nameJob: "Nhân viên chăm sóc khách hàng",
-      name: "ADVIETNAM",
-      address: "Thành phố Hồ Chí Minh",
-      experience: "Ít hơn 1 năm",
-      salary: "4.000.000 VND",
-      jobType: "Daily",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/2.png",
-      time:"25 phút trước",
-    },
-    {
-      id: 11,
-      nameJob: "Việc làm thêm parttime/Fulltime tại quận Cầu Giấy",
-      name: "Công ty Cổ phần Công nghệ KiotViet",
-      address: "Hà Nội",
-      experience: "Hơn 10 năm",
-      salary: "5.000.000 VND",
-      jobType: "Internship",
-      education: "Tối thiểu Trung Học Phổ Thông",
-      image: "/assets/cty/3.png",
-      time:"4 giờ trước",
-    },
-    {
-      id: 12,
-      nameJob: "Content Creator/Livestream Host",
-      name: "Công ty TNHH Nature Story",
-      address: "Long An",
-      experience: "Ít hơn 1 năm",
-      salary: "6.000.000 VND",
-      jobType: "Contract",
-      education: "Tối thiểu Cử nhân",
-      image: "/assets/cty/4.png",
-      time:"10 ngày trước",
-    },
-  ];
 
-  useEffect(() => {
-    // Giả lập việc gọi API để lấy danh sách công ty dựa trên currentPage
-    const startIndex = (currentPage - 1) * companiesPerPage;
-    const endIndex = startIndex + companiesPerPage;
-    let currentCompanies = mockFindJobs.slice(startIndex, endIndex);
-
-    // Lọc dữ liệu dựa trên giá trị của jobType
-    let filteredCompanies = [...currentCompanies];
-    if (jobTypeOptions.fullTime) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.jobType === "Full-Time"
-      );
-    }
-    if (jobTypeOptions.partTime) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.jobType === "Part-Time"
-      );
-    }
-    if (jobTypeOptions.daily) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.jobType === "Daily"
-      );
-    }
-    if (jobTypeOptions.internship) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.jobType === "Internship"
-      );
-    }
-    if (jobTypeOptions.contract) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.jobType === "Contract"
-      );
-    }
-    if (jobTypeOptions.experience1) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.experience === "Ít hơn 1 năm"
-      );
-    }
-    if (jobTypeOptions.experience2) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.experience === "Từ 1-3 năm"
-      );
-    }
-    if (jobTypeOptions.experience3) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.experience === "Từ 3-5 năm"
-      );
-    }
-    if (jobTypeOptions.experience4) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.experience === "Từ 5-10 năm"
-      );
-    }
-    if (jobTypeOptions.experience5) {
-      filteredCompanies = filteredCompanies.filter(
-        (company) => company.experience === "Hơn 10 năm"
-      );
-    }
-
-    setCompanies(filteredCompanies);
-  }, [currentPage, jobTypeOptions]);
-
-  const handleJobTypeChange = (option) => {
-    setJobTypeOptions({ ...jobTypeOptions, [option]: !jobTypeOptions[option] });
-  };
   const [isIconRotatedType, setIsIconRotatedType] = useState(false);
   const [isIconRotatedExp, setIsIconRotatedExp] = useState(false);
   const [isIconRotatedTime, setIsIconRotatedTime] = useState(false);
+
+  const getAllPost = async () => {
+    setIsLoading(true);
+    await getAllPostRecruitment(6, currentPage, null, null,jobTypeFilter,experienceFilter,updateFilter,search,companies)
+    .then((res) => setPostData(res.data))
+    setIsLoading(false);
+  }
+  useEffect(() => {
+    getAllPost();
+  }, [currentPage,jobTypeFilter,experienceFilter]);
+  const handleToggleJobTypeFilter = (value) => {
+    setJobTypeFilter((prevFilters) => {
+      if (prevFilters.includes(value)) {
+        return prevFilters.filter((filter) => filter !== value);
+      } else {
+        return [...prevFilters, value];
+      }
+    });
+    
+  };
+
+  const handleToggleExperienceFilter = (value) => {
+    setExperienceFilter((prevFilters) => {
+      if (prevFilters.includes(value)) {
+        return prevFilters.filter((filter) => filter !== value);
+      } else {
+        return [...prevFilters, value];
+      }
+    });
+    
+  };
+
+  const handleToggleUpdateFilter = (value) => {
+    setUpdateFilter(value);
+  };
+  
   const renderCompanies = () => {
-    return companies.map((company) => (
-      <Col key={company.id} className="col-md-6">
+    return (
+      <>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            {postData.items &&
+              postData.items.map((data) => (
+                <Col key={data.id} className="col-md-6">
         <div className="card card-lg border-1 search-categories">
-          <div className="name-job">{company.nameJob}</div>
+          <Link
+            className="name-job"
+            to={`/jobs/${data.id}`}
+            target="_blank"
+          >
+            {data.title}
+          </Link>
           <div className="salary">
             <p>
-              {t("findJob.salary")}: {company.salary}
+              {t("findJob.salary")}: {data.salary}
             </p>
           </div>
-          <div className="company-detail">
-            <div className="job-type">{company.jobType}</div>
-            <div className="experience">{company.experience}</div>
-            <div className="education">{company.education}</div>
+          <div className="company-detai">
+            <div className="job-type">{data.job_type}</div>
+            <div className="experience">{data.experience_requirements}</div>
+            <div className="education">{data.educational_requirements}</div>
           </div>
-
           <div className="d-flex">
             <img
-              src={company.image}
-              alt={company.name}
+              src={data.company.logo_url}
+              alt={data.company.name}
               className="company-image"
             />
             <div className="company-info">
-              <p>{company.name}</p>
+              <div className="cus-name-cty">
+                <p>
+                  <img
+                    src="/assets/images/tichxanh.png"
+                    alt="/assets/images/tichxanh.png"
+                    className="icon-tichxanh"
+                  />
+                  <Link
+                    className="link-cty"
+                    to={`/companies/${data.company.id}`}
+                    target="_blank"
+                  >
+                    {data.company.name}
+                  </Link>
+                </p>
+              </div>
               <p>
-                <FontAwesomeIcon icon={faLocationDot} /> {company.address}
+                <FontAwesomeIcon icon={faLocationDot} /> {data.company.address_main}
               </p>
             </div>
           </div>
           <div className="line"></div>
-          <div className="time-line">{company.time}</div>
+          <div className="time-line">
+            <TimeAgo createdAt={data.updated_at} />
+          </div>
         </div>
       </Col>
-    ));
+              ))}
+          </>
+        )}
+      </>
+    );
   };
+  
 
-  const totalPages = Math.ceil(mockFindJobs.length / companiesPerPage);
+  const totalPages = postData.pagination?.lastPage;
 
   return (
     <>
@@ -303,135 +157,137 @@ function FindJobs() {
         <Search />
       </Col>
       <Container>
+        <div className="text-find">
+        {t("findJob.titleNew")}
+        </div>
         <Row>
           <Col className="col-sort" md={3}>
             <h2 id="toggleLabel" onClick={handleToggleSortOptions}>
-            {t("findJob.jobType")}
-              <FontAwesomeIcon icon={faChevronUp} className={`chevron-icon ${isIconRotatedType ? "rotate" : ""}`}/>
+              {t("findJob.jobType")}
+              <FontAwesomeIcon
+                icon={faChevronUp}
+                className={`chevron-icon ${isIconRotatedType ? "rotate" : ""}`}
+              />
             </h2>
             <div className={`sort-type-job ${showSortOptions ? "" : "hidden"}`}>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("fullTime")}
+                  onChange={() => handleToggleJobTypeFilter("Toàn thời gian")}
+                  checked={jobTypeFilter.includes("Toàn thời gian")}
                 />{" "}
                 {t("findJob.fullTime")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("partTime")}
+                  onChange={() => handleToggleJobTypeFilter("Bán thời gian")}
+                  checked={jobTypeFilter.includes("Bán thời gian")}
                 />{" "}
                 {t("findJob.partTime")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("daily")}
+                  onChange={() => handleToggleJobTypeFilter("Theo ngày")}
+                  checked={jobTypeFilter.includes("Theo ngày")}
                 />{" "}
                 {t("findJob.daily")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("internship")}
+                  onChange={() => handleToggleJobTypeFilter("Thực tập")}
+                  checked={jobTypeFilter.includes("Thực tập")}
                 />{" "}
                 {t("findJob.internship")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("contract")}
+                  onChange={() => handleToggleJobTypeFilter("Theo dự án")}
+                  checked={jobTypeFilter.includes("Theo dự án")}
                 />{" "}
                 {t("findJob.contract")}
               </label>
             </div>
+           
             <div className="line"></div>
             <h2 id="toggleLabel" onClick={handleToggleSortOption}>
-            {t("findJob.experience")}
-              <FontAwesomeIcon icon={faChevronUp} className={`chevron-icon ${isIconRotatedExp ? "rotate" : ""}`}/>
+              {t("findJob.experience")}
+              <FontAwesomeIcon
+                icon={faChevronUp}
+                className={`chevron-icon ${isIconRotatedExp ? "rotate" : ""}`}
+              />
             </h2>
             <div className={`sort-type-job ${showSortOption ? "" : "hidden"}`}>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("experience1")}
+                  onChange={() => handleToggleExperienceFilter("Ít hơn 1 năm")}
+                  checked={experienceFilter.includes("Ít hơn 1 năm")}
                 />{" "}
                 {t("findJob.no")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("experience2")}
+                  onChange={() => handleToggleExperienceFilter("1-3 năm")}
+                  checked={experienceFilter.includes("1-3 năm")}
                 />{" "}
                 {t("findJob.no1")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("experience3")}
+                  onChange={() => handleToggleExperienceFilter("3-5 năm")}
+                  checked={experienceFilter.includes("3-5 năm")}
                 />{" "}
                 {t("findJob.no2")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("experience4")}
+                  onChange={() => handleToggleExperienceFilter("5-10 năm")}
+                  checked={experienceFilter.includes("5-10 năm")}
                 />{" "}
                 {t("findJob.no3")}
               </label>
               <label>
                 <input
                   type="checkbox"
-                  checked={jobTypeOptions.byJobType}
-                  onChange={() => handleJobTypeChange("experience5")}
+                  onChange={() => handleToggleExperienceFilter("Hơn 10 năm")}
+                  checked={experienceFilter.includes("Hơn 10 năm")}
                 />{" "}
                 {t("findJob.no4")}
               </label>
             </div>
             <div className="line"></div>
             <h2 id="toggleLabel" onClick={handleToggleSortOptionz}>
-            {t("findJob.lastUpdate")}
-              <FontAwesomeIcon icon={faChevronUp} className={`chevron-icon ${isIconRotatedTime ? "rotate" : ""}`}/>
+              {t("findJob.lastUpdate")}
+              <FontAwesomeIcon
+                icon={faChevronUp}
+                className={`chevron-icon ${isIconRotatedTime ? "rotate" : ""}`}
+              />
             </h2>
             <div className={`sort-type-job ${showSortOptionz ? "" : "hidden"}`}>
+            <label>
+                <input type="radio" name="update-frequency" checked/>{" "}
+                {t("findJob.time4")}
+              </label>
               <label>
-                <input
-                  type="radio"
-                  name="update-frequency"
-                />{" "}
+                <input type="radio" name="update-frequency" />{" "}
                 {t("findJob.time1")}
               </label>
               <label>
-                <input
-                  type="radio"
-                  name="update-frequency"
-                />{" "}
+                <input type="radio" name="update-frequency" />{" "}
                 {t("findJob.time2")}
               </label>
               <label>
-                <input
-                  type="radio"
-                  name="update-frequency"
-                />{" "}
+                <input type="radio" name="update-frequency" />{" "}
                 {t("findJob.time3")}
               </label>
-              <label>
-                <input
-                  type="radio"
-                  name="update-frequency"
-                />{" "}
-                {t("findJob.time4")}
-              </label>
+              
             </div>
             <div className="line"></div>
           </Col>
@@ -462,5 +318,4 @@ function FindJobs() {
     </>
   );
 }
-
 export default FindJobs;

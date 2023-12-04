@@ -1,30 +1,52 @@
 .cus-pre-next {
-    background-color: white; 
-    color: black; 
-    border: 1px solid black;
-    border-radius: 5px; 
-    padding: 8px 16px; 
-    margin: 0 5px; 
-    cursor: pointer; 
-  }
-  
-  .cus-pre-next:disabled {
-    background-color: #ccc;
-    color: #888; 
-    cursor: not-allowed; 
-  }
-  .company-image {
-    margin-right: 10px;
-    width: 100px;
-    height: 100px;
-    
-  }
-  .company-details{
-    margin: 10px;
-    font-size: 18px;
-  }
-  .fa-building, .fa-briefcase {
-    margin-right: 10px;
-    weight: 20px;
-    height: 20px;
-  }
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+.company-detail:hover{
+  cursor: pointer;
+  color:#0d6efd;
+
+}
+.cus-pre-next:disabled {
+  background-color: #ccc;
+  color: #888;
+  cursor: not-allowed;
+}
+.company-image {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.company-details {
+  margin: 10px;
+  font-size: 18px;
+}
+.brief-icon {
+  margin-right: 10px !important;
+  margin-left: -2px !important;
+  weight: 20px;
+  height: 20px;
+}
+.building-icon {
+  margin-right: 13px !important;
+  weight: 20px;
+  height: 20px;
+}
+
+//Profile
+
+.company-profile-image {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 200px; 
+  object-fit: contain; /* Hiển thị toàn bộ hình ảnh trong khung */
+}

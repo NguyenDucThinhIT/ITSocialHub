@@ -27,6 +27,9 @@ background: #eee;
 	padding: 10px; 
 	border-radius: 50%; 
   }
+  .img-fluid{
+	margin-top:-30px;
+  }
   .pass{
 	color: blue;
   }
@@ -36,4 +39,8 @@ background: #eee;
   }
   .cus-or {
   	margin-bottom: 25px;
+  }
+  .cus-form {
+	height:auto;
+	weight: 300px;
   }

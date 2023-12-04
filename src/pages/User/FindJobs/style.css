@@ -15,6 +15,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
 }
 .salary{
   margin-left:10px;
@@ -26,9 +27,9 @@
 .card-lg {
   width: 450px;
 }
-.company-detail {
+.company-detai {
   margin-top:-3px;
-  display: inline;
+  display: flex;
   font-size: 18px;
 }
 .job-type,
@@ -46,7 +47,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 .cus-pre-next:disabled {
   background-color: #ccc;
@@ -117,4 +117,138 @@
   color: green;
   font-size:17px;
   margin-left:10px;
+}
+.text-find {
+  font-size:25px;
+  font-weight:600;
+  padding-bottom: 20px;
+  margin-left:-10px;
+}
+.icon-tichxanh {
+  display:inline-block;
+  width:20px;
+  height:20px;
+  margin-right:10px;
+  margin-left:-5px;
+}
+.icon-tichxanhh {
+  display:inline-block;
+  width:20px;
+  height:20px;
+  margin-top:-5px;
+  margin-right:9px;
+  margin-left:-2px;
+}
+.fa-graduation-cap{
+  margin-left:-5px;
+  margin-right:8px;
+}
+.fa-brie{
+  margin-left:-3px;
+  margin-right:2px;
+}
+.fa-build{
+  margin-right:2px;
+}
+.fa-dollar-sign{
+  margin-left:2px;
+}
+.cus-name-cty{
+  color: #0d6efd;
+  cursor: pointer;
+  
+}
+.cus-name-cty:hover{
+  text-decoration: underline;
+}
+.link-cty{
+  text-decoration: none;
+}
+.cus-namee-cty{
+  margin-bottom:-7px;
+}
+.fa-circle{
+  margin-right:10px;
+  font-size:10px;
+  margin-bottom:1px;
+}
+.fa-time{
+  font-size:15px;
+  margin-right:11px;
+}
+.button-apply{
+  margin-top:20px;
+  margin-right:30px;
+  padding: 10px 20px;
+  background: #3498db;
+  color: white;
+  font-weight:600;
+  font-size:25px;
+  text-transform:UpperCase;
+  border: 3px solid #3498db;
+  transition: all 0.3s ease;
+}
+.button-share{
+  margin-top:20px;
+  padding: 10px 20px;
+  font-size:25px;
+  text-transform:UpperCase;
+  color:#3498db;
+  border: 3px solid #3498db;
+  transition: all 0.3s ease;
+  cursor:pointer;
+}
+.fa-share-nodes{
+  margin-right:10px;
+}
+.button-apply:hover{
+  color: white; 
+  transform: scale(1.1); 
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); 
+}
+.button-share:hover{
+  color: #3498db; 
+  transform: scale(1.1); 
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); 
+}
+.text-time{
+  padding-top:15px;
+  color: rgb(0, 132, 100);
+  font-size:15px;
+}
+.description-text{
+  padding-top:20px;
+}
+.avatar-hr{
+  margin-left:20px;
+  width:100px;
+  height:100px;
+}
+.log0{
+  width:200px;
+  height:200px;
+}
+.name-hr{
+  font-size:25px;
+  margin-left:20px;
+}
+.protect{
+  width:20px;
+  height:20px;
+  margin-right:10px;
+  margin-top:5px;
+  margin-left:15px;
+}
+.protect-text{
+  font-size:20px;
+  font-weight:bold;
+}
+.protect-title{
+  font-size:15px;
+  margin-left:15px;
+}
+.expiredd-job {
+  background-color: #ffcccc; 
+  color: #cc0000; 
+  font-weight: bold;
 }

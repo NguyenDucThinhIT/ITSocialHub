@@ -7,11 +7,107 @@
   display: block;
   margin-top: 84px;
 }
+.ava-profile{
+  margin-top:-118px;
+  margin-left:28px;
+  width: 250px;
+  height: 250px;
+}
 #editButton {
+  position: relative;
   padding: 5px 10px;
   background-color: yellow;
   border: 1px solid yellow;
   margin-top: 20px;
   border-radius: 15px;
   color: #000000;
+}
+.form-control{
+  font-size:20px !important;
+}
+.react-datepicker-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: inherit;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+  padding: 5px;
+  padding-left:12px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.react-datepicker__year-dropdown-container {
+  margin-top: 0.5em;
+}
+.react-datepicker__year-dropdown-container .react-datepicker__year-option {
+  padding: 0.5em;
+  background: #000;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+  font-size: 18px;
+}
+
+.react-datepicker__day {
+  font-size: 14px;
+  padding: 10px;
+}
+
+/* Định dạng ngày đã chọn */
+.react-datepicker__day--selected {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Định dạng ngày hiện tại */
+.react-datepicker__day--today {
+  font-weight: bold;
+}
+
+/* Định dạng các ngày không thể chọn */
+.react-datepicker__day--disabled {
+  color: #ccc;
+}
+
+/* Định dạng tiêu đề tháng và năm */
+.react-datepicker__header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 1em;
+}
+
+/* Định dạng tiêu đề thời gian (nếu sử dụng time picker) */
+.react-datepicker-time__header {
+  padding: 1em;
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Định dạng nút chọn tháng và năm */
+.react-datepicker__navigation {
+  top: 1.5em;
+  line-height: 1.7em;
+  border: 0.45em solid transparent;
+}
+
+.react-datepicker__navigation--next {
+  border-left-color: #fff;
+}
+
+.react-datepicker__navigation--previous {
+  border-right-color: #fff;
 }

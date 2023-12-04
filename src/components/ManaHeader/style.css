@@ -2,3 +2,25 @@
     font-size:18px;
     text-transform: Uppercase;
 }
+.custom-dropdown-toggle {
+    .ava-user {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+  
+    .avatarr-image {
+      width: 40px; /* Đặt kích thước mong muốn */
+      height: 40px; /* Đặt kích thước mong muốn */
+      object-fit: cover; /* Để đảm bảo ảnh không bị bóp hoặc co lại */
+    }
+  }
+.custom-dropdown-toggle {
+    background-color: white !important;
+    border: none !important;
+    padding: 0; /* Xóa padding */
+    color: white;
+    font-size: inherit; 
+    &::after {
+        content: none !important;
+      }
+  }

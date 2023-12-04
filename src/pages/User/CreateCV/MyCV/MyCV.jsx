@@ -20,9 +20,11 @@ import {
   postResume,
   downloadResume,
   deleteResume,
+  editResume,
 } from "../../../../services/resumes.api";
 import Loading from "../../../../components/Loading/Loading";
 import ConfirmModal from "../../../../components/ConfirmModal";
+import { useMutation } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -31,7 +33,7 @@ import {
   faFile,
   faPaperclip,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { upload } from "@/services/upload.api";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import "./style.css";
@@ -41,81 +43,135 @@ const MyCV = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const [hasCV, setHasCV] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [initialData, setInitialData] = useState([]);
-  const [selectedInfo, setSelectedInfo] = useState(null);
+  const [selectedInfo, setSelectedInfo] = useState({});
   const [showForm, setShowForm] = useState(true);
   const [uploadedFile, setUploadedFile] = useState();
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
   const [quantumCVs, setQuantumCVs] = useState(0);
+  const [selectedCVTitle, setSelectedCVTitle] = useState("");
+  const [editedCVTitle, setEditedCVTitle] = useState("");
 
-  const { refetch } = useQuery({
-    queryKey: ["resumes"],
-    queryFn: () => getResume(user.id),
-    onSuccess: (res) => setInitialData(res.data.data),
-    onSettled: () => setIsLoading(false),
-  });
-  const checkCVAvailability = () => setHasCV(initialData.length > 0);
+  // const { refetch } = useQuery({
+  //   queryKey: ["resumes"],
+  //   queryFn: () => getResume(),
+  //   onSuccess: (res) => setInitialData(res.items),
+  //   onSettled: () => setIsLoading(false),
+  // });
 
-  const handleSearch = (query) => {
-    setIsLoading(true);
-    setSearchQuery(query);
-    setUploadedFile(null);
-    getResume(query, "")
-      .then((res) => setInitialData(res.data.data))
-      .finally(() => setIsLoading(false));
+  const getAllCV = () => {
+    getResume().then((res) => {
+      setInitialData(res.data.items);
+      console.log(res);
+    });
   };
+  useEffect(() => {
+    getAllCV();
+  }, []);
+
+  const checkCVAvailability = () => setHasCV(initialData.length > 0);
 
   const handleInputChange = (e) => {
     const query = e.target.value;
-    setSearchQuery(query);
-    handleSearch(query);
+    if (selectedInfo) {
+      setEditedCVTitle(query);
+      const updatedData = initialData.map((info) =>
+        info.id === selectedInfo.id ? { ...info, title: query } : info
+      );
+      setInitialData(updatedData);
+    }
   };
 
   const handleInfoClick = (infoId) => {
     const info = initialData.find((item) => item.id === infoId);
     setSelectedInfo(info);
-    setUploadedFile(info.file);
+    setSelectedCVTitle(info.name);
+    setUploadedFile(info.file_url);
     setShowForm(true);
-    setIsLoading(true);
-    viewResume(infoId)
-      .then((res) => setUploadedFile(res.data))
-      .finally(() => setIsLoading(false));
+    //setIsLoading(true);
+    // viewResume(infoId)
+    //   .then((res) => setUploadedFile(res.data))
+    //   .finally(() => setIsLoading(false));
   };
-
-  const handleCreateCV = () => navigate("/templateCV");
-
+  const postResumeMutation = useMutation({
+    mutationFn: (body) => postResume(body),
+  });
+  const handleSaveCV = async () => {
+    if (selectedInfo.id) {
+      setIsLoading(true);
+      await editResume(selectedInfo.id,selectedInfo);
+      getAllCV();
+    } else {
+      setIsLoading(true);
+      if (selectedInfo.file_url) {
+        const urlCV = await upload(selectedInfo.file_url)
+          .then((response) => {
+            return response.url;
+          })
+          .catch((error) => {
+            console.error("Lỗi khi tải lên:", error);
+            return false;
+          });
+        if (urlCV) {
+          postResumeMutation.mutate(
+            {
+              name: selectedInfo.name,
+              file_url: urlCV,
+            },
+            {
+              onSuccess: () => {
+                getAllCV();
+                Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  timer: 3000,
+                  timerProgressBar: true,
+                  showConfirmButton: false,
+                }).fire({
+                  icon: "success",
+                  text: t("candidate.tags.uploadCV"),
+                });
+              },
+              onError: () => {
+                let errorText;
+                Swal.fire({
+                  icon: "error",
+                  title: t("jobPage.failed"),
+                  text: errorText,
+                });
+              },
+            }
+          );
+        }
+      }
+    }
+    setIsLoading(false);
+  };
   const handleUploadCV = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "application/pdf";
-
     fileInput.onchange = (e) => {
       const file = e.target.files[0];
-      postResume(file).then(() => refetch());
       const fileName = file.name.replace(/\.[^/.]+$/, "");
-      const newCV = { id: initialData.length + 1, title: fileName, file: file };
+      setSelectedCVTitle(fileName);
+      const newCV = { id: null, name: fileName, file_url: file };
       const updatedData = [...initialData, newCV];
       setInitialData(updatedData);
-      setUploadedFile(file);
+      setUploadedFile(URL.createObjectURL(file));
+      setSelectedInfo(newCV);
       setShowForm(true);
-      Swal.mixin({
-        toast: true,
-        position: "top-end",
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false,
-      }).fire({
-        icon: "success",
-        text: t("candidate.tags.uploadCV"),
-      });
     };
-
     fileInput.click();
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const fileName = file ? file.name : "";
+    setSelectedCVTitle(fileName);
+  };
   const handleDeleteCV = () => {
     if (selectedInfo) {
       setDeleteConfirmModal(true);
@@ -124,11 +180,8 @@ const MyCV = () => {
 
   const handleConfirmDeleteCV = () => {
     if (selectedInfo) {
-      const updatedData = initialData.filter(
-        (info) => info.id !== selectedInfo.id
-      );
       deleteResume(selectedInfo.id);
-      setInitialData(updatedData);
+      getAllCV();
       setSelectedInfo(null);
       setUploadedFile(null);
       setDeleteConfirmModal(false);
@@ -179,151 +232,143 @@ const MyCV = () => {
 
   useEffect(() => {
     let filteredDataToShow = initialData;
-    if (searchQuery !== "") {
-      filteredDataToShow = filteredDataToShow.filter((info) =>
-        info.fileName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
     setFilteredData(filteredDataToShow);
     setQuantumCVs(filteredDataToShow.length);
-  }, [initialData, searchQuery]);
+  }, [initialData]);
 
   return (
-    <div className="mx-3 mb-3">
-        <div className="container">
-      <Row className="align-items-center">
-        <Col sm={4}>
-          <div className="info-count">{quantumCVs} CV</div>
-        </Col>
-        <Col sm={8}>
-          <div className="d-flex align-items-center justify-content-end">
-            <Form className="mr-3" onSubmit={(e) => e.preventDefault()}>
-              <div className="search-input">
-                <FormControl
-                  type="text"
-                  placeholder={t("candidate.view.searchCV")}
-                  value={searchQuery}
-                  onChange={handleInputChange}
-                  className="custom-input"
-                />
-                <FontAwesomeIcon
-                  icon={faSearch}
-                  className="search-icon"
-                  onClick={() => handleSearch(searchQuery)}
-                />
+    <div className="mx-3 mb-3 pt-5">
+      <div className="container">
+        <Row className="align-items-center">
+          <Col sm={4}>
+            <div className="info-count">{quantumCVs} CV</div>
+          </Col>
+          <Col sm={8}>
+            <div className="d-flex align-items-center justify-content-end">
+              <Form
+                className="mr-3 d-flex"
+                onSubmit={(e) => e.preventDefault()}
+              >
+                <div className="input-name">
+                  <FormControl
+                    type="text"
+                    //placeholder={t("candidate.view.searchCV")}
+                    value={selectedInfo.name}
+                    onChange={(e) => setSelectedInfo({...selectedInfo, name: e.target.value})}
+                    className="custom-input"
+                  />
+                </div>
+                <button className="save-button-cv ml-3" onClick={handleSaveCV}>
+                {t("candidate.create.save")}
+                </button>
+              </Form>
+              <div className="cv">
+                <Button
+                  id="upAndCreateButton"
+                  variant="secondary"
+                  onClick={handleUploadCV}
+                >
+                  {t("candidate.view.uploadCV")}
+                </Button>
               </div>
-            </Form>
-            <div className="cv">
-              {/* <Button
-                id="upAndCreateButton"
-                variant="primary"
-                onClick={handleCreateCV}
-              >
-                {t("candidate.view.createCV")}
-              </Button> */}
-              <Button
-                id="upAndCreateButton"
-                variant="secondary"
-                onClick={handleUploadCV}
-              >
-                {t("candidate.view.uploadCV")}
-              </Button>
             </div>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={4}>
-          {hasCV && filteredData.length > 0 ? (
-            <Card id="cardForm">
-              <ListGroup variant="flush" className="cv-list px-2 pt-2">
-                {filteredData.map((info) => (
-                  <ListGroup.Item
-                    style={{ minHeight: "96px" }}
-                    key={info.id}
-                    action
-                    onClick={() => handleInfoClick(info.id)}
-                    className={
-                      selectedInfo && selectedInfo.id === info.id
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    <div className="info-content">
-                      <div className="info-title">
-                        {info.fileName && info.fileName.replace(".pdf", "")}
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={4}>
+            {hasCV && filteredData.length > 0 ? (
+              <Card id="cardForm">
+                <ListGroup variant="flush" className="cv-list px-2 pt-2">
+                  {filteredData.map((info) => (
+                    <ListGroup.Item
+                      style={{ minHeight: "96px" }}
+                      key={info.id}
+                      action
+                      onClick={() => handleInfoClick(info.id)}
+                      className={
+                        selectedInfo && selectedInfo.id === info.id
+                          ? "active"
+                          : ""
+                      }
+                    >
+                      <div className="info-content">
+                        <div className="info-title">
+                          {editedCVTitle ||
+                            (info.name && info.name.replace(".pdf", ""))}
+                        </div>
                       </div>
-                    </div>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Card>
-          ) : (
-            <div className="no-cv">
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <>
-                  <FontAwesomeIcon icon={faFile} className="no-cv-icon" />
-                  <span>{t("candidate.view.noCV")}</span>
-                </>
-              )}
-            </div>
-          )}
-        </Col>
-        <Col sm={8}>
-          {showForm && (
-            <Card>
-              <Card.Body>
-                <div className="attached-cv">
-                  <span>{t("candidate.view.detailCV")}</span>
-                  {selectedInfo && (
-                    <div className="cv-buttons">
-                      <Button variant="danger" onClick={handleDeleteCV}>
-                        <FontAwesomeIcon
-                          icon={faTrashAlt}
-                          className="delete-button"
-                        />
-                      </Button>
-                      <Button variant="warning" onClick={handleDownloadCV}>
-                        <FontAwesomeIcon icon={faDownload} />
-                      </Button>
-                    </div>
-                  )}
-                </div>
-                <div className="cv-description">
-                  {uploadedFile ? (
-                    <>
-                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
-                        <Viewer fileUrl={URL.createObjectURL(uploadedFile)} />
-                      </Worker>
-                    </>
-                  ) : (
-                    <div className="no-file-icon">
-                      {isLoading ? (
-                        <Loading />
-                      ) : (
-                        <>
-                          <FontAwesomeIcon icon={faPaperclip} />
-                          <span>{t("candidate.appliedJob.noFile")}</span>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </Card.Body>
-            </Card>
-          )}
-        </Col>
-      </Row>
-      <ConfirmModal
-        visible={deleteConfirmModal}
-        setVisible={setDeleteConfirmModal}
-        messageTitle={t("candidate.notice.deleteCV")}
-        messageContent={t("candidate.notice.deletePostContentCV")}
-        action={handleConfirmDeleteCV}
-        onCancel={handleCancelDeleteCV}
-      />
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </Card>
+            ) : (
+              <div className="no-cv">
+                {!isLoading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <FontAwesomeIcon icon={faFile} className="no-cv-icon" />
+                    <span>{t("candidate.view.noCV")}</span>
+                  </>
+                )}
+              </div>
+            )}
+          </Col>
+          <Col sm={8}>
+            {showForm && (
+              <Card>
+                <Card.Body>
+                  <div className="attached-cv">
+                    <span>{t("candidate.view.detailCV")}</span>
+                    {selectedInfo && (
+                      <div className="cv-buttons">
+                        <Button variant="danger" onClick={handleDeleteCV}>
+                          <FontAwesomeIcon
+                            icon={faTrashAlt}
+                            className="delete-cv"
+                          />
+                        </Button>
+                        <Button variant="warning" onClick={handleDownloadCV}>
+                          <FontAwesomeIcon icon={faDownload} />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="cv-description">
+                    {isLoading ? (
+                      <Loading />
+                    ) : (
+                      <>
+                        {uploadedFile ? (
+                          <>
+                            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
+                              <Viewer fileUrl={uploadedFile} />
+                            </Worker>
+                          </>
+                        ) : (
+                          <div className="no-file-icon">
+                            <>
+                              <FontAwesomeIcon icon={faPaperclip} />
+                              <span>{t("candidate.appliedJob.noFile")}</span>
+                            </>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            )}
+          </Col>
+        </Row>
+        <ConfirmModal
+          visible={deleteConfirmModal}
+          setVisible={setDeleteConfirmModal}
+          messageTitle={t("candidate.notice.deleteCV")}
+          messageContent={t("candidate.notice.deletePostContentCV")}
+          action={handleConfirmDeleteCV}
+          onCancel={handleCancelDeleteCV}
+        />
       </div>
     </div>
   );

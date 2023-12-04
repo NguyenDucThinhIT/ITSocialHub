@@ -1,0 +1,20 @@
+
+.rich-text-editor-container {
+    width: 75%; 
+    margin: 0 80px; 
+    padding-top:20px;
+  }
+  
+  .react-quill {
+    width: 100%;
+    min-height: 200px;
+    margin-bottom: 20px; 
+  }
+  
+
+  .preview-container {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  

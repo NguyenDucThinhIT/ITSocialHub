@@ -1,15 +1,21 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
+import { setEdit } from "@/redux/auth.slice";
 
 import "./styles.css";
 
 const Profile = () => {
   const { t } = useTranslation("common");
-  //const user = useSelector((state) => state.auth.user);
 
-  
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
+  const handleEdit = () => {
+    dispatch(setEdit(true));
+  };
   return (
     <div className="full-height">
       <Container style={{ marginTop: "30px", marginBottom: "30px" }}>
@@ -18,7 +24,7 @@ const Profile = () => {
             <Row className="justify-content-center">
               <img
                 className="profile-pic p-0"
-                src={"assets/images/user.png"}
+                src={user?.image_url || "assets/images/user.png"}
                 alt=""
                 id="imgAvatar"
               />
@@ -30,19 +36,19 @@ const Profile = () => {
                 <Card.Body>
                   <Row className="gutters">
                     <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-                      <h4 className="mb-3">{t("candidate.profile.profile")}</h4>
+                      <h2 className="mb-3 font-bold">{t("candidate.profile.profile")}</h2>
                     </Col>
                     <Col xl={8} lg={8} md={8} sm={12} xs={12}>
                       <div className="form-group mb-3">
                         <label htmlFor="lastName">
-                        {t("candidate.profile.lastName")}
+                          {t("candidate.profile.lastName")}
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           name="lastName"
                           id="lastName"
-                          value={"Nguyễn Đức"}
+                          value={user?.last_name || "None"}
                           disabled
                         />
                       </div>
@@ -50,14 +56,14 @@ const Profile = () => {
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
                       <div className="form-group mb-3">
                         <label htmlFor="firstName">
-                        {t("candidate.profile.firstName")}
+                          {t("candidate.profile.firstName")}
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           name="firstName"
                           id="firstName"
-                          value={"Thịnh"}
+                          value={user?.first_name || "None"}
                           disabled
                         />
                       </div>
@@ -65,14 +71,19 @@ const Profile = () => {
                     <Col xl={8} lg={8} md={8} sm={12} xs={12}>
                       <div className="form-group mb-3">
                         <label htmlFor="birthday">
-                        {t("candidate.profile.date")}
+                          {t("candidate.profile.date")}
                         </label>
-                        <input
-                          type="text"
+                        <DatePicker
+                          selected={
+                            user?.date_of_birth
+                              ? new Date(user.date_of_birth)
+                              : null
+                          }
                           className="form-control"
-                          name="birthday"
-                          id="birthday"
-                          value={"24/05/2002"}
+                          dateFormat="dd-MM-yyyy"
+                          showYearDropdown
+                          scrollableYearDropdown
+                          yearDropdownItemNumber={15}
                           disabled
                         />
                       </div>
@@ -80,14 +91,14 @@ const Profile = () => {
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
                       <div className="form-group mb-3">
                         <label htmlFor="gender">
-                        {t("candidate.profile.gender")}
+                          {t("candidate.profile.gender")}
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           name="gender"
                           id="gender"
-                          value={"Nam"}
+                          value={user?.gender || "None"}
                           disabled
                         />
                       </div>
@@ -95,14 +106,14 @@ const Profile = () => {
                     <Col xl={12} lg={12} md={12} sm={12} xs={12}>
                       <div className="form-group mb-3">
                         <label htmlFor="email">
-                        {t("candidate.profile.email")}
+                          {t("candidate.profile.email")}
                         </label>
                         <input
                           type="email"
                           className="form-control"
                           name="email"
                           id="email"
-                          value={"thinhbeo@gmail.com"}
+                          value={user?.email || "None"}
                           disabled
                         />
                       </div>
@@ -110,14 +121,14 @@ const Profile = () => {
                     <Col xl={12} lg={12} md={12} sm={12} xs={12}>
                       <div className="form-group">
                         <label htmlFor="phone">
-                        {t("candidate.profile.phone")}
+                          {t("candidate.profile.phone")}
                         </label>
                         <input
                           type="tel"
                           className="form-control"
                           name="phone"
                           id="phone"
-                          value={"0123456789"}
+                          value={user?.phonenumber || "None"}
                           disabled
                         />
                       </div>
@@ -129,7 +140,7 @@ const Profile = () => {
                         <Button
                           variant="primary"
                           id="editButton"
-                          //onClick={handleEdit}
+                          onClick={handleEdit}
                         >
                           <strong>{t("candidate.profile.edit")}</strong>
                         </Button>

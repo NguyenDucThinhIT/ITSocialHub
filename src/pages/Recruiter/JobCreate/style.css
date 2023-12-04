@@ -1,0 +1,195 @@
+.body-job {
+    border: 1px solid #ccc;
+    margin: 30px;
+}
+.custom-container {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  .ima-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    background-color: #ccc;
+  }
+  .upload {
+    position: absolute;
+    bottom: 5%;
+    right: 10%;
+    width: 150px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 2;
+  }
+  .ima-container img {
+    width: 100%;
+    height: auto;
+  }
+  .ima-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .upload-button {
+    height: 50px;
+    width: 200px;
+    background-color: white;
+    color: blue;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid blue;
+  }
+  .ava-upload-button {
+    height: 50px;
+    width: 170px;
+    background-color: white;
+    color: blue;
+    font-weight: bold;
+    padding: 10px 10px;
+    border-radius: 5px;
+    border: 1px solid blue;
+  }
+  .fa-upload {
+    margin-right: 10px;
+  }
+  .d-none {
+    display: none !important;
+  }
+  .ava-ima-container {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    background-image: url("/assets/images/upload.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    border: 1px solid black;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .input-form {
+    height: 50px;
+    width: 70%;
+    padding-left: 20px;
+    font-size:20px;
+    border: 1px solid #000;
+    background-color: white;
+  }
+  .role-job,
+  .title-job,
+  .address-job,
+  .request-job,
+  .salary-job,
+  .expired-job {
+    position: relative;
+  }
+  .required-icon {
+    position: absolute;
+    top: 20%;
+    transform: translateY(-50%);
+    left: 1px;
+  }
+  .required-icon img {
+    width: 18px;
+    height: auto;
+  }
+  .expired-job{
+    width:50%;
+  }
+  .text-expired{
+    position: absolute;
+    left: 58%;
+    margin-top:10px;
+  }
+  .select-control{
+    width:70%;
+  }
+  .select-control .css-1dimb5e-singleValue{
+    margin-left:10px;
+  }
+  .expired-job.react-datepicker__input-container input {
+    width: 100%;
+    margin: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  .line-company {
+    margin: 40px 0;
+    border: 1px solid #000;
+  }
+  .description-job {
+    padding: 10px 20px 0px 80px;
+  }
+  .info-company {
+    padding-left: 80px;
+  }
+  .text-edit {
+    padding-top: 40px;
+  }
+  .star {
+    color: #017eb7;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1em;
+  }
+ 
+  .save-info-company button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .save-info-company button:hover {
+    background-color: #0056b3;
+  }
+  .cancel-info-company button {
+    background-color: red;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right:30px;
+    margin-top:20px;
+  }
+  
+  .cancel-info-company button:hover {
+    background-color: #e55353;
+  }
+  .switch-salary {
+    position: absolute;
+    left: 60%;
+    margin-top:10px;
+  }
+  
+  .switch-salary label {
+    margin-bottom: 0; /* Loại bỏ khoảng cách dưới label */
+  }
+  @media (max-width: 768px) {
+    .required-icon {
+      top: 0;
+      transform: translateY(0);
+    }
+    .upload {
+      bottom: 5%;
+      right: 10%;
+    }
+  }
+  @media (max-width: 480px) {
+    .upload {
+      right: 5%;
+    }
+  }
+  
