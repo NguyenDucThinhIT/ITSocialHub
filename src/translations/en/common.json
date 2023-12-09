@@ -61,6 +61,8 @@
       "newTag": "New tag"
     },
     "account": {
+      "fullName":"Full name",
+      "phone":"Phone",
       "accounts": "Accounts",
       "role": "Role",
       "allRoles": "All roles",
@@ -201,6 +203,7 @@
       "all": "Please fill all fields"
     },
     "appliedJob": {
+      "searchCandidate":"Search for Candidates",
       "appliedJob": "Applied Job",
       "searchJob": "Search for Applied Job",
       "searchPost": "Search for Recruitment Post",
@@ -234,7 +237,9 @@
       "downloadCV": "Download CV successfully",
       "createCV": "Create CV successfully",
       "saveInformation": "Update personal information successfully",
-      "editPost":"Update post recruitment successfully"
+      "editPost":"Update post recruitment successfully",
+      "updateRec":"Feedback sent to candidate",
+      "apply":"Successful application"
     }
   },
   "recruiter": {
@@ -455,6 +460,8 @@
   },
   "interviewer": {
     "questionSheet": {
+      "content":"Content",
+      "feedback":"Feedback",
       "interview": "Interview",
       "noQuestionSheet": "No Question Sheet available",
       "findQuestion": "Search for Question",
@@ -702,7 +709,7 @@
     "Post Tags": "Post Tags",
     "Dashboard": "Dashboard",
     "Calendar": "Calendar",
-    "Jobs": "Jobs",
+    "Jobs": "Recruitement Post",
     "CVs": "CVs",
     "Interviewers": "Interviewers",
     "Report": "Report",
@@ -763,6 +770,28 @@
     "page": "Recruitment Page"
   },
   "landing": {
+    "title1":"Explore 15,000+ new jobs every month!",
+    "title2":"Find your dream job",
+    "title3":"Choose a career related to your job",
+    "content1":"Join Talent Harbor's community",
+    "content2":"Discover your dream career",
+    "content3":"Discover your dream career and apply for thousands of the hottest jobs today!",
+    "content4":"Communicate with the community",
+    "content5":"Have the opportunity to connect with 1,000,000+ talented candidates and grasp the latest job opportunities",
+    "content6":"Talent Harbor in the media",
+    "job1":"Sales & Business Development",
+    "job2":"Finance & Accounting",
+    "job3":"Human Resources Manager",
+    "job4":"Marketing",
+    "job5":"Information Technology",
+    "job6":"Artificial Intelligence",
+    "job7":"Digital Marketing",
+    "job8":"Graphic Design",
+    "job9":"Public Relations",
+    "job10":"Media & Events",
+    "job11":"Human Resources Administration",
+    "job12":"Logistics",
+    "job13":"Learn more",
     "getTitle": "Get your dream job today",
     "findTitle": "Find your suitable jobs based on",
     "findTitle2": " your interest and study major",

@@ -8,13 +8,14 @@ export const getProfileCompany = (data) => {
   return http.get('company-informations', data);
 }
 
-export const getAllCompany = (limit, page, column, order) => {
+export const getAllCompany = (limit, page, column, order, search) => {
   return http.get('companies', {
       params:{
           limit:limit,
           page:page,
           column:column,
-          order:order
+          order:order,
+          search:search,
       },
   });
 };

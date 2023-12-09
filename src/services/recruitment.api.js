@@ -52,3 +52,5 @@ export const getPostRecruitment = (limit, page, column, order) => {
         },
     });
   };
+
+  export const deletePostRecruitment = (ids) => http.delete(`recruitment-posts`,{data:{ids}});

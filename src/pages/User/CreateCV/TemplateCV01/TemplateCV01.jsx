@@ -6,8 +6,8 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import AlertModal from "../../../../components/AlertModal";
 import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
-import ReactHTMLToPDF from "react-html2pdf";
-import { Preview, print } from "react-html2pdf";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarDays,
@@ -16,7 +16,6 @@ import {
   faEnvelope,
   faLink,
   faLocationDot,
-  
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../../../../components/Avatar/ProfilePic";
 import {
@@ -155,9 +154,7 @@ function TemplateCV01() {
       return;
     }
     e.preventDefault();
-    if (
-      !validateGender(gender)
-    ) {
+    if (!validateGender(gender)) {
       setInvalidGenderModal(true);
       return;
     }
@@ -173,10 +170,7 @@ function TemplateCV01() {
       setInvalidJobModal(true);
       return;
     }
-    if (!validateBirthday(birthday)) {
-      setInvalidBirthdayModal(birthday);
-      return;
-    }
+    
     if (!validatePhone(phone)) {
       setInvalidPhoneModal(true);
       return;
@@ -256,16 +250,15 @@ function TemplateCV01() {
                   <FontAwesomeIcon icon={faCalendarDays} />
                 </div>
                 <div className="infor">
-                  <input
-                    type="text"
-                    className="no-border"
-                    id="date"
-                    placeholder={t("candidate.create.dateP")}
-                    value={birthday}
-                    onChange={(e) => {
-                      setBirthday(e.target.value);
-                    }}
-                    required
+                  <DatePicker
+                    className="cus-birthday"
+                    placeholderText="Vui lòng chọn ngày sinh"
+                    selected={birthday}
+                    onChange={(date) => setBirthday(date)}
+                    dateFormat="dd-MM-yyyy"
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={30}
                   />
                 </div>
                 <div className="icon">
@@ -398,7 +391,10 @@ function TemplateCV01() {
                   required
                 ></textarea>
               </div>
-              <Row className="gutters" style={{ marginTop: "20px",marginBottom: "20px" }}>
+              <Row
+                className="gutters"
+                style={{ marginTop: "20px", marginBottom: "20px" }}
+              >
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="d-flex justify-content-end">
                     <Button

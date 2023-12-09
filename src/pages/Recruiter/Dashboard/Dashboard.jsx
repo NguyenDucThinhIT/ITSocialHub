@@ -7,15 +7,15 @@ import {
   FormControl,
   Card,
   ListGroup,
-  DropdownButton,
-  Dropdown,
-  ButtonGroup,
   Col,
   Row,
   Container,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getPostRecruitment } from "@/services/recruitment.api";
+import {
+  deletePostRecruitment,
+  getPostRecruitment,
+} from "@/services/recruitment.api";
 import Loading from "@/components/Loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,6 +28,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./style.css";
+import Swal from "sweetalert2";
+import ConfirmModal from "@/components/ConfirmModal";
 
 const Dashboard = () => {
   const { t } = useTranslation("common");
@@ -38,7 +40,8 @@ const Dashboard = () => {
   const [quantumPosts, setQuantumPosts] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  const [postIdToDelete, setPostIdToDelete] = useState(null);
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const handleSearch = () => {
     const results = initialData.filter((post) =>
       Object.values(post).some((value) =>
@@ -52,23 +55,52 @@ const Dashboard = () => {
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
-  useEffect(() => {
-    getPostRecruitment().then((res) => {
+  const getAllPosts = async () => {
+    setIsLoading(true);
+    await getPostRecruitment().then((res) => {
       const recruitmentPosts = res.data.items;
       setInitialData(recruitmentPosts);
       setQuantumPosts(recruitmentPosts.length);
       setIsLoading(false);
     });
+  };
+
+  useEffect(() => {
+    getAllPosts();
   }, []);
 
   const handleEdit = (postId) => {
     navigate(`/job/edit/${postId}`);
   };
-
-  const handleDelete = (postId) => {
-    // Logic để xử lý chức năng xóa
+  const handleApplication = (postId) => {
+    navigate(`/application/post/${postId}`);
   };
+  const handleDeleteCV = (e,postId) => {
+    e.preventDefault();
+    setPostIdToDelete(postId);
+    setDeleteConfirmModal(true);
+  };
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    await deletePostRecruitment([postIdToDelete]);
+    getAllPosts();
+    setIsLoading(false);
+    setPostIdToDelete(null);
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      timer: 3000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+    }).fire({
+      icon: "success",
+      text: t("recruiter.jobs.information.modal.deletePostSuccess"),
+    });
+    setDeleteConfirmModal(false);
+  };
+
+  const handleCancelDeleteCV = () => setDeleteConfirmModal(false);
   const onSubmit = (e) => {
     e.preventDefault();
     handleSearch(searchQuery);
@@ -80,7 +112,9 @@ const Dashboard = () => {
           <div className="container">
             <Row className="align-items-center">
               <Col sm={4}>
-                <div className="info-count">{quantumPosts} Bài tuyển dụng</div>
+                <div className="info-count">
+                  {quantumPosts} {t("sidenav.Jobs")}
+                </div>
               </Col>
               <Col sm={8}>
                 <Form inline className="filter mr-3" onSubmit={onSubmit}>
@@ -138,6 +172,12 @@ const Dashboard = () => {
                           </div>
                           <div className="info-actions">
                             <button
+                              className="application-button mr-1"
+                              onClick={() => handleApplication(post.id)}
+                            >
+                              {post.number_application} Hồ sơ ứng tuyển
+                            </button>
+                            <button
                               className="edit-button"
                               onClick={() => handleEdit(post.id)}
                             >
@@ -145,7 +185,7 @@ const Dashboard = () => {
                             </button>
                             <button
                               className="delete-button"
-                              onClick={() => handleDelete(post.id)}
+                              onClick={(e) => handleDeleteCV(e,post.id)}
                             >
                               Xóa
                             </button>
@@ -171,6 +211,14 @@ const Dashboard = () => {
                 )}
               </Col>
             </Row>
+            <ConfirmModal
+              visible={deleteConfirmModal}
+              setVisible={setDeleteConfirmModal}
+              messageTitle={t("recruiter.jobs.information.modal.deletePostTitle")}
+              messageContent={t("recruiter.jobs.information.modal.deletePostContent")}
+              action={(e) => handleDelete(e, postIdToDelete)}
+              onCancel={handleCancelDeleteCV}
+            />
           </div>
         </div>
       </Container>

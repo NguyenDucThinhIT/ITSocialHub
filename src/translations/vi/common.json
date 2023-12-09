@@ -61,6 +61,8 @@
       "newTag": "Từ khóa mới"
     },
     "account": {
+      "fullName":"Họ tên",
+      "phone":"Số điện thoại",
       "accounts": "Tài khoản",
       "role": "Vai trò",
       "allRoles": "Tất cả",
@@ -201,6 +203,7 @@
       "all": "Vui lòng điền đầy đủ thông tin"
     },
     "appliedJob": {
+      "searchCandidate":"Tìm kiếm ứng viên",
       "appliedJob": "Công việc ứng tuyển",
       "searchJob": "Tìm kiếm công việc",
       "searchPost": "Tìm kiếm bài tuyển dụng",
@@ -225,7 +228,9 @@
       "saveCV": "Bạn có muốn lưu CV này?",
       "savePostContentCV": "Bạn có chắc chắn rằng đã nhập chính xác thông tin vào các trường?",
       "cancel": "Bạn chắc chắn muốn rời khỏi trang này?",
-      "cancelPostContent": "Thông tin đã nhập sẽ không được lưu."
+      "cancelPostContent": "Thông tin đã nhập sẽ không được lưu.",
+      "apply":"Ứng tuyển thành công"
+
     },
     "tags": {
       "deleteCV": "Xóa CV thành công",
@@ -234,7 +239,8 @@
       "downloadCV": "Tải CV về thành công",
       "createCV": "Tạo CV thành công",
       "saveInformation": "Đã cập nhập thông tin cá nhân",
-      "editPost":"Đã cập nhật bài tuyển dụng"
+      "editPost":"Đã cập nhật bài tuyển dụng",
+      "updateRec":"Đã gửi phản hồi cho ứng viên"
     }
   },
   "recruiter": {
@@ -455,6 +461,8 @@
   },
   "interviewer": {
     "questionSheet": {
+      "content":"Nội dung",
+      "feedback":"Phản hồi",
       "interview": "Cuộc phỏng vấn",
       "noQuestionSheet": "Không có phiếu câu hỏi nào tồn tại",
       "findQuestion": "Tìm câu hỏi",
@@ -522,7 +530,7 @@
       "failStatusSetTitle": "Thiết lập trạng thái phỏng vấn thất bại",
       "failStatusSet": "Bạn không thể thay đổi trạng thái cho cuộc phỏng vấn đã kết thúc.",
       "failStartSet": "Bạn không thể bắt đầu cuộc phỏng vấn trước thời gian bắt đầu cuộc phỏng vấn.",
-      "notFound": "Không tìm thấy",
+      "notFound": "Không tìm thấy kết quả",
       "filterBy": "Lọc theo",
       "noEvaluate":"This interview has not been graded yet"
     },
@@ -764,6 +772,28 @@
     "page": "Trang Tuyển Dụng"
   },
   "landing": {
+    "title1":"Khám phá 15000+ việc làm mới hằng tháng!",
+    "title2":"Tìm kiếm công việc mơ ước",
+    "title3":"Lựa chọn ngành nghề liên quan tới công việc của bạn",
+    "content1":"Tham gia cộng đồng của Talent Harbor",
+    "content2":"Khám phá nghề nghiệp mơ ước",
+    "content3":"Khám phá nghề nghiệp mơ ước và ứng tuyển hàng ngàn việc làm nổi bật nhất hiện nay!",
+    "content4":"Giao lưu với cộng đồng",
+    "content5":"Có cơ hội kết nối với 1.000.000+ ứng viên tài năng và nắm bắt cơ hội việc làm mới nhất",
+    "content6":"Talent Harbor trên truyền thông",
+    "job1":"Phát Triển Kinh Doanh & Bán Hàng",
+    "job2":"Tài Chính & Kế Toán",
+    "job3":"Quản Lý Nhân Sự",
+    "job4":"Marketing",
+    "job5":"Công Nghệ Thông Tin",
+    "job6":"Trí Tuệ Nhân Tạo",
+    "job7":"Digital Marketing",
+    "job8":"Thiết Kế Đồ Họa",
+    "job9":"Quan Hệ Công Chúng",
+    "job10":"Truyền Thông & Sự Kiện",
+    "job11":"Hành Chính Nhân Sự",
+    "job12":"Logistics",
+    "job13":"Tìm hiểu thêm",
     "getTitle": "Có được công việc mơ ước",
     "findTitle": "Tìm công việc phù hợp dựa trên",
     "findTitle2": "sở thích và chuyên ngành của bạn",

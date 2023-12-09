@@ -24,10 +24,11 @@ export const postApplications = (data) => {
     file_url: data.file_url,
     recruitment_post_id: data.recruitment_post_id,
     status: data.status,
+    feedback : data.feedback,
   });
 };
 export const editApplications = (id,data) => http.put(`applications/${id}`,data);
 
 
-export const deleteApplications = (id) => http.delete(`applications`,{ids: [id]});
+export const deleteApplications = (ids) => http.delete(`applications`,{data:{ids}});
 

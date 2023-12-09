@@ -1,0 +1,15 @@
+.hidetext {
+    -webkit-text-security: disc;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing : 0 1em;
+}
+
+.table td {
+    border-bottom: 0;
+}
+.fa-frash-alt{
+    background-color: white;
+}

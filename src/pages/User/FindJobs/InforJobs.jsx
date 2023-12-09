@@ -48,6 +48,7 @@ const InforJobs = () => {
   const [applied, setApplied] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const userCVs = [];
   useEffect(() => {
     handleGetJobInfor();
   }, []);
@@ -75,7 +76,7 @@ const InforJobs = () => {
         setApplied(res.data.post.applied);
         //check
         const currentDate = new Date();
-        const expirationDate = new Date(expired);
+        const expirationDate = new Date(res.data.post.expired_at);
         const hasExpired = currentDate > expirationDate;
         setIsExpired(hasExpired);
       })
@@ -99,7 +100,6 @@ const InforJobs = () => {
     e.preventDefault();
     if (isAuthenticated) {
       if (!isApplicationExpired() && !applied) {
-        // Nếu chưa ứng tuyển và chưa hết hạn, mở modal
         handleOpenModal();
       }
     } else {
@@ -236,6 +236,8 @@ const InforJobs = () => {
                           show={showModal}
                           handleClose={handleClose}
                           postId={postId}
+                          title={title}
+                          userCVs={userCVs}
                         />
                         <div
                           className="button-share"

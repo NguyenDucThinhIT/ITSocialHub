@@ -1,28 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Container, Row, Image } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Search from "../../../components/Search/Search.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import "./style.css";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function LandingPage() {
   const { t } = useTranslation("common");
+  const user = useSelector((state) => state.auth.user);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    navigate(`jobs?search=${search}`);
+  };
+
+  useEffect(() => {
+    if(user?.role === 0){
+      navigate(`admin/accounts`)
+    } else if (user?.role === 2) {
+      navigate(`dashboard`)
+    }
+  },[])
   return (
     <Container fluid className="landing-container gx-0">
         <div className="cus-search" >
-      <div className="text-ld">Khám phá 15000+ việc làm mới hằng tháng!</div>
+      <div className="text-ld">{t("landing.title1")}</div>
       <Row>
-        <Search/>
+      <Search search={search} setSearch={setSearch} onClick={handleSearch} />
       </Row>
       </div>
       <Row>
         <div className="landing-title text-center text-mid-ld pt-5">
-          Tìm kiếm công việc mơ ước{" "}
+        {t("landing.title2")}
         </div>
         <h5 className="landing-description text-center fw-light mb-5">
-          Lựa chọn ngành nghề liên quan tới công việc của bạn
+        {t("landing.title3")}
           <br />
           {t("landing.howDes2")}
         </h5>
@@ -31,24 +47,24 @@ function LandingPage() {
         <Col lg={4}>
           <Row className="no-pad">
             <Col xs={6} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-itemm cus-border image1">
-                  Phát Triển Kinh Doanh & Bán Hàng
+                {t("landing.job1")}
                 </div>
               </Link>
             </Col>
             <Col xs={6} className="no-pad">
               <Col xs={12}>
-                <Link to="/profile" className="cus-dec">
+                <Link to="/jobs" className="cus-dec">
                   <div className="landing-item cus-border image2">
-                    Tài Chính & Kế Toán
+                  {t("landing.job2")}
                   </div>
                 </Link>
               </Col>
               <Col xs={12}>
-                <Link to="/profile" className="cus-dec">
+                <Link to="/jobs" className="cus-dec">
                   <div className="landing-item cus-border image3">
-                    Quản Lý Nhân Sự
+                  {t("landing.job3")}
                   </div>
                 </Link>
               </Col>
@@ -56,8 +72,8 @@ function LandingPage() {
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/profile" className="cus-dec">
-                <div className="landing-item cus-border image4">Marketing</div>
+              <Link to="/jobs" className="cus-dec">
+                <div className="landing-item cus-border image4">{t("landing.job4")}</div>
               </Link>
             </Col>
           </Row>
@@ -65,34 +81,34 @@ function LandingPage() {
         <Col lg={4}>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-item cus-border image5">
-                  Công Nghệ Thông Tin
+                {t("landing.job5")}
                 </div>
               </Link>
             </Col>
           </Row>
           <Row>
             <Col xs={6} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-item cus-border image6">
-                  Trí Tuệ Nhân Tạo
+                {t("landing.job6")}
                 </div>
               </Link>
             </Col>
             <Col xs={6} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-item cus-border image7">
-                  Digital Marketing
+                {t("landing.job7")}
                 </div>
               </Link>
             </Col>
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-item cus-border image8">
-                  Thiết Kế Đồ Họa
+                {t("landing.job8")}
                 </div>
               </Link>
             </Col>
@@ -102,33 +118,33 @@ function LandingPage() {
           <Row>
             <Col xs={6} className="no-pad">
               <Col xs={12}>
-                <Link to="/profile" className="cus-dec">
+                <Link to="/jobs" className="cus-dec">
                   <div className="landing-item cus-border image9">
-                    Quan Hệ Công Chúng
+                  {t("landing.job9")}
                   </div>
                 </Link>
               </Col>
               <Col xs={12}>
-                <Link to="/profile" className="cus-dec">
+                <Link to="/jobs" className="cus-dec">
                   <div className="landing-item cus-border image10">
-                    Truyền Thông & Sự Kiện
+                  {t("landing.job10")}
                   </div>
                 </Link>
               </Col>
             </Col>
             <Col xs={6} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-itemm cus-borderB image11">
-                  Hành Chính Nhân Sự
+                {t("landing.job11")}
                 </div>
               </Link>
             </Col>
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/profile" className="cus-dec">
+              <Link to="/jobs" className="cus-dec">
                 <div className="landing-item cus-borderB image12">
-                  Logistics
+                {t("landing.job12")}
                 </div>
               </Link>
             </Col>
@@ -138,38 +154,36 @@ function LandingPage() {
           <Col xs={12} className="no-pad">
             <Link to="/jobs" className="cus-dec">
               <div className="landing-itemmm cus-borderB">
-                Tìm hiểu thêm <FontAwesomeIcon icon={faArrowRight} />
+              {t("landing.job13")} <FontAwesomeIcon icon={faArrowRight} />
               </div>
             </Link>
           </Col>
         </Row>
         <Row className="mid-LP">
           <div className="text-mid-ld">
-            Tham gia cộng đồng của Talent Harbor
+          {t("landing.content1")}
           </div>
           <Col xs={12} sm={6}>
           <Image src="assets/ldJob/a13.png" alt="#" className="image-lp" fluid />
           </Col>
           <Col xs={12} sm={6}>
-            <div className="text-lp1">Khám phá nghề nghiệp mơ ước</div>
+            <div className="text-lp1">{t("landing.content2")}</div>
             <div className="text-lp2">
-              Khám phá nghề nghiệp mơ ước và ứng tuyển hàng ngàn việc làm nổi
-              bật nhất hiện nay!
+            {t("landing.content3")}
             </div>
             <div className="line-lp"></div>
             
             <div className="text-lp1">
-              Giao lưu với cộng đồng
+            {t("landing.content4")}
             </div>
             <div className="text-lp2">
-              Có cơ hội kết nối với 1.000.000+ ứng viên tài năng và nắm bắt
-              cơ hội việc làm mới nhất
+            {t("landing.content5")}
             </div>
             <div className="line-lp"></div>
           </Col>
         </Row>
         <Row className="mid-LP">
-          <div className="text-mid-ld">Talent Harbor trên truyền thông</div>
+          <div className="text-mid-ld">{t("landing.content6")}</div>
           <Col xs={6} sm={3}>
             <img className="image-lp1" src="assets/ldJob/a16.png" alt="#" />
           </Col>

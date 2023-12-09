@@ -53,20 +53,17 @@ const MyCV = () => {
   const [quantumCVs, setQuantumCVs] = useState(0);
   const [selectedCVTitle, setSelectedCVTitle] = useState("");
   const [editedCVTitle, setEditedCVTitle] = useState("");
+  const [showCVButtons, setShowCVButtons] = useState(false);
 
-  // const { refetch } = useQuery({
-  //   queryKey: ["resumes"],
-  //   queryFn: () => getResume(),
-  //   onSuccess: (res) => setInitialData(res.items),
-  //   onSettled: () => setIsLoading(false),
-  // });
 
-  const getAllCV = () => {
-    getResume().then((res) => {
+  const getAllCV = async () => {
+    setIsLoading(false);
+    await getResume().then((res) => {
       setInitialData(res.data.items);
-      console.log(res);
     });
+    setIsLoading(true);
   };
+
   useEffect(() => {
     getAllCV();
   }, []);
@@ -90,10 +87,7 @@ const MyCV = () => {
     setSelectedCVTitle(info.name);
     setUploadedFile(info.file_url);
     setShowForm(true);
-    //setIsLoading(true);
-    // viewResume(infoId)
-    //   .then((res) => setUploadedFile(res.data))
-    //   .finally(() => setIsLoading(false));
+    setShowCVButtons(true);
   };
   const postResumeMutation = useMutation({
     mutationFn: (body) => postResume(body),
@@ -181,8 +175,9 @@ const MyCV = () => {
   const handleConfirmDeleteCV = () => {
     if (selectedInfo) {
       deleteResume(selectedInfo.id);
+      //setSelectedInfo(null);
       getAllCV();
-      setSelectedInfo(null);
+      
       setUploadedFile(null);
       setDeleteConfirmModal(false);
     }
@@ -316,11 +311,11 @@ const MyCV = () => {
           </Col>
           <Col sm={8}>
             {showForm && (
-              <Card>
+              <Card id="cardFormCV">
                 <Card.Body>
                   <div className="attached-cv">
                     <span>{t("candidate.view.detailCV")}</span>
-                    {selectedInfo && (
+                    {showCVButtons && selectedInfo && (
                       <div className="cv-buttons">
                         <Button variant="danger" onClick={handleDeleteCV}>
                           <FontAwesomeIcon
@@ -335,7 +330,7 @@ const MyCV = () => {
                     )}
                   </div>
                   <div className="cv-description">
-                    {isLoading ? (
+                    {!isLoading ? (
                       <Loading />
                     ) : (
                       <>

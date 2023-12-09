@@ -13,8 +13,6 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
-//import { getCandidateApplication } from "@/services/applications.api";
-import { viewResume } from "@/services/resumes.api";
 import Loading from "@/components/Loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,6 +22,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./style.css";
+import { getApplications } from "@/services/application";
 
 const AppliedCV= () => {
   const { t } = useTranslation("common");
@@ -35,15 +34,27 @@ const AppliedCV= () => {
   const [initialData, setInitialData] = useState([]);
   const [showForm, setShowForm] = useState(true);
   const [uploadedFile, setUploadedFile] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const [content,setContent] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [quantumCVs, setQuantumCVs] = useState(0);
   const selectedInfo = null;
   const checkJobAppliedAvailability = () => {
     setHasJobApplied(initialData.length > 0);
   };
-
+  const getAllApplication = async () => {
+    setIsLoading(false);
+    await getApplications().then((res) => {
+      setInitialData(res.data.items);
+    });
+    setIsLoading(true);
+  };
+  useEffect(() => {
+    getAllApplication();
+  }, []);
   const handleSearch = (query) => {
     setUploadedFile(null);
+    getAllApplication();
     // getCandidateApplication(user.id, query, "")
     //   .then((res) => {
     //     setInitialData(res.data.data);
@@ -61,16 +72,11 @@ const AppliedCV= () => {
 
   const handleInfoClick = (infoId) => {
     const info = initialData.find((item) => item.id === infoId);
-    setUploadedFile(info.file);
+    setUploadedFile(info.file_url);
+    setContent(info.content);
+    setFeedback(info.feedback || "Chưa được phản hồi");
     setShowForm(true);
-    setIsLoading(true);
-    viewResume(info.resume.id)
-      .then((res) => {
-        setUploadedFile(res.data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    //setIsLoading(true);
   };
 
   const handleFilterOptionChange = (option) => {
@@ -82,14 +88,6 @@ const AppliedCV= () => {
     checkJobAppliedAvailability();
   }, [initialData]);
 
-  // useEffect(() => {
-  //   getCandidateApplication(user.id).then((res) => {
-  //     setInitialData(res.data.data);
-  //     setIsLoading(false);
-  //     setShowForm(true);
-  //   });
-  // }, [user.id]);
-
   useEffect(() => {
     let filteredDataToShow = initialData;
     if (filterOption !== "") {
@@ -99,7 +97,7 @@ const AppliedCV= () => {
     }
     if (searchQuery !== "") {
       filteredDataToShow = filteredDataToShow.filter((info) =>
-        info.resume.fileName.toLowerCase().includes(searchQuery.toLowerCase())
+        info.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     setFilteredData(filteredDataToShow);
@@ -133,13 +131,7 @@ const AppliedCV= () => {
                 <Dropdown.Item eventKey="NEW" f>
                   {t("candidate.appliedJob.status.NEW")}
                 </Dropdown.Item>
-                <Dropdown.Item eventKey="REVIEWED">
-                  {t("candidate.appliedJob.status.REVIEWED")}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="IN_PROGRESS">
-                  {t("candidate.appliedJob.status.IN_PROGRESS")}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="HIRED">
+                <Dropdown.Item eventKey="ACCEPT">
                   {t("candidate.appliedJob.status.ACCEPTED")}
                 </Dropdown.Item>
                 <Dropdown.Item eventKey="REJECTED">
@@ -182,12 +174,12 @@ const AppliedCV= () => {
                     }
                   >
                     <div className="info-content">
-                      <div className="info-title">
-                        {info.resume.fileName &&
-                          info.resume.fileName.replace(".pdf", "")}
+                      <div className="info-titlee">
+                        {info.title &&
+                          info.title.replace(".pdf", "")}
                       </div>
                       <div
-                        className={`info-status ${info.status
+                        className={`info-statuss ${info.status
                           .toLowerCase()
                           .replace(" ", "-")}${
                           filterOption === info.status ? " selected-status" : ""
@@ -196,13 +188,17 @@ const AppliedCV= () => {
                         <span>{info.status}</span>
                       </div>
                     </div>
+                    <div className="d-flex infor-cty">
+                      <div className="cus-logo-company"><img src={info.logo_url} alt="" /></div>
+                    <div className="name-companyy">{info.company}</div>
+                    </div>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
             </Card>
           ) : (
             <div className="no-job-applied">
-              {isLoading ? (
+              {!isLoading ? (
                 <Loading/>
               ) : (
                 <>
@@ -217,6 +213,22 @@ const AppliedCV= () => {
           )}
         </Col>
         <Col sm={8} style={{ marginBottom: "30px" }}>
+        <Card>
+              <Row>
+                <Col sm={6} className="line-design">
+                  <h3>{t("interviewer.questionSheet.content")}</h3>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: content }}
+                  />
+                </Col>
+                <Col sm={6}>
+                  <h3>{t("interviewer.questionSheet.feedback")}</h3>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: feedback  }}
+                  />
+                </Col>
+              </Row>
+            </Card>
           {showForm && (
             <Card>
               <Card.Body>
@@ -227,12 +239,12 @@ const AppliedCV= () => {
                   {uploadedFile ? (
                     <>
                       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
-                        <Viewer fileUrl={URL.createObjectURL(uploadedFile)} />
+                        <Viewer fileUrl={uploadedFile} />
                       </Worker>
                     </>
                   ) : (
                     <div className="no-file-icon">
-                      {isLoading ? (
+                      {!isLoading ? (
                         <Loading/>
                       ) : (
                         <>
