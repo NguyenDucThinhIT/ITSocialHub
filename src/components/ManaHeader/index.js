@@ -1,3 +1,4 @@
 import HeaderUser from "./HeaderUser";
+import HeaderAdmin from "./HeaderAdmin";
 
-export default HeaderUser;
+export {HeaderUser,HeaderAdmin};

@@ -33,10 +33,13 @@ const authSlice = createSlice({
       setProfileToLS(data);
       state.user = getProfileFromLS();
     },
+    saveRole: (state, action) => {
+      state.role = action.payload;
+    },
   },
 });
 
-export const { loginSlice, logoutSlice, setEdit, editSlice } =
+export const { loginSlice, logoutSlice, setEdit, editSlice, saveRole } =
   authSlice.actions;
 const authReducer = authSlice.reducer;
 export default authReducer;

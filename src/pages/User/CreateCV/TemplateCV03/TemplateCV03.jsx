@@ -331,7 +331,7 @@ function TemplateCV03() {
             <h2 className="bio">{t("candidate.create.shortBio")}</h2>
               <div className="form-groupp careerObjective">
                 <textarea
-                  className="no-border textarea-80-percent"
+                  className="no-border"
                   id="careerObjective"
                   placeholder={t("candidate.create.shortBioP")}
                   required

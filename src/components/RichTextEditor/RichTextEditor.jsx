@@ -3,7 +3,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './style.css'; 
 
-const RichTextEditor = ({ value, handleChange, placeholder }) => {
+const RichTextEditor = ({ value, handleChange, placeholder, className }) => {
   const [editorValue, setEditorValue] = useState(value || '');
 
   const handleEditorChange = (val) => {
@@ -16,9 +16,10 @@ const RichTextEditor = ({ value, handleChange, placeholder }) => {
   }, [value]);
 
   return (
-    <div className="rich-text-editor-container">
+    <div className="rich-text-editor-container bio-text">
       <ReactQuill
         value={editorValue}
+        className={className}
         onChange={handleEditorChange}
         placeholder={placeholder}
         modules={{

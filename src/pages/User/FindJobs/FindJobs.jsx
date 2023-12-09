@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Search from "../../../components/Search/Search.jsx";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Col, Container, Row, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,8 +14,13 @@ import Loading from "@/components/Loading/Loading";
 import TimeAgo from "@/components/TimeAgo";
 import { getAllPostRecruitment } from "@/services/recruitment.api.js";
 import "./style.css";
+
 function FindJobs() {
   const { t } = useTranslation("common");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get('search');
+
   const [postData, setPostData] = useState({});
   const [companies, setCompanies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +32,7 @@ function FindJobs() {
   const [showSortOption, setShowSortOption] = useState(true);
   const [showSortOptionz, setShowSortOptionz] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const handleToggleSortOptions = () => {
     setShowSortOptions(!showSortOptions);
     setIsIconRotatedType(!isIconRotatedType);
@@ -44,15 +50,32 @@ function FindJobs() {
   const [isIconRotatedExp, setIsIconRotatedExp] = useState(false);
   const [isIconRotatedTime, setIsIconRotatedTime] = useState(false);
 
-  const getAllPost = async () => {
+  const getAllPost = async (searchDefault = null) => {
     setIsLoading(true);
-    await getAllPostRecruitment(6, currentPage, null, null,jobTypeFilter,experienceFilter,updateFilter,search,companies)
-    .then((res) => setPostData(res.data))
+    await getAllPostRecruitment(
+      6,
+      currentPage,
+      null,
+      null,
+      jobTypeFilter,
+      experienceFilter,
+      updateFilter,
+      searchDefault ?? search,
+      companies
+    ).then((res) => {
+      setPostData(res.data);
+      setNoResults(res.data.items.length === 0);
+    });
     setIsLoading(false);
-  }
+  };
   useEffect(() => {
-    getAllPost();
-  }, [currentPage,jobTypeFilter,experienceFilter]);
+    if (searchQuery) {
+      getAllPost(searchQuery);
+    } else {
+      getAllPost();
+    }
+  }, [currentPage, jobTypeFilter, experienceFilter,updateFilter]);
+
   const handleToggleJobTypeFilter = (value) => {
     setJobTypeFilter((prevFilters) => {
       if (prevFilters.includes(value)) {
@@ -61,9 +84,10 @@ function FindJobs() {
         return [...prevFilters, value];
       }
     });
-    
   };
-
+  const handleSearch = () => {
+    getAllPost();
+  } 
   const handleToggleExperienceFilter = (value) => {
     setExperienceFilter((prevFilters) => {
       if (prevFilters.includes(value)) {
@@ -72,13 +96,31 @@ function FindJobs() {
         return [...prevFilters, value];
       }
     });
-    
   };
 
   const handleToggleUpdateFilter = (value) => {
-    setUpdateFilter(value);
+    const now = new Date();
+
+    switch (value) {
+      case "anytime":
+        setUpdateFilter(null); 
+        break;
+      case "24h":
+        setUpdateFilter(now); 
+        break;
+      case "week":
+        setUpdateFilter(new Date(now - 7 * 24 * 60 * 60 * 1000)); 
+        break;
+      case "month":
+        setUpdateFilter(
+          new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+        ); 
+        break;
+      default:
+        break;
+    }
   };
-  
+
   const renderCompanies = () => {
     return (
       <>
@@ -86,62 +128,79 @@ function FindJobs() {
           <Loading />
         ) : (
           <>
-            {postData.items &&
+            {postData.items && postData.items.length > 0 ? (
               postData.items.map((data) => (
                 <Col key={data.id} className="col-md-6">
-        <div className="card card-lg border-1 search-categories">
-          <Link
-            className="name-job"
-            to={`/jobs/${data.id}`}
-            target="_blank"
-          >
-            {data.title}
-          </Link>
-          <div className="salary">
-            <p>
-              {t("findJob.salary")}: {data.salary}
-            </p>
-          </div>
-          <div className="company-detai">
-            <div className="job-type">{data.job_type}</div>
-            <div className="experience">{data.experience_requirements}</div>
-            <div className="education">{data.educational_requirements}</div>
-          </div>
-          <div className="d-flex">
-            <img
-              src={data.company.logo_url}
-              alt={data.company.name}
-              className="company-image"
-            />
-            <div className="company-info">
-              <div className="cus-name-cty">
-                <p>
-                  <img
-                    src="/assets/images/tichxanh.png"
-                    alt="/assets/images/tichxanh.png"
-                    className="icon-tichxanh"
-                  />
-                  <Link
-                    className="link-cty"
-                    to={`/companies/${data.company.id}`}
-                    target="_blank"
-                  >
-                    {data.company.name}
-                  </Link>
-                </p>
-              </div>
-              <p>
-                <FontAwesomeIcon icon={faLocationDot} /> {data.company.address_main}
+                  <div className="card card-lg border-1 search-categories">
+                    <Link
+                      className="name-job"
+                      to={`/jobs/${data.id}`}
+                      target="_blank"
+                    >
+                      {data.title}
+                    </Link>
+                    <div className="salary">
+                      <p>
+                        {t("findJob.salary")}: {data.salary}
+                      </p>
+                    </div>
+                    <div className="company-detai">
+                      <div className="job-type">{data.job_type}</div>
+                      <div className="experience">
+                        {data.experience_requirements}
+                      </div>
+                      <div className="education">
+                        {data.educational_requirements}
+                      </div>
+                    </div>
+                    <div className="d-flex">
+                      <img
+                        src={data.company.logo_url}
+                        alt={data.company.name}
+                        className="company-image"
+                      />
+                      <div className="company-info">
+                        <div className="cus-name-cty">
+                          <p>
+                            <img
+                              src="/assets/images/tichxanh.png"
+                              alt="/assets/images/tichxanh.png"
+                              className="icon-tichxanh"
+                            />
+                            <Link
+                              className="link-cty"
+                              to={`/companies/${data.company.id}`}
+                              target="_blank"
+                            >
+                              {data.company.name}
+                            </Link>
+                          </p>
+                        </div>
+                        <p>
+                          <FontAwesomeIcon icon={faLocationDot} />{" "}
+                          {data.company.address}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="line"></div>
+                    <div className="time-line">
+                      <TimeAgo createdAt={data.updated_at} />
+                    </div>
+                  </div>
+                </Col>
+              ))
+            ) : (
+              <div className="no-results-container">
+              <img
+                src="/assets/images/notFound.png"
+                alt="No results found"
+                className="no-results-image"
+              />
+              <p className="no-results-message">
+                {t("interviewer.interviewList.notFound")}
               </p>
             </div>
-          </div>
-          <div className="line"></div>
-          <div className="time-line">
-            <TimeAgo createdAt={data.updated_at} />
-          </div>
-        </div>
-      </Col>
-              ))}
+            )}
           </>
         )}
       </>
@@ -150,18 +209,16 @@ function FindJobs() {
   
 
   const totalPages = postData.pagination?.lastPage;
-
+  console.log(search);
   return (
     <>
       <Col>
-        <Search />
+        <Search search = {search} setSearch = {setSearch} onClick={handleSearch}/>
       </Col>
-      <Container>
-        <div className="text-find">
-        {t("findJob.titleNew")}
-        </div>
-        <Row>
-          <Col className="col-sort" md={3}>
+      <Container className="z-0">
+        <div className="text-find">{t("findJob.titleNew")}</div>
+        <Row className="z-0">
+          <Col className="col-sort z-0" md={3}>
             <h2 id="toggleLabel" onClick={handleToggleSortOptions}>
               {t("findJob.jobType")}
               <FontAwesomeIcon
@@ -211,7 +268,7 @@ function FindJobs() {
                 {t("findJob.contract")}
               </label>
             </div>
-           
+
             <div className="line"></div>
             <h2 id="toggleLabel" onClick={handleToggleSortOption}>
               {t("findJob.experience")}
@@ -271,23 +328,42 @@ function FindJobs() {
               />
             </h2>
             <div className={`sort-type-job ${showSortOptionz ? "" : "hidden"}`}>
-            <label>
-                <input type="radio" name="update-frequency" checked/>{" "}
+              <label>
+                <input
+                  type="radio"
+                  name="update-frequency"
+                  checked={updateFilter === null}
+                  onChange={() => handleToggleUpdateFilter("anytime")}
+                />{" "}
                 {t("findJob.time4")}
               </label>
+
               <label>
-                <input type="radio" name="update-frequency" />{" "}
+                <input
+                  type="radio"
+                  name="update-frequency"
+                  onChange={() => handleToggleUpdateFilter("24h")}
+                />{" "}
                 {t("findJob.time1")}
               </label>
+
               <label>
-                <input type="radio" name="update-frequency" />{" "}
+                <input
+                  type="radio"
+                  name="update-frequency"
+                  onChange={() => handleToggleUpdateFilter("week")}
+                />{" "}
                 {t("findJob.time2")}
               </label>
+
               <label>
-                <input type="radio" name="update-frequency" />{" "}
+                <input
+                  type="radio"
+                  name="update-frequency"
+                  onChange={() => handleToggleUpdateFilter("month")}
+                />{" "}
                 {t("findJob.time3")}
               </label>
-              
             </div>
             <div className="line"></div>
           </Col>

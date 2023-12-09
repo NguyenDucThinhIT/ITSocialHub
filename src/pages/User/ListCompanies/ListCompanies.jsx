@@ -3,7 +3,13 @@ import Search from "../../../components/Search/Search.jsx";
 import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight, faBriefcase, faBuilding, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faBriefcase,
+  faBuilding,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading/Loading";
 import { getAllCompany } from "@/services/company.js";
@@ -13,22 +19,18 @@ function ListCompanies() {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const [companies, setCompanies] = useState([]);
+  const [companies, setCompanies] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const companiesPerPage = 15;
+  const [noResults, setNoResults] = useState(false);
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    getAllCompany()
+  const getAllCompanies = async () => {
+    setIsLoading(true);
+    await getAllCompany(6, currentPage, null, null, search)
       .then((res) => {
-        const companiesData = res.data.items.map((company) => ({
-          id:company.id,
-          name: company.name,
-          logo_url: company.logo_url,
-          address_main: company.address_main,
-          field: company.field,
-          number_of_recruitment_post_hiring: company.number_of_recruitment_post_hiring,
-        }));
-        setCompanies(companiesData);
+        setCompanies(res.data);
+        setNoResults(res.data.items.length === 0);
+        console.log(noResults);
       })
       .catch((error) => {
         console.error("Error fetching company data:", error);
@@ -36,9 +38,17 @@ function ListCompanies() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    getAllCompanies();
+  }, [currentPage]);
   const handleInfo = (postId) => {
     navigate(`${postId}`);
+  };
+  const handleSearch = () => {
+    setNoResults(false);
+    getAllCompanies();
   };
   const renderCompanies = () => {
     return (
@@ -46,59 +56,87 @@ function ListCompanies() {
         {isLoading ? (
           <Loading />
         ) : (
-          companies.map((company) => (
-            <Col key={company.id} className="col-lg-4 col-md-6 col-sm-12 col-12">
-              <div className="card border-1 search-categories">
-                <div
-                  className="d-flex company-detail"
-                  role="button"
-                  onClick={() => handleInfo(company.id)}
+          <>
+            {companies?.items.length === 0 ? (
+              <p className="no-results-message">
+                {t("interviewer.interviewList.notFound")}
+              </p>
+            ) : (
+              companies?.items.map((company) => (
+                <Col
+                  key={company.id}
+                  className="col-lg-4 col-md-6 col-sm-12 col-12"
                 >
-                  <img
-                    src={company.logo_url}
-                    alt={company.logo_url}
-                    className="company-image"
-                  />
-                  <div className="company-info">
-                    <h4 className="card-title fw-bold">{company.name}</h4>
-                    <p>
-                      <FontAwesomeIcon icon={faLocationDot} />
-                      {company.address_main}
-                    </p>
+                  <div className="card border-1 search-categories">
+                    <div
+                      className="d-flex company-detail"
+                      role="button"
+                      onClick={() => handleInfo(company.id)}
+                    >
+                      <img
+                        src={company.logo_url}
+                        alt={company.logo_url}
+                        className="company-image"
+                      />
+                      <div className="company-info">
+                        <h4 className="card-title fw-bold">{company.name}</h4>
+                        <p>
+                          <FontAwesomeIcon icon={faLocationDot} />
+                          {company.address_main}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="company-details">
+                      <p>
+                        <FontAwesomeIcon
+                          icon={faBuilding}
+                          className="building-icon"
+                        />
+                        {company.field}
+                      </p>
+                      <p>
+                        <FontAwesomeIcon
+                          icon={faBriefcase}
+                          className="brief-icon"
+                        />
+                        {company.number_of_recruitment_post_hiring}{" "}
+                        {t("candidate.appliedJob.active")}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="company-details">
-                  <p>
-                    <FontAwesomeIcon
-                      icon={faBuilding}
-                      className="building-icon"
-                    />
-                    {company.field}
-                  </p>
-                  <p>
-                    <FontAwesomeIcon icon={faBriefcase} className="brief-icon" />
-                    {company.number_of_recruitment_post_hiring}{" "}
-                    {t("candidate.appliedJob.active")}
-                  </p>
-                </div>
-              </div>
-            </Col>
-          ))
+                </Col>
+              ))
+            )}
+          </>
         )}
       </>
     );
   };
-  
 
-  const totalPages = Math.ceil(companies.length / companiesPerPage);
+  const totalPages = companies.pagination?.lastPage;
 
   return (
     <>
       <Col>
-        <Search />
+        <Search search={search} setSearch={setSearch} onClick={handleSearch} />
       </Col>
       <Container>
-        <Row className="justify-content-center">{renderCompanies()}</Row>
+        <Row className="justify-content-center">
+          {noResults ? (
+            <div className="no-results-container">
+              <img
+                src="/assets/images/notFound.png"
+                alt="No results found"
+                className="no-results-image"
+              />
+              <p className="no-results-message">
+                {t("interviewer.interviewList.notFound")}
+              </p>
+            </div>
+          ) : (
+            renderCompanies()
+          )}
+        </Row>
         <div className="text-center">
           <button
             className="cus-pre-next"

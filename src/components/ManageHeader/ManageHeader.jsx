@@ -54,9 +54,8 @@ const ManageHeader = () => {
               <Link to="/dashboard">Dashboard</Link>
             </li>
             <li className="header-menu-item">
-              <Link to="/job/create">Đăng tin tuyển dụng</Link>
+              <Link to="/job/create">{t("header.recruitment")}</Link>
             </li>
-            
           </ul>
           <div className="header-dropdown">
             <button className="header-dropbtn" onClick={dropdownLanguage}>

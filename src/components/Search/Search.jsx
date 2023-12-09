@@ -7,13 +7,18 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 import "./style.css";
 
-function Search() {
+function Search({search, setSearch, onClick}) {
   const navigate = useNavigate();
   const { t } = useTranslation("common");
   const { register, handleSubmit } = useForm();
+  const [searchData, setSearchData] = useState({
+    location: "",
+    data: ""
+  });
   const [filteredCities, setFilteredCities] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
   const cities = [
+    "",
     "An Giang",
     "Bà Rịa Vũng Tàu",
     "Bắc Giang",
@@ -90,24 +95,29 @@ function Search() {
       setFilteredCities([]);
     }
   };
+  const mergeString = (str1, str2) => {
+    if (str1 != "" && str2 != "") return str1 + ", " + str2;
+    return str1 + str2;
+  }
   
-  const handleCitySelect = (city) => {
+  const handleCitySelect = (e,city) => {
     setSelectedCity(city);
     setFilteredCities([]);
+    setSearchData({...searchData, location:city});
+    setSearch(mergeString(city,searchData.data));
   };
-  const onSubmit = handleSubmit((data) => {
-    navigate({
-      pathname: "/joblist",
-      search: `?page=1&keyword=${data.title}&location=${data.city}`,
-    });
-  });
+  const handleData = (data) => {
+    setSearchData({...searchData, data:data});
+    setSearch(mergeString(searchData.location,data));
+  };
+  
 
   return (
     <div className="search-wrapped" >
       <div className="search-container">
         <div className="search-form">
           <div className="search-box mb-5">
-            <Form onSubmit={onSubmit}>
+            <Form>
               <Container>
                 <Row className="gy-2">
                   <Col lg={3}>
@@ -127,9 +137,9 @@ function Search() {
                           <div
                             key={city}
                             className="autocomplete-item"
-                            onClick={() => handleCitySelect(city)}
+                            onClick={(e) => handleCitySelect(e,city)}
                           >
-                            {city}
+                            {city === "" ? "Tất cả" : city}
                           </div>
                         ))}
                       </div>
@@ -140,14 +150,17 @@ function Search() {
                       {...register("title")}
                       className="search-height"
                       type="text"
+                      title={searchData.data}
+                      onChange={(event) => handleData(event.target.value)}
                       placeholder={t("jobPage.searchTitle")}
                     />
                   </Col>
                   <Col lg={3}>
                     <Button
-                      type="submit"
+                      type="button"
                       variant="dark"
                       className="search-height w-100"
+                      onClick={onClick}
                     >
                       {t("landing.findJobs")}
                     </Button>

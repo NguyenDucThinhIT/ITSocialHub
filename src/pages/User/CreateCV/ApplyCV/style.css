@@ -4,13 +4,19 @@
   align-items: center;
 }
 
-.info-title {
+.info-titlee {
   flex: 1;
+  font-size:25px;
+  max-width: 190px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.info-status {
+.info-statuss {
   display: inline-block;
   padding: 2px 6px;
+  margin-top:20px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
@@ -18,7 +24,7 @@
   margin-left: 10px;
 }
 
-.info-status.new {
+.info-statuss.new {
   background-color: #a5a5b2;
   color: white;
 }
@@ -33,12 +39,12 @@
   color: white;
 }
 
-.info-status.hired {
+.info-statuss.accept {
   background-color: #90b050;
   color: white;
 }
 
-.info-status.rejected {
+.info-statuss.rejected {
   background-color: #f86e69;
   color: white;
 }
@@ -134,7 +140,7 @@
   color: #a5a5b2;
 }
 .cv-description {
-  height: 570px;
+  height: 560px;
 }
 .no-job-applied-icon {
   font-size: 48px;
@@ -151,4 +157,21 @@
 
 body {
   overflow-x: hidden;
+}
+.cus-logo-company {
+  margin-left:10px;
+  margin-right:10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.name-companyy{
+  font-size:13px;
+  font-weight:600;
+  margin-top:4px;
+  color: #0dcaf0;
+}
+.infor-cty{
+  margin-top:-8px;
 }

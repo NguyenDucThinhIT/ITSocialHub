@@ -11,6 +11,7 @@ import FindAccount from "./pages/User/FindAccount/findAccount.jsx";
 import TemplateCV from "./pages/User/CreateCV/Template/TemplateCV.jsx";
 import TemplateCV01 from "./pages/User/CreateCV/TemplateCV01/TemplateCV01.jsx";
 import TemplateCV02 from "./pages/User/CreateCV/TemplateCV02/TemplateCV02.jsx";
+import TemplateCV04 from "./pages/User/CreateCV/TemplateCV04/TemplateCV04.jsx";
 import MyCV from "./pages/User/CreateCV/MyCV/index.js";
 import TemplateCV03 from "./pages/User/CreateCV/TemplateCV03/TemplateCV03.jsx";
 import ListCompanies from "./pages/User/ListCompanies/ListCompanies.jsx";
@@ -26,6 +27,9 @@ import Page404 from "./pages/Page404/Page404.jsx";
 import ProfileCompany from "./pages/User/ListCompanies/ProfileCompany.jsx";
 import { FindJobs } from "./pages/User/FindJobs/index.js";
 import InforJobs from "./pages/User/FindJobs/InforJobs.jsx";
+import Accounts from "./pages/Admin/Accounts/Accounts.jsx";
+import Application from "./pages/Recruiter/Application/index.js";
+
 
 function ProtectedRoute({ allowedRoles }) {
   const location = useLocation();
@@ -120,6 +124,11 @@ function useRouteElements() {
               path: "job/edit/:postId",
               element: <EditJobCreate />,
             },
+            {
+              path: "application/post/:postId",
+              element: <Application />,
+            },
+            
           ],
         },
       ],
@@ -137,7 +146,7 @@ function useRouteElements() {
               element: <ProfileUser />,
             },
             {
-              path: "templateCV",
+              path: "/create/templateCV",
               element: <TemplateCV />,
             },
             {
@@ -149,18 +158,38 @@ function useRouteElements() {
               element: <ApplyCV />,
             },
             {
-              path: "templateCV01",
+              path: "/create/templateCV/01",
               element: <TemplateCV01 />,
             },
             {
-              path: "templateCV02",
+              path: "/create/templateCV/02",
               element: <TemplateCV02 />,
             },
             {
-              path: "templateCV03",
+              path: "/create/templateCV/03",
               element: <TemplateCV03 />,
             },
+            {
+              path: "/create/templateCV/04",
+              element: <TemplateCV04 />,
+            },
             
+          ],
+        },
+      ],
+    },
+    {
+      path: "",
+      element: <ProtectedRoute allowedRoles={[0]} />,
+      children: [
+        {
+          path: "",
+          element: <MainLayout />,
+          children: [
+            {
+              path: "/admin/accounts",
+              element: <Accounts />,
+            },        
           ],
         },
       ],
