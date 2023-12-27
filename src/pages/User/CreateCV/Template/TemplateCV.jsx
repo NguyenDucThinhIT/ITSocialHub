@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useNavigate  } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
-import Swal from "sweetalert2";
 import {
   Card,
   ListGroup,
@@ -12,7 +11,6 @@ import {
   Button,
 } from "react-bootstrap";
 import Loading from "../../../../components/Loading/Loading";
-import ConfirmModal from "../../../../components/ConfirmModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFile,

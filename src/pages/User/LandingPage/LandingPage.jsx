@@ -5,9 +5,10 @@ import Search from "../../../components/Search/Search.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import "./style.css";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+
+import "./style.css";
 
 function LandingPage() {
   const { t } = useTranslation("common");
@@ -47,7 +48,7 @@ function LandingPage() {
         <Col lg={4}>
           <Row className="no-pad">
             <Col xs={6} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=Phát Triển Kinh Doanh & Bán Hàng" className="cus-dec">
                 <div className="landing-itemm cus-border image1">
                 {t("landing.job1")}
                 </div>
@@ -55,14 +56,14 @@ function LandingPage() {
             </Col>
             <Col xs={6} className="no-pad">
               <Col xs={12}>
-                <Link to="/jobs" className="cus-dec">
+                <Link to="/jobs?search=Tài chính & kế toán" className="cus-dec">
                   <div className="landing-item cus-border image2">
                   {t("landing.job2")}
                   </div>
                 </Link>
               </Col>
               <Col xs={12}>
-                <Link to="/jobs" className="cus-dec">
+                <Link to="/jobs?search=quản lý nhân sự" className="cus-dec">
                   <div className="landing-item cus-border image3">
                   {t("landing.job3")}
                   </div>
@@ -72,7 +73,7 @@ function LandingPage() {
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=marketing" className="cus-dec">
                 <div className="landing-item cus-border image4">{t("landing.job4")}</div>
               </Link>
             </Col>
@@ -81,7 +82,7 @@ function LandingPage() {
         <Col lg={4}>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=công nghệ thông tin" className="cus-dec">
                 <div className="landing-item cus-border image5">
                 {t("landing.job5")}
                 </div>
@@ -90,14 +91,14 @@ function LandingPage() {
           </Row>
           <Row>
             <Col xs={6} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=trí tuệ nhân tạo" className="cus-dec">
                 <div className="landing-item cus-border image6">
                 {t("landing.job6")}
                 </div>
               </Link>
             </Col>
             <Col xs={6} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=digital marketing" className="cus-dec">
                 <div className="landing-item cus-border image7">
                 {t("landing.job7")}
                 </div>
@@ -106,7 +107,7 @@ function LandingPage() {
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=thiết kế đồ họa" className="cus-dec">
                 <div className="landing-item cus-border image8">
                 {t("landing.job8")}
                 </div>
@@ -118,14 +119,14 @@ function LandingPage() {
           <Row>
             <Col xs={6} className="no-pad">
               <Col xs={12}>
-                <Link to="/jobs" className="cus-dec">
+                <Link to="/jobs?search=quan hệ công chúng" className="cus-dec">
                   <div className="landing-item cus-border image9">
                   {t("landing.job9")}
                   </div>
                 </Link>
               </Col>
               <Col xs={12}>
-                <Link to="/jobs" className="cus-dec">
+                <Link to="/jobs?search=truyền thông & sự kiện" className="cus-dec">
                   <div className="landing-item cus-border image10">
                   {t("landing.job10")}
                   </div>
@@ -133,7 +134,7 @@ function LandingPage() {
               </Col>
             </Col>
             <Col xs={6} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=hành chính nhân sự" className="cus-dec">
                 <div className="landing-itemm cus-borderB image11">
                 {t("landing.job11")}
                 </div>
@@ -142,7 +143,7 @@ function LandingPage() {
           </Row>
           <Row>
             <Col xs={12} className="no-pad">
-              <Link to="/jobs" className="cus-dec">
+              <Link to="/jobs?search=logistics" className="cus-dec">
                 <div className="landing-item cus-borderB image12">
                 {t("landing.job12")}
                 </div>

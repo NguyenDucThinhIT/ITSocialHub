@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import Select from "react-select";
-import { Row, Col, Container, Image, Form } from "react-bootstrap";
+import { Row, Col, Container, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { validateDateExpired } from "@/components/Validated/Validated";
 import { useParams } from "react-router-dom";
 import {
   getIdPostRecruitment,
   editRecruitment,
 } from "@/services/recruitment.api";
 import Big from "big.js";
+import Loading from "@/components/Loading/Loading";
 import "./style.css";
 
 const EditJobCreate = () => {
   const { t } = useTranslation("common");
+  const [roleMainJob, setRoleMainJob] = useState("");
+  const [jobOptions, setJobOptions] = useState([]);
+  const [post, setPost] = useState({});
   const [roleJob, setRoleJob] = useState("");
   const [titleJob, setTitleJob] = useState("");
   const [addressJob, setAddressJob] = useState("");
@@ -36,31 +36,37 @@ const EditJobCreate = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getIdPostRecruitment(postId)
-      .then((res) => {
-        setRoleJob(res.data.post.role);
-        setTitleJob(res.data.post.title);
-        setAddressJob(res.data.post.address);
-        setTypeJob(res.data.post.job_type);
-        setSalaryJob(res.data.post.salary);
-        setDescriptionJob((prevDescription) => {
-          return String(res.data.post.description);
-        });
-        setRequestJob((prevRequirements) => {
-          return String(res.data.post.job_requirements);
-        });
-        setEducation(res.data.post.educational_requirements);
-        setExperience(res.data.post.experience_requirements);
-        setExpired(new Date(res.data.post.expired_at));
-      })
-      .catch((error) => {
-        console.error("Error fetching post data:", error);
-        setIsLoading(false);
+  const getAllinformationJob = async () => {
+    setIsLoading(true);
+    await getIdPostRecruitment(postId).then((res) => {
+      
+      handleRoleMainJobChange({value: res.data.post.role_main});
+      setRoleMainJob(res.data.post.role_main);
+      setRoleJob(res.data.post.role);
+      setTitleJob(res.data.post.title);
+      setAddressJob(res.data.post.address);
+      setTypeJob(res.data.post.job_type);
+      setSalaryJob(res.data.post.salary);
+      setDescriptionJob((prevDescription) => {
+        return String(res.data.post.description);
       });
+      setRequestJob((prevRequirements) => {
+        return String(res.data.post.job_requirements);
+      });
+      setEducation(res.data.post.educational_requirements);
+      setExperience(res.data.post.experience_requirements);
+      setExpired(new Date(res.data.post.expired_at));
+      
+    });
+    setIsLoading(false);
+    
+  };
+  useEffect(() => {
+    getAllinformationJob();
   }, [postId]);
   const handleSave = () => {
     const updatedPost = {
+      role_main: roleMainJob,
       role: roleJob,
       title: titleJob,
       address: addressJob,
@@ -236,6 +242,26 @@ const EditJobCreate = () => {
       }));
     });
   };
+  const handleRoleMainJobChange = (selectedOption) => {
+    if (selectedOption.value === roleMainJob) {
+      return
+    }
+    setRoleMainJob(selectedOption.value);
+    const selectedCategory = roleAllJob.find(
+      (category) => category.danhMuc === selectedOption.value
+    );
+    if (selectedCategory) {
+      setJobOptions(
+        selectedCategory.ngheNghiep.map((job) => ({
+          value: job,
+          label: job,
+        }))
+      );
+    } else {
+      setJobOptions([]);
+    }
+    setRoleJob(selectedCategory?.ngheNghiep[0]);
+  };
   const handleRoleJobChange = (selectedOption) => {
     setRoleJob(selectedOption.value);
   };
@@ -282,31 +308,70 @@ const EditJobCreate = () => {
   const onSubmit = () => {
     handleSave();
   };
+  if (isLoading) {
+    return <Loading />;
+  }
+  
   return (
     <>
       <Form onSubmit={onSubmit} className="bg-white">
         <Container className="p-5 body-job">
-          <h2 className="pb-4 font-bold">Đăng tin tuyển dụng</h2>
+          <h2 className="pb-4 font-bold">{t("post.post")}</h2>
           <Row className="mt-3 pl-12">
             <Col md={4}>
               <p>
-                <span className="star">✻</span> Đây là phần bắt buộc
+                <span className="star">✻</span> {t("post.required")}
               </p>
             </Col>
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Vai trò công việc</div>
+              <div className="info-company">{t("post.roleMain")}</div>
             </Col>
             <Col md={8}>
               <div className="role-job">
                 <Select
                   className="select-control"
-                  value={{ value: roleJob, label: roleJob }}
+                  value={
+                    {
+                      value: roleMainJob,
+                    label: roleMainJob,
+                    }
+                  }
+                  onChange={handleRoleMainJobChange}
+                  options={roleAllJob.map((category) => ({
+                    value: category.danhMuc,
+                    label: category.danhMuc,
+                  }))}
+                  placeholder={t("post.roleMainT")}
+                />
+                {console.log("aaaaaaaaaaaaaaaaaaaaa", post.role_main)}
+                <span className="required-icon">
+                  <img
+                    src="/assets/images/form-icon-required.png"
+                    alt="Required"
+                  />
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col md={4}>
+              <div className="info-company">{t("post.role")}</div>
+            </Col>
+            <Col md={8}>
+              <div className="role-job">
+                <Select
+                  className="select-control"
+                  value={
+                    {
+                      value: roleJob,
+                    label: roleJob,
+                    }
+                  }
                   onChange={handleRoleJobChange}
-                  options={convertToOptions(roleAllJob)}
-                  placeholder="Chọn vai trò công việc"
-                  disabled={true}
+                  options={jobOptions}
+                  placeholder={t("post.roleT")}
                 />
                 <span className="required-icon">
                   <img
@@ -319,7 +384,7 @@ const EditJobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Tiêu đề công việc</div>
+              <div className="info-company">{t("post.title")}</div>
             </Col>
             <Col md={8}>
               <div className="title-job">
@@ -327,7 +392,7 @@ const EditJobCreate = () => {
                   type="text"
                   className="input-form"
                   value={titleJob}
-                  placeholder="Nhập tiêu đề công việc"
+                  placeholder={t("post.titleT")}
                   onChange={(e) => {
                     setTitleJob(e.target.value);
                   }}
@@ -344,7 +409,7 @@ const EditJobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Địa chỉ làm việc</div>
+              <div className="info-company">{t("post.address")}</div>
             </Col>
             <Col md={8}>
               <div className="address-job">
@@ -352,7 +417,7 @@ const EditJobCreate = () => {
                   type="text"
                   className="input-form"
                   value={addressJob}
-                  placeholder="Nhập địa chỉ làm việc"
+                  placeholder={t("post.addressT")}
                   onChange={(e) => {
                     setAddressJob(e.target.value);
                   }}
@@ -369,7 +434,7 @@ const EditJobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Loại hình công việc</div>
+              <div className="info-company">{t("post.type")}</div>
             </Col>
             <Col md={8}>
               <div className="form-group">
@@ -391,7 +456,7 @@ const EditJobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Lương (VND)</div>
+              <div className="info-company">{t("post.salary")}</div>
             </Col>
             <Col md={4}>
               <div className="salary-job">
@@ -418,7 +483,7 @@ const EditJobCreate = () => {
                 <Form.Check
                   type="switch"
                   id="salarySwitch"
-                  label="Lương thỏa thuận"
+                  label={t("post.salaryy")}
                   onChange={handleSwitchChange}
                   checked={isSalaryAgreed}
                 />
@@ -428,30 +493,30 @@ const EditJobCreate = () => {
           <div className="line-company"></div>
           <div>
             <div className="description-job">
-              Mô tả công việc <span className="star">✻</span>
+              {t("post.description")} <span className="star">✻</span>
             </div>
             <RichTextEditor
               className="text-edit"
               value={descriptionJob}
               handleChange={handleDescriptionChange}
-              placeholder="Mô tả loại công việc ở vị trí này"
+              placeholder={t("post.descriptionT")}
             />
           </div>
           <div>
             <div className="description-job">
-              Yêu cầu công việc <span className="star">✻</span>
+              {t("post.requirements")} <span className="star">✻</span>
             </div>
             <RichTextEditor
               className="text-edit"
               value={requestJob}
               handleChange={handleRequestChange}
-              placeholder="Mô tả yêu cầu và trách nhiệm của vị trí này"
+              placeholder={t("post.requirementsT")}
             />
           </div>
           <div className="line-company"></div>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Yêu Cầu Trình Độ Học Vấn</div>
+              <div className="info-company">{t("post.education")}</div>
             </Col>
             <Col md={8}>
               <div className="form-group">
@@ -476,7 +541,7 @@ const EditJobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Yêu cầu kinh nghiệm</div>
+              <div className="info-company">{t("post.experience")}</div>
             </Col>
             <Col md={8}>
               <div className="form-group">
@@ -501,7 +566,7 @@ const EditJobCreate = () => {
           <div className="line-company"></div>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Thời hạn ứng tuyển</div>
+              <div className="info-company">{t("post.deadline")}</div>
             </Col>
             <Col md={5}>
               <div className="expired-job">
@@ -523,19 +588,19 @@ const EditJobCreate = () => {
               </div>
             </Col>
             <Col md={3}>
-              <div className="text-expired">Thời hạn tối thiểu 3 ngày</div>
+              <div className="text-expired">{t("post.days")}</div>
             </Col>
           </Row>
           <div className="line-company"></div>
           <div className="info-actions">
             <div className="cancel-info-company">
               <button type="button" onClick={handleCancel}>
-                Hủy
+                {t("post.cancel")}
               </button>
             </div>
             <div className="save-info-company">
               <button type="button" onClick={handleSave}>
-                Lưu
+                {t("post.save")}
               </button>
             </div>
           </div>

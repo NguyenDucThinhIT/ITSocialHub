@@ -11,11 +11,9 @@ import FindAccount from "./pages/User/FindAccount/findAccount.jsx";
 import TemplateCV from "./pages/User/CreateCV/Template/TemplateCV.jsx";
 import TemplateCV01 from "./pages/User/CreateCV/TemplateCV01/TemplateCV01.jsx";
 import TemplateCV02 from "./pages/User/CreateCV/TemplateCV02/TemplateCV02.jsx";
-import TemplateCV04 from "./pages/User/CreateCV/TemplateCV04/TemplateCV04.jsx";
 import MyCV from "./pages/User/CreateCV/MyCV/index.js";
 import TemplateCV03 from "./pages/User/CreateCV/TemplateCV03/TemplateCV03.jsx";
 import ListCompanies from "./pages/User/ListCompanies/ListCompanies.jsx";
-//import FindJobs from "./pages/User/FindJobs/FindJobs.jsx";
 import ApplyCV from "./pages/User/CreateCV/ApplyCV/index.js";
 import LandingPage from "./pages/User/LandingPage/LandingPage.jsx";
 import ActiveAccount from "./pages/User/ActiveAccount/ActiveAccount.jsx";
@@ -168,10 +166,6 @@ function useRouteElements() {
             {
               path: "/create/templateCV/03",
               element: <TemplateCV03 />,
-            },
-            {
-              path: "/create/templateCV/04",
-              element: <TemplateCV04 />,
             },
             
           ],

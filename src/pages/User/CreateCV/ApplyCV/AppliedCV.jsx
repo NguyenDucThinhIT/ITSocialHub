@@ -24,7 +24,7 @@ import {
 import "./style.css";
 import { getApplications } from "@/services/application";
 
-const AppliedCV= () => {
+const AppliedCV = () => {
   const { t } = useTranslation("common");
   const user = useSelector((state) => state.auth.user);
   const [hasJobApplied, setHasJobApplied] = useState(false);
@@ -34,7 +34,7 @@ const AppliedCV= () => {
   const [initialData, setInitialData] = useState([]);
   const [showForm, setShowForm] = useState(true);
   const [uploadedFile, setUploadedFile] = useState();
-  const [content,setContent] = useState("");
+  const [content, setContent] = useState("");
   const [feedback, setFeedback] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [quantumCVs, setQuantumCVs] = useState(0);
@@ -79,9 +79,23 @@ const AppliedCV= () => {
     //setIsLoading(true);
   };
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case 0:
+        return t("candidate.appliedJob.status.NEW");
+      case 1:
+        return t("candidate.appliedJob.status.IN_PROGRESS");
+      case 2:
+        return t("candidate.appliedJob.status.ACCEPTED");
+      case 3:
+        return t("candidate.appliedJob.status.REJECTED");
+      default:
+        return t("candidate.appliedJob.status.REJECTED");
+    }
+  };
   const handleFilterOptionChange = (option) => {
     setUploadedFile(null);
-    setFilterOption(option);
+    setFilterOption(option === "" ? "" : parseInt(option, 10));
   };
 
   useEffect(() => {
@@ -107,159 +121,177 @@ const AppliedCV= () => {
   return (
     <div className="mx-3 mb-3 pt-5">
       <div className="container">
-      <Row className="align-items-center">
-        <Col sm={4}>
-          <div className="info-count">
-            {quantumCVs} {t("candidate.appliedJob.appliedJob")}
-          </div>
-        </Col>
-        <Col sm={8}>
-          <Form inline className="filter mr-3" onSubmit={(e) => e.preventDefault()}>
-            <span>{t("candidate.appliedJob.status.status")} </span>
-            <DropdownButton
-              as={ButtonGroup}
-              title={filterOption === "" ? "All Status" : filterOption}
-              id="filter-dropdown"
-              variant="outline-secondary"
-              onSelect={handleFilterOptionChange}
-              className="custom-dropdown-button"
+        <Row className="align-items-center">
+          <Col sm={4}>
+            <div className="info-count">
+              {quantumCVs} {t("candidate.appliedJob.appliedJob")}
+            </div>
+          </Col>
+          <Col sm={8}>
+            <Form
+              inline
+              className="filter mr-3"
+              onSubmit={(e) => e.preventDefault()}
             >
-              <dropdown-menu className="custom-menu">
-                <Dropdown.Item eventKey="">
-                  {t("candidate.appliedJob.status.allStatus")}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="NEW" f>
-                  {t("candidate.appliedJob.status.NEW")}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="ACCEPT">
-                  {t("candidate.appliedJob.status.ACCEPTED")}
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="REJECTED">
-                  {t("candidate.appliedJob.status.REJECTED")}
-                </Dropdown.Item>
-              </dropdown-menu>
-            </DropdownButton>
-            <div className="search-inputt">
-              <FormControl
-                type="text"
-                placeholder={t("candidate.appliedJob.searchJob")}
-                value={searchQuery}
-                onChange={handleInputChange}
-                className="custom-input"
-              />
-              <FontAwesomeIcon
-                icon={faSearch}
-                className="search-icon"
-                onClick={() => handleSearch(searchQuery)}
-              />
-            </div>
-          </Form>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={4}>
-          {hasJobApplied && filteredData.length > 0 ? (
-            <Card id="cardForm">
-              <ListGroup variant="flush" className="cv-list px-2 pt-2 ">
-                {filteredData.map((info) => (
-                  <ListGroup.Item
-                    style={{ minHeight: "96px" }}
-                    key={info.id}
-                    action
-                    onClick={() => handleInfoClick(info.id)}
-                    className={
-                      selectedInfo && selectedInfo.id === info.id
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    <div className="info-content">
-                      <div className="info-titlee">
-                        {info.title &&
-                          info.title.replace(".pdf", "")}
+              <span>{t("candidate.appliedJob.status.status")} </span>
+              <DropdownButton
+                as={ButtonGroup}
+                title={
+                  filterOption === ""
+                    ? t("candidate.appliedJob.status.allStatus")
+                    : getStatusText(filterOption)
+                }
+                id="filter-dropdown"
+                variant="outline-secondary"
+                onSelect={handleFilterOptionChange}
+                className="custom-dropdown-button"
+              >
+                <dropdown-menu className="custom-menu">
+                  <Dropdown.Item eventKey="">
+                    {t("candidate.appliedJob.status.allStatus")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="0">
+                    {t("candidate.appliedJob.status.NEW")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="1">
+                    {t("candidate.appliedJob.status.IN_PROGRESS")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2">
+                    {t("candidate.appliedJob.status.ACCEPTED")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="3">
+                    {t("candidate.appliedJob.status.REJECTED")}
+                  </Dropdown.Item>
+                </dropdown-menu>
+              </DropdownButton>
+              <div className="search-inputt">
+                <FormControl
+                  type="text"
+                  placeholder={t("candidate.appliedJob.searchJob")}
+                  value={searchQuery}
+                  onChange={handleInputChange}
+                  className="custom-input"
+                />
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="search-icon"
+                  onClick={() => handleSearch(searchQuery)}
+                />
+              </div>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={4}>
+            {hasJobApplied && filteredData.length > 0 ? (
+              <Card id="cardForm">
+                <ListGroup variant="flush" className="cv-list px-2 pt-2 ">
+                  {filteredData.map((info) => (
+                    <ListGroup.Item
+                      style={{ minHeight: "96px" }}
+                      key={info.id}
+                      action
+                      onClick={() => handleInfoClick(info.id)}
+                      className={
+                        selectedInfo && selectedInfo.id === info.id
+                          ? "active"
+                          : ""
+                      }
+                    >
+                      <div className="info-content">
+                        <div className="info-titlee">
+                          {info.title && info.title.replace(".pdf", "")}
+                        </div>
+                        <div
+                          className={`info-status ${
+                            info.status === 0
+                            ? "new"
+                            : info.status === 1
+                            ? "in_progress"
+                            : info.status === 2
+                            ? "accepted"
+                            : info.status === 3
+                            ? "rejected"
+                            : ""
+                          }${
+                            filterOption === info.status
+                              ? " selected-status"
+                              : ""
+                          }`}
+                        >
+                          <span>{getStatusText(info.status)}</span>
+                        </div>
                       </div>
-                      <div
-                        className={`info-statuss ${info.status
-                          .toLowerCase()
-                          .replace(" ", "-")}${
-                          filterOption === info.status ? " selected-status" : ""
-                        }`}
-                      >
-                        <span>{info.status}</span>
+                      <div className="d-flex infor-cty">
+                        <div className="cus-logo-company">
+                          <img src={info.logo_url} alt="" />
+                        </div>
+                        <div className="name-companyy">{info.company}</div>
                       </div>
-                    </div>
-                    <div className="d-flex infor-cty">
-                      <div className="cus-logo-company"><img src={info.logo_url} alt="" /></div>
-                    <div className="name-companyy">{info.company}</div>
-                    </div>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Card>
-          ) : (
-            <div className="no-job-applied">
-              {!isLoading ? (
-                <Loading/>
-              ) : (
-                <>
-                  <FontAwesomeIcon
-                    icon={faFile}
-                    className="no-job-applied-icon"
-                  />
-                  <span>{t("candidate.appliedJob.noJob")}</span>
-                </>
-              )}
-            </div>
-          )}
-        </Col>
-        <Col sm={8} style={{ marginBottom: "30px" }}>
-        <Card>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </Card>
+            ) : (
+              <div className="no-job-applied">
+                {!isLoading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faFile}
+                      className="no-job-applied-icon"
+                    />
+                    <span>{t("candidate.appliedJob.noJob")}</span>
+                  </>
+                )}
+              </div>
+            )}
+          </Col>
+          <Col sm={8} style={{ marginBottom: "30px" }}>
+            <Card>
               <Row>
                 <Col sm={6} className="line-design">
                   <h3>{t("interviewer.questionSheet.content")}</h3>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: content }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: content }} />
                 </Col>
                 <Col sm={6}>
                   <h3>{t("interviewer.questionSheet.feedback")}</h3>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: feedback  }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: feedback }} />
                 </Col>
               </Row>
             </Card>
-          {showForm && (
-            <Card>
-              <Card.Body>
-                <div className="attached-cv">
-                  <span>{t("candidate.appliedJob.attachedCV")}</span>
-                </div>
-                <div className="cv-description">
-                  {uploadedFile ? (
-                    <>
-                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
-                        <Viewer fileUrl={uploadedFile} />
-                      </Worker>
-                    </>
-                  ) : (
-                    <div className="no-file-icon">
-                      {!isLoading ? (
-                        <Loading/>
-                      ) : (
-                        <>
-                          <FontAwesomeIcon icon={faPaperclip} />
-                          <span>{t("candidate.appliedJob.noFile")}</span>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </Card.Body>
-            </Card>
-          )}
-        </Col>
-      </Row>
+            {showForm && (
+              <Card>
+                <Card.Body>
+                  <div className="attached-cv">
+                    <span>{t("candidate.appliedJob.attachedCV")}</span>
+                  </div>
+                  <div className="cv-description">
+                    {uploadedFile ? (
+                      <>
+                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.8.162/build/pdf.worker.min.js">
+                          <Viewer fileUrl={uploadedFile} />
+                        </Worker>
+                      </>
+                    ) : (
+                      <div className="no-file-icon">
+                        {!isLoading ? (
+                          <Loading />
+                        ) : (
+                          <>
+                            <FontAwesomeIcon icon={faPaperclip} />
+                            <span>{t("candidate.appliedJob.noFile")}</span>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            )}
+          </Col>
+        </Row>
       </div>
     </div>
   );

@@ -2,8 +2,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -17,9 +16,7 @@ import "./index.css";
 const ActiveAccount = () => {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation("common");
   
   const activeMutation = useMutation({
@@ -41,10 +38,8 @@ const ActiveAccount = () => {
       { email, verify_code : code },
       {
         onSuccess: (data) => {
-          //dispatch(loginSlice(data.data.user));
           Swal.fire({
             icon: "success",
-            //title: t("login.success"),
             text: t("login.activeSuccess"),
           });
           navigate("/login");
@@ -111,9 +106,9 @@ const ActiveAccount = () => {
             </button>
             <div className="text-center mt-2">
               <p className="small fw-bold mt-2 pt-1 mb-0">
-                {t("account.noAccounts")}
-                <Link to="/register" className="link-danger">
-                  {t("account.signUp")}
+                {t("account.haveAccount")}
+                <Link to="/login" className="link-danger">
+                  {t("account.login")}
                 </Link>
               </p>
             </div>

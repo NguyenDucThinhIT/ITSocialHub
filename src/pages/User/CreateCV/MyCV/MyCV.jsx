@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import {
   Form,
@@ -16,7 +14,6 @@ import {
 } from "react-bootstrap";
 import {
   getResume,
-  viewResume,
   postResume,
   downloadResume,
   deleteResume,
@@ -27,7 +24,6 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import { useMutation } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSearch,
   faTrashAlt,
   faDownload,
   faFile,
@@ -40,7 +36,6 @@ import "./style.css";
 
 const MyCV = () => {
   const { t } = useTranslation("common");
-  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const [hasCV, setHasCV] = useState(false);
   const [initialData, setInitialData] = useState([]);
@@ -93,6 +88,14 @@ const MyCV = () => {
     mutationFn: (body) => postResume(body),
   });
   const handleSaveCV = async () => {
+    if (!selectedInfo.name) {
+      Swal.fire({
+        icon: "error",
+        title: t("candidate.modal.error"),
+        text: t("candidate.tags.errorName"),
+      });
+      return;
+    }
     if (selectedInfo.id) {
       setIsLoading(true);
       await editResume(selectedInfo.id,selectedInfo);

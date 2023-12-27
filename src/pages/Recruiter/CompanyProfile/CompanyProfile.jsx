@@ -203,7 +203,7 @@ const CompanyProfile = () => {
           showConfirmButton: false,
         }).fire({
           icon: "success",
-          text: t("recruiter.dashboard.profileCompany"),
+          text: t("recruiter.dashboard.upProfile"),
         });
       })
       .catch((error) => {
@@ -219,7 +219,7 @@ const CompanyProfile = () => {
     <>
       <Form onSubmit={onSubmit} className=" bg-white">
         <Container className="p-5">
-          <h2 className="pb-4 font-bold">Thông tin công ty</h2>
+          <h2 className="pb-4 font-bold">{t("company.information")}</h2>
           <div>
             <div className="banner-container">
               {coverImage && (
@@ -236,7 +236,7 @@ const CompanyProfile = () => {
                 <label htmlFor="coverImage">
                   <div className="upload-button">
                     <FontAwesomeIcon icon={faUpload} />
-                    Upload Banner
+                    {t("company.banner")}
                   </div>
                 </label>
               </div>
@@ -245,19 +245,19 @@ const CompanyProfile = () => {
           <Row className="mt-3 pl-12">
             <Col md={4}>
               <p>
-                <span className="star">✻</span> Đây là phần bắt buộc
+                <span className="star">✻</span> {t("post.required")}
               </p>
             </Col>
             <Col md={4}>
-              <p>Ảnh Banner: 800px x 300px</p>
+              <p>{t("company.imgB")} 800px x 300px</p>
             </Col>
             <Col md={4}>
-              <p>Ảnh Logo: 120px x 120px</p>
+              <p>{t("company.imgA")} 120px x 120px</p>
             </Col>
           </Row>
           <Row className="mt-4">
             <Col md={4}>
-              <div className="info-company mt-5">Logo Công Ty</div>
+              <div className="info-company mt-5">{t("company.imglogo")}</div>
             </Col>
             <Col md={8} className="d-flex align-items-center">
               <Form.Group controlId="logo" className="d-none">
@@ -275,7 +275,7 @@ const CompanyProfile = () => {
                   <label htmlFor="logo" className="upload-label">
                     <div className="ava-upload-button">
                       <FontAwesomeIcon icon={faUpload} />
-                      Upload logo
+                      {t("company.logo")}
                     </div>
                   </label>
                 </div>
@@ -284,7 +284,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Tên Công Ty</div>
+              <div className="info-company">{t("company.nameCompany")}</div>
             </Col>
             <Col md={8}>
               <div className="name-company">
@@ -292,7 +292,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={nameCompany}
-                  placeholder="Nhập tên công ty"
+                  placeholder={t("company.nameCompanyT")}
                   onChange={(e) => {
                     setNameCompany(e.target.value);
                   }}
@@ -308,7 +308,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Giới thiệu tóm tắt</div>
+              <div className="info-company">{t("company.intro")}</div>
             </Col>
             <Col md={8}>
               <div className="title-company">
@@ -316,7 +316,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={titleCompany}
-                  placeholder="Nhập giới thiệu"
+                  placeholder={t("company.introT")}
                   onChange={(e) => {
                     setTitleCompany(e.target.value);
                   }}
@@ -332,7 +332,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Địa chỉ văn phòng</div>
+              <div className="info-company">{t("company.address")}</div>
             </Col>
             <Col md={8}>
               <div className="address-company">
@@ -340,7 +340,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={addressCompany}
-                  placeholder="Nhập địa chỉ văn phòng"
+                  placeholder={t("company.addressT")}
                   onChange={(e) => {
                     setAddressCompany(e.target.value);
                   }}
@@ -356,7 +356,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Trụ sở chính</div>
+              <div className="info-company">{t("company.addressmain")}</div>
             </Col>
             <Col md={8}>
               <div className="address-company">
@@ -365,7 +365,7 @@ const CompanyProfile = () => {
                   value={{ value: addressMainCompany, label: addressMainCompany }}
                   onChange={handleCityChange}
                   options={cities.map(city => ({ value: city, label: city }))}
-                  placeholder="Chọn thành phố"
+                  placeholder={t("company.addressmainT")}
                   
                 />
                 <span className="required-icon">
@@ -379,7 +379,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Quy mô công ty</div>
+              <div className="info-company">{t("company.size")}</div>
             </Col>
             <Col md={8}>
               <div className="form-group">
@@ -401,7 +401,7 @@ const CompanyProfile = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Lĩnh vực kinh doanh</div>
+              <div className="info-company">{t("company.businessAreas")}</div>
             </Col>
             <Col md={8}>
               <div className="field-company">
@@ -409,7 +409,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={fieldCompany}
-                  placeholder="Nhập lĩnh vực kinh doanh"
+                  placeholder={t("company.businessAreasT")}
                   onChange={(e) => {
                     setFieldCompany(e.target.value);
                   }}
@@ -426,7 +426,7 @@ const CompanyProfile = () => {
           <div className="line-company"></div>
           <Row className="mt-3">
             <Col md={4}>
-              <div className="info-company">Website Công Ty</div>
+              <div className="info-company">{t("company.web")}</div>
             </Col>
             <Col md={8}>
               <div className="web-company">
@@ -434,7 +434,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={webCompany}
-                  placeholder="Nhập link Web công ty"
+                  placeholder={t("company.webT")}
                   onChange={(e) => {
                     setWebCompany(e.target.value);
                   }}
@@ -452,7 +452,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={fbCompany}
-                  placeholder="Nhập link Facebook"
+                  placeholder={t("company.fb")}
                   onChange={(e) => {
                     setFbCompany(e.target.value);
                   }}
@@ -470,7 +470,7 @@ const CompanyProfile = () => {
                   type="text"
                   className="input-form"
                   value={linkedInCompany}
-                  placeholder="Nhập link LinkedIn"
+                  placeholder={t("company.link")}
                   onChange={(e) => {
                     setLinkedInCompany(e.target.value);
                   }}
@@ -481,27 +481,27 @@ const CompanyProfile = () => {
           <div className="line-company"></div>
           <div>
             <div className="description-company">
-              Giới thiệu công ty <span className="star">✻</span>
+             {t("company.introduction")} <span className="star">✻</span>
             </div>
             <RichTextEditor
               className="text-edit"
               value={descriptionCompany}
-              placeholder="Giới thiệu về công tyy"
+              placeholder={t("company.introductionT")}
               handleChange={handleDescriptionChange}
             />
           </div>
           <div>
-            <div className="description-company">Văn hóa công ty</div>
+            <div className="description-company">{t("company.culture")}</div>
             <RichTextEditor
               className="text-edit"
               value={cultureCompany}
-              placeholder="Mô tả văn hóa công ty"
+              placeholder={t("company.cultureT")}
               handleChange={handleCultureChange}
             />
           </div>
           <div className="line-company"></div>
           <div className="save-info-company">
-            <button type="button" onClick={handleSave}>Lưu</button>
+            <button type="button" onClick={handleSave}>{t("company.save")}</button>
           </div>
         </Container>
       </Form>

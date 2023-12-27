@@ -30,7 +30,7 @@ const HeaderRecruiter = () => {
         </Link>
         <Link className="dropdown-item" to="/company/edit">
           <FontAwesomeIcon icon={faBuilding} className="me-2" />
-          COMPANY PROFILE
+          {t('header.profileCompany')}
         </Link>
         <Dropdown.Divider />
         <button

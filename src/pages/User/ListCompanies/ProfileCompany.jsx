@@ -78,7 +78,7 @@ const ProfileCompany = () => {
                 <Col md={12} lg={8}>
                   <div className=" ml-2">
                     <h1 className="font-bold">{nameCompany}</h1>
-                    <h3 className="card-title pb-2">{titleCompany}</h3>
+                    <h4 className="card-title pb-2">{titleCompany}</h4>
                     <Row>
                       <Col>
                         <div className="d-flex">

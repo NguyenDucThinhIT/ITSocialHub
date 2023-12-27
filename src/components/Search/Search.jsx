@@ -1,16 +1,11 @@
 import React, {useState} from "react";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "@tanstack/react-query";
-import { createSearchParams, useNavigate } from "react-router-dom";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 import "./style.css";
 
 function Search({search, setSearch, onClick}) {
-  const navigate = useNavigate();
   const { t } = useTranslation("common");
-  const { register, handleSubmit } = useForm();
   const [searchData, setSearchData] = useState({
     location: "",
     data: ""
@@ -122,7 +117,7 @@ function Search({search, setSearch, onClick}) {
                 <Row className="gy-2">
                   <Col lg={3}>
                   <Form.Control
-                      {...register("city", { required: true })}
+                      
                       className="search-height"
                       placeholder={t("jobPage.all")}
                       value={selectedCity}
@@ -147,7 +142,7 @@ function Search({search, setSearch, onClick}) {
                   </Col>
                   <Col lg={6}>
                     <Form.Control
-                      {...register("title")}
+                      
                       className="search-height"
                       type="text"
                       title={searchData.data}

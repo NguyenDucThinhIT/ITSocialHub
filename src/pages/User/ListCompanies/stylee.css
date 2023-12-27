@@ -1,12 +1,11 @@
 .company-profile-image {
     margin:10px;
     width: 180px; 
-    //object-fit: contain; /* Hiển thị toàn bộ hình ảnh trong khung */
   }
   .info-cty {
     font-weight: 600;
-    border-bottom: 1px solid #ccc; /* Đổi màu sắc và độ dày theo mong muốn */
-    padding-bottom: 10px; /* Thêm padding nếu cần */
+    border-bottom: 1px solid #ccc; 
+    padding-bottom: 10px; 
   }
   .info-cityy  {
     font-weight: 600;

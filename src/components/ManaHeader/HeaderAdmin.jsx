@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faFile,faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { logoutSlice } from '@/redux/auth.slice';
 import { Dropdown } from 'react-bootstrap';
 import './style.css';
@@ -24,14 +24,6 @@ const AppHeaderDropdown = () => {
         />
       </Dropdown.Toggle>
       <Dropdown.Menu className="cus-text pt-lg-0">
-        {/* <Link className="dropdown-item" to="/profile">
-          <FontAwesomeIcon icon={faUser} className="me-2" />
-          {t('header.profile')}
-        </Link>
-        <Link className="dropdown-item" to="/applications">
-          <FontAwesomeIcon icon={faFile} className="me-2" />
-          {t('header.apply')}
-        </Link> */}
         <Dropdown.Divider />
         <button
           className="dropdown-item"

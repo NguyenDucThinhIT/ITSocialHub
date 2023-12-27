@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import AlertModal from "../../../../components/AlertModal";
@@ -23,7 +23,6 @@ import {
   validateName,
   validateImage,
   validateJob,
-  validateBirthday,
   validateEmail,
   validatePhone,
   validateAddress,
@@ -252,7 +251,7 @@ function TemplateCV01() {
                 <div className="infor">
                   <DatePicker
                     className="cus-birthday"
-                    placeholderText="Vui lòng chọn ngày sinh"
+                    placeholderText={t("post.bir")}
                     selected={birthday}
                     onChange={(date) => setBirthday(date)}
                     dateFormat="dd-MM-yyyy"

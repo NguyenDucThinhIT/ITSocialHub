@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Search from "../../../components/Search/Search.jsx";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
-import { Col, Container, Row, Dropdown } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
@@ -19,7 +19,7 @@ function FindJobs() {
   const { t } = useTranslation("common");
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const searchQuery = searchParams.get('search');
+  const searchQuery = searchParams.get("search");
 
   const [postData, setPostData] = useState({});
   const [companies, setCompanies] = useState([]);
@@ -33,6 +33,7 @@ function FindJobs() {
   const [showSortOptionz, setShowSortOptionz] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [noResults, setNoResults] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState([]);
   const handleToggleSortOptions = () => {
     setShowSortOptions(!showSortOptions);
     setIsIconRotatedType(!isIconRotatedType);
@@ -74,28 +75,44 @@ function FindJobs() {
     } else {
       getAllPost();
     }
-  }, [currentPage, jobTypeFilter, experienceFilter,updateFilter]);
+  }, [currentPage, jobTypeFilter, experienceFilter, updateFilter]);
 
   const handleToggleJobTypeFilter = (value) => {
     setJobTypeFilter((prevFilters) => {
-      if (prevFilters.includes(value)) {
-        return prevFilters.filter((filter) => filter !== value);
-      } else {
-        return [...prevFilters, value];
-      }
+      const updatedFilters = prevFilters.includes(value)
+        ? prevFilters.filter((filter) => filter !== value)
+        : [...prevFilters, value];
+      setSelectedFilters(updatedFilters);
+      return updatedFilters;
     });
   };
   const handleSearch = () => {
     getAllPost();
-  } 
+  };
   const handleToggleExperienceFilter = (value) => {
     setExperienceFilter((prevFilters) => {
-      if (prevFilters.includes(value)) {
-        return prevFilters.filter((filter) => filter !== value);
-      } else {
-        return [...prevFilters, value];
-      }
+      const updatedFilters = prevFilters.includes(value)
+        ? prevFilters.filter((filter) => filter !== value)
+        : [...prevFilters, value];
+      setSelectedFilters(updatedFilters);
+
+      return updatedFilters;
     });
+  };
+  const handleClearAllFilters = () => {
+    setJobTypeFilter([]);
+    setExperienceFilter([]);
+    setSelectedFilters([]);
+  };
+  const renderClearAllButton = () => {
+    if (selectedFilters.length >= 2 || (jobTypeFilter.length + experienceFilter.length) >= 2) {
+      return (
+        <button className="clear-all-button" onClick={handleClearAllFilters}>
+          {t("findJob.clear")}
+        </button>
+      );
+    }
+    return null;
   };
 
   const handleToggleUpdateFilter = (value) => {
@@ -103,18 +120,18 @@ function FindJobs() {
 
     switch (value) {
       case "anytime":
-        setUpdateFilter(null); 
+        setUpdateFilter(null);
         break;
       case "24h":
-        setUpdateFilter(now); 
+        setUpdateFilter(now);
         break;
       case "week":
-        setUpdateFilter(new Date(now - 7 * 24 * 60 * 60 * 1000)); 
+        setUpdateFilter(new Date(now - 7 * 24 * 60 * 60 * 1000));
         break;
       case "month":
         setUpdateFilter(
           new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
-        ); 
+        );
         break;
       default:
         break;
@@ -176,9 +193,9 @@ function FindJobs() {
                             </Link>
                           </p>
                         </div>
-                        <p>
+                        <p className="location-job">
                           <FontAwesomeIcon icon={faLocationDot} />{" "}
-                          {data.company.address}
+                          {data.address}
                         </p>
                       </div>
                     </div>
@@ -191,34 +208,33 @@ function FindJobs() {
               ))
             ) : (
               <div className="no-results-container">
-              <img
-                src="/assets/images/notFound.png"
-                alt="No results found"
-                className="no-results-image"
-              />
-              <p className="no-results-message">
-                {t("interviewer.interviewList.notFound")}
-              </p>
-            </div>
+                <img
+                  src="/assets/images/notFound.png"
+                  alt="No results found"
+                  className="no-results-image"
+                />
+                <p className="no-results-message">
+                  {t("interviewer.interviewList.notFound")}
+                </p>
+              </div>
             )}
           </>
         )}
       </>
     );
   };
-  
 
   const totalPages = postData.pagination?.lastPage;
-  console.log(search);
   return (
     <>
       <Col>
-        <Search search = {search} setSearch = {setSearch} onClick={handleSearch}/>
+        <Search search={search} setSearch={setSearch} onClick={handleSearch} />
       </Col>
       <Container className="z-0">
         <div className="text-find">{t("findJob.titleNew")}</div>
         <Row className="z-0">
           <Col className="col-sort z-0" md={3}>
+            <div className="clear-button">{renderClearAllButton()}</div>
             <h2 id="toggleLabel" onClick={handleToggleSortOptions}>
               {t("findJob.jobType")}
               <FontAwesomeIcon
