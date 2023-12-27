@@ -153,8 +153,8 @@ function Search({search, setSearch, onClick}) {
                   <Col lg={3}>
                     <Button
                       type="button"
-                      variant="dark"
-                      className="search-height w-100"
+                      //variant="dark"
+                      className="search-height search-title w-100"
                       onClick={onClick}
                     >
                       {t("landing.findJobs")}

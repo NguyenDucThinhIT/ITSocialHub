@@ -58,8 +58,14 @@
   border-radius: 8px;
   min-height: 160px;
 }
-
+.search-title{
+  background-color: #4f5d73 !important;
+}
+.search-title:hover{
+  background-color: #8a93a2 !important;
+}
 .search-height {
+  
   padding-top:10px !important;
   justify-content: center;
   text-align: center;
