@@ -14,7 +14,7 @@ import {
   Row,
   Button,
 } from "react-bootstrap";
-import { downloadResume, viewResume } from "@/services/resumes.api";
+import { downloadResume } from "@/services/resumes.api";
 import Loading from "@/components/Loading/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,12 +28,10 @@ import "./style.css";
 import RichTextEditor from "@/components/RichTextEditor/RichTextEditor";
 import {
   editApplications,
-  postApplications,
   viewApplications,
 } from "@/services/application";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useMutation } from "@tanstack/react-query";
 
 const Application = () => {
   const { t } = useTranslation("common");
@@ -47,9 +45,6 @@ const Application = () => {
   const [showForm, setShowForm] = useState(true);
   const [uploadedFile, setUploadedFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [content, setContent] = useState("");
-  const [feedback, setFeedback] = useState("");
-  const [status, setStatus] = useState("");
   const [application, setApplication] = useState({});
   const [quantumCVs, setQuantumCVs] = useState(0);
   const [showCVButtons, setShowCVButtons] = useState(false);
@@ -98,9 +93,7 @@ const Application = () => {
       text: t("candidate.tags.downloadCV"),
     });
   };
-  const handleFeedbackChange = (value) => {
-    setFeedback(value);
-  };
+ 
 
   const handleSearch = (query) => {
     setUploadedFile(null);
@@ -115,24 +108,35 @@ const Application = () => {
   };
   const checkEdit = (id) => {
     const info = initialData.find((item) => item.id === id);
-    if (info.status != "NEW" && info.feedback != null) return false;
+    if (
+      info.status != t("candidate.appliedJob.status.NEW") &&
+      info.feedback != null
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: t("recruiter.dashboard.check"),
+        text: t("recruiter.dashboard.titleCheck"),
+      });
+      return false;
+    }
+
     return true;
   };
 
   const handleSave = () => {
-    if (application == {} || !checkEdit(application.id)) return; //thongbao;
+    // if (application == {} || !checkEdit(application.id)) return;
     const updatedApplicaton = {
       status: application.status,
       feedback: application.feedback,
     };
     editApplications(application.id, updatedApplicaton)
       .then(() => {
-        //navigate("/dashboard");
         getPostApplication();
       })
       .catch((error) => {
         console.error("Error updating post:", error);
       });
+      
     Swal.mixin({
       toast: true,
       position: "top-end",
@@ -153,20 +157,26 @@ const Application = () => {
   const handleInfoClick = (infoId) => {
     const info = initialData.find((item) => item.id === infoId);
     setApplication(info);
-    // setUploadedFile(info.file_url);
-    // setContent(info.content);
-    // setFeedback(info.feedback);
-    // setStatus(info.status);
     setShowForm(true);
     setShowCVButtons(true);
   };
 
-  const handleFilterOptionChange = (option, filterNumber) => {
+  const handleFilterOptionChange = (option) => {
     setUploadedFile(null);
-    if (filterNumber === 1) {
-      setFilterOption(option);
-    } else if (filterNumber === 2) {
-      setFilterOption2(option);
+    setFilterOption(option === "" ? "" : parseInt(option, 10));
+  };
+  const getStatusText = (status) => {
+    switch (status) {
+      case 0:
+        return t("candidate.appliedJob.status.NEW");
+      case 1:
+        return t("candidate.appliedJob.status.IN_PROGRESS");
+      case 2:
+        return t("candidate.appliedJob.status.ACCEPTED");
+      case 3:
+        return t("candidate.appliedJob.status.REJECTED");
+      default:
+        return t("candidate.appliedJob.status.NEW");
     }
   };
 
@@ -191,7 +201,6 @@ const Application = () => {
     setFilteredData(filteredDataToShow);
     setQuantumCVs(filteredDataToShow.length);
   }, [initialData, filterOption, filterOption2, searchQuery]);
-
   return (
     <div className="mx-3 mb-3 pt-5 bg-white">
       <div className="container">
@@ -208,23 +217,30 @@ const Application = () => {
               <span>{t("candidate.appliedJob.status.status")} </span>
               <DropdownButton
                 as={ButtonGroup}
-                title={filterOption === "" ? "All Status" : filterOption}
+                title={
+                  filterOption === ""
+                    ? t("candidate.appliedJob.status.allStatus")
+                    : getStatusText(filterOption)
+                }
                 id="filter-dropdown-1"
                 variant="outline-secondary"
-                onSelect={(option) => handleFilterOptionChange(option, 1)}
+                onSelect={handleFilterOptionChange}
                 className="custom-dropdown-button"
               >
                 <dropdown-menu className="custom-menu">
                   <Dropdown.Item eventKey="">
                     {t("candidate.appliedJob.status.allStatus")}
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="NEW">
+                  <Dropdown.Item eventKey="0">
                     {t("candidate.appliedJob.status.NEW")}
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="ACCEPT">
+                  <Dropdown.Item eventKey="1">
+                    {t("candidate.appliedJob.status.IN_PROGRESS")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2">
                     {t("candidate.appliedJob.status.ACCEPTED")}
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="REJECTED">
+                  <Dropdown.Item eventKey="3">
                     {t("candidate.appliedJob.status.REJECTED")}
                   </Dropdown.Item>
                 </dropdown-menu>
@@ -254,28 +270,39 @@ const Application = () => {
               <span className="mr-2">{t("button.evaluate")}</span>
               <DropdownButton
                 as={ButtonGroup}
-                title={application.status ?? "NEW"}
+                title={getStatusText(parseInt(application.status))}
+
                 id="filter-dropdown-2"
                 variant="outline-secondary"
                 onSelect={(value) =>
-                  setApplication({ ...application, status: value })
+                  setApplication({
+                    ...application,
+                    status:parseInt(value),
+                  })
                 }
                 className="custom-dropdown-button"
+                
               >
+                
                 <dropdown-menu className="custom-menu">
-                  <Dropdown.Item eventKey="NEW">
+                  <Dropdown.Item eventKey="0">
                     {t("candidate.appliedJob.status.NEW")}
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="ACCEPT">
+                  <Dropdown.Item eventKey="1">
+                    {t("candidate.appliedJob.status.IN_PROGRESS")}
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2">
                     {t("candidate.appliedJob.status.ACCEPTED")}
                   </Dropdown.Item>
-                  <Dropdown.Item eventKey="REJECTED">
+                  <Dropdown.Item eventKey="3">
                     {t("candidate.appliedJob.status.REJECTED")}
                   </Dropdown.Item>
                 </dropdown-menu>
               </DropdownButton>
               <div className="button-send">
-                <button onClick={handleSave}>{t("candidate.create.save")}</button>
+                <button onClick={handleSave}>
+                  {t("candidate.create.save")}
+                </button>
               </div>
             </Form>
           </Col>
@@ -299,18 +326,26 @@ const Application = () => {
                     >
                       <div className="info-content">
                         <div className="info-title">
-                          {info.user.first_name + " " + info.user.last_name}
+                          {info.user.last_name + " " + info.user.first_name}
                         </div>
                         <div
-                          className={`info-status ${info.status
-                            .toLowerCase()
-                            .replace(" ", "-")}${
+                          className={`info-status ${
+                            info.status === 0
+                              ? "new"
+                              : info.status === 1
+                              ? "in_progress"
+                              : info.status === 2
+                              ? "accepted"
+                              : info.status === 3
+                              ? "rejected"
+                              : ""
+                          }${
                             filterOption === info.status
                               ? " selected-status"
                               : ""
                           }`}
                         >
-                          <span>{info.status}</span>
+                          <span>{getStatusText(parseInt(info.status))}</span>
                         </div>
                       </div>
                     </ListGroup.Item>
@@ -352,7 +387,7 @@ const Application = () => {
                     handleChange={(value) =>
                       setApplication({ ...application, feedback: value })
                     }
-                    placeholder="Nhập phản hồi ở đây"
+                    placeholder={t("interviewer.questionSheet.enterFeedback")}
                   />
                 </Col>
               </Row>

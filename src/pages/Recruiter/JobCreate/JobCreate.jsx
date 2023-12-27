@@ -16,6 +16,8 @@ import "./style.css";
 
 const JobCreate = () => {
   const { t } = useTranslation("common");
+  const [roleMainJob, setRoleMainJob] = useState("");
+  const [jobOptions, setJobOptions] = useState([]);
   const [roleJob, setRoleJob] = useState("");
   const [titleJob, setTitleJob] = useState("");
   const [addressJob, setAddressJob] = useState("");
@@ -174,6 +176,23 @@ const JobCreate = () => {
       }));
     });
   };
+  const handleRoleMainJobChange = (selectedOption) => {
+    setRoleMainJob(selectedOption);
+    const selectedCategory = roleAllJob.find(
+      (category) => category.danhMuc === selectedOption.value
+    );
+    if (selectedCategory) {
+      setJobOptions(
+        selectedCategory.ngheNghiep.map((job) => ({
+          value: job,
+          label: job,
+        }))
+      );
+    } else {
+      setJobOptions([]);
+    }
+    setRoleJob("");
+  };
   const handleRoleJobChange = (selectedOption) => {
     setRoleJob(selectedOption);
   };
@@ -229,6 +248,7 @@ const JobCreate = () => {
     }
     postRecruitmentMutation.mutate(
       {
+        role_main: roleMainJob.label,
         role: roleJob.value,
         title: titleJob,
         address: addressJob,
@@ -238,7 +258,7 @@ const JobCreate = () => {
         job_requirements: requestJob,
         educational_requirements: education,
         experience_requirements: experience,
-        expired_at: expired
+        expired_at: expired,
       },
       {
         onSuccess: () => {
@@ -279,6 +299,31 @@ const JobCreate = () => {
           </Row>
           <Row className="mt-3">
             <Col md={4}>
+              <div className="info-company">{t("post.roleMain")}</div>
+            </Col>
+            <Col md={8}>
+              <div className="role-job">
+                <Select
+                  className="select-control"
+                  value={roleMainJob}
+                  onChange={handleRoleMainJobChange}
+                  options={roleAllJob.map((category) => ({
+                    value: category.danhMuc,
+                    label: category.danhMuc,
+                  }))}
+                  placeholder={t("post.roleMainT")}
+                />
+                <span className="required-icon">
+                  <img
+                    src="/assets/images/form-icon-required.png"
+                    alt="Required"
+                  />
+                </span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col md={4}>
               <div className="info-company">{t("post.role")}</div>
             </Col>
             <Col md={8}>
@@ -287,8 +332,8 @@ const JobCreate = () => {
                   className="select-control"
                   value={roleJob}
                   onChange={handleRoleJobChange}
-                  options={convertToOptions(roleAllJob)}
-                  placeholder="Chọn vai trò công việc"
+                  options={jobOptions}
+                  placeholder={t("post.roleT")}
                 />
                 <span className="required-icon">
                   <img
@@ -309,7 +354,7 @@ const JobCreate = () => {
                   type="text"
                   className="input-form"
                   value={titleJob}
-                  placeholder="Nhập tiêu đề công việc"
+                  placeholder={t("post.titleT")}
                   onChange={(e) => {
                     setTitleJob(e.target.value);
                   }}
@@ -334,7 +379,7 @@ const JobCreate = () => {
                   type="text"
                   className="input-form"
                   value={addressJob}
-                  placeholder="Nhập địa chỉ làm việc"
+                  placeholder={t("post.addressT")}
                   onChange={(e) => {
                     setAddressJob(e.target.value);
                   }}
@@ -410,24 +455,24 @@ const JobCreate = () => {
           <div className="line-company"></div>
           <div>
             <div className="description-job">
-            {t("post.description")} <span className="star">✻</span>
+              {t("post.description")} <span className="star">✻</span>
             </div>
             <RichTextEditor
               className="text-edit"
               value={descriptionJob}
               handleChange={handleDescriptionChange}
-              placeholder="Mô tả loại công việc ở vị trí này"
+              placeholder={t("post.descriptionT")}
             />
           </div>
           <div>
             <div className="description-job">
-            {t("post.requirements")} <span className="star">✻</span>
+              {t("post.requirements")} <span className="star">✻</span>
             </div>
             <RichTextEditor
               className="text-edit"
               value={requestJob}
               handleChange={handleRequestChange}
-              placeholder="Mô tả yêu cầu và trách nhiệm của vị trí này"
+              placeholder={t("post.requirementsT")}
             />
           </div>
           <div className="line-company"></div>

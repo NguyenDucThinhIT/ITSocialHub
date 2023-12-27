@@ -16,6 +16,20 @@ const Profile = () => {
   const handleEdit = () => {
     dispatch(setEdit(true));
   };
+  const getGenderText = () => {
+    const genderValue = parseInt(user?.gender, 10);
+    switch (genderValue) {
+      case 0:
+        return t("candidate.profile.male");
+      case 1:
+        return t("candidate.profile.female");
+      case 2:
+        return t("candidate.profile.other");
+      default:
+        return t("candidate.profile.other");
+    }
+  };
+
   return (
     <div className="full-height">
       <Container style={{ marginTop: "30px", marginBottom: "30px" }}>
@@ -36,7 +50,9 @@ const Profile = () => {
                 <Card.Body>
                   <Row className="gutters">
                     <Col xl={12} lg={12} md={12} sm={12} xs={12}>
-                      <h2 className="mb-3 font-bold">{t("candidate.profile.profile")}</h2>
+                      <h2 className="mb-3 font-bold">
+                        {t("candidate.profile.profile")}
+                      </h2>
                     </Col>
                     <Col xl={8} lg={8} md={8} sm={12} xs={12}>
                       <div className="form-group mb-3">
@@ -76,7 +92,7 @@ const Profile = () => {
                         <DatePicker
                           selected={
                             user?.date_of_birth
-                              ? new Date(user.date_of_birth)
+                              ? new Date(user?.date_of_birth)
                               : null
                           }
                           className="form-control"
@@ -98,7 +114,7 @@ const Profile = () => {
                           className="form-control"
                           name="gender"
                           id="gender"
-                          value={user?.gender || "None"}
+                          value={getGenderText() || "None"}
                           disabled
                         />
                       </div>

@@ -50,9 +50,9 @@ const Input = (props) => {
           disabled={disabled}
         >
           <option disabled value="None">{t("candidate.profile.none")}</option>
-          <option value="MALE">{t("candidate.profile.male")}</option>
-          <option value="FEMALE">{t("candidate.profile.female")}</option>
-          <option value="OTHER">{t("candidate.profile.other")}</option>
+          <option value="0">{t("candidate.profile.male")}</option>
+          <option value="1">{t("candidate.profile.female")}</option>
+          <option value="2">{t("candidate.profile.other")}</option>
         </select>
       );
     } else if (inputType === "photo") {

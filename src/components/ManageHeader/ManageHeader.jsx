@@ -28,15 +28,6 @@ const ManageHeader = () => {
     setIsIconRotatedCV(false);
     setIsIconRotatedLanguage(!showLanguage);
   };
-  const dropdownCV = () => {
-    setShowCV(!showCV);
-    setShowLanguage(false);
-    setIsIconRotatedCV(!showCV);
-    setIsIconRotatedLanguage(false);
-  };
-  const handleContentCVClick = () => {
-    setIsIconRotatedCV(!isIconRotatedCV);
-  };
 
   const handleContentLanguageClick = () => {
     setIsIconRotatedLanguage(!isIconRotatedLanguage);
@@ -51,7 +42,7 @@ const ManageHeader = () => {
           </Link>
           <ul className="header-menu">
             <li className="header-menu-item">
-              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/dashboard">{t("header.dashboard")}</Link>
             </li>
             <li className="header-menu-item">
               <Link to="/job/create">{t("header.recruitment")}</Link>

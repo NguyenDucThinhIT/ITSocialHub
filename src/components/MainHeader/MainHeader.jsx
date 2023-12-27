@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { faGlobe, faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import HeaderRecruiter from "../ManaHeader/HeaderRecruiter";
 
 const MainHeader = () => {
-  const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
   const { t, i18n } = useTranslation("common");
@@ -59,7 +58,7 @@ const MainHeader = () => {
               
               <ul className="header-menu">
                 <li className="header-menu-item">
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/dashboard">{t("header.dashboard")}</Link>
                 </li>
                 <li className="header-menu-item">
                   <Link to="/job/create">{t("header.recruitment")}</Link>
@@ -175,9 +174,9 @@ const MainHeader = () => {
                 <li className="header-menu-item">
                   <Link to="/companies">{t("header.company")}</Link>
                 </li>
-                <li className="header-menu-item">
+               {/* <li className="header-menu-item">
                   <Link to="/blog">Blog</Link>
-                </li>
+                </li>  */}
                 {isAuthenticated && (
                   <div className="header-dropdown">
                     <button className="header-dropbtn" onClick={dropdownCV}>

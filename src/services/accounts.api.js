@@ -13,3 +13,4 @@ export const getAccount = (limit, page, column, order) => {
   };
 export const deleteAccount = (ids) => http.delete(`users`,{data:{ids}});
 
+export const statusAccount = (id,data) => http.put(`users/update-profile/${id}`,data);

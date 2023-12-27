@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Button, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import AlertModal from "../../../../components/AlertModal";
@@ -8,25 +8,17 @@ import { useNavigate } from "react-router-dom";
 import html2pdf from "html2pdf.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCalendarDays,
-  faUser,
   faPhone,
   faEnvelope,
-  faLink,
-  
 } from "@fortawesome/free-solid-svg-icons";
 import ProfilePic from "../../../../components/Avatar/ProfilePic";
 import {
-  validateGender,
   validateName,
   validateImage,
   validateJob,
-  validateBirthday,
   validateEmail,
   validatePhone,
-  validateAddress,
 } from "../../../../components/Validated/Validated";
-import Input from "../../../../components/InputFileds/InputFileds";
 import "./style.css";
 import { faSquareFacebook } from "@fortawesome/free-brands-svg-icons";
 
@@ -40,8 +32,6 @@ function TemplateCV03() {
   const [birthday, setBirthday] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [gender, setGender] = useState("None");
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [confirmCancelModal, setConfirmCancelModal] = useState(false);
   const [invalidImageModal, setInvalidImageModal] = useState(false);
@@ -50,8 +40,6 @@ function TemplateCV03() {
   const [invalidBirthdayModal, setInvalidBirthdayModal] = useState(false);
   const [invalidEmailModal, setInvalidEmailModal] = useState(false);
   const [invalidPhoneModal, setInvalidPhoneModal] = useState(false);
-  const [invalidAddressModal, setInvalidAddressModal] = useState(false);
-  const [invalidGenderModal, setInvalidGenderModal] = useState(false);
   const openFileDialog = (e) => {
     e.preventDefault();
     imageFormControl.current.click();

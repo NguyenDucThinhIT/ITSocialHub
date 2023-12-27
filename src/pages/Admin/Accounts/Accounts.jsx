@@ -4,20 +4,15 @@ import CIcon from "@coreui/icons-react";
 import { Button, Col, Container, Form, Row, Table } from "react-bootstrap";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { cilPlus, cilSearch } from "@coreui/icons";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { getAccount, deleteAccount } from "@/services/accounts.api";
+import {  cilSearch } from "@coreui/icons";
+import { getAccount, deleteAccount ,statusAccount} from "@/services/accounts.api";
 import useQueryConfigAcc from "@/hooks/useQueryConfigAcc";
-import { Pagination } from "@/components/Pagination";
 import "./style.css";
 import AccountItem from "./AccountItem";
 
 function Accounts() {
-  const navigate = useNavigate();
   const queryConfig = useQueryConfigAcc();
   const { t } = useTranslation("common");
-  const { register, handleSubmit } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [initialData, setInitialData] = useState([]);
   const [searchData, setSearchData] = useState({
@@ -49,6 +44,25 @@ function Accounts() {
   const deleteAccountMutation = useMutation({
     mutationFn: (body) => deleteAccount(body),
   });
+  const handleToggleStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === 1 ? 2 : 1;
+    try {
+      await statusAccount(id, { status: newStatus });
+      Swal.fire({
+        icon: "success",
+        title: t("jobPage.successfully"),
+        //text: t("admin.account.statusUpdateRes"),
+      });
+      fetchData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: t("jobPage.failed"),
+        text: error.response?.data?.error || "",
+      });
+    }
+  };
+  
 
   const handleDeleteAccount = (id) => {
     deleteAccountMutation.mutate([id], {
@@ -137,6 +151,7 @@ function Accounts() {
             <th>{t("admin.account.fullName")}</th>
             <th>Email</th>
             <th>{t("admin.account.role")}</th>
+            <th>{t("sort.status")}</th>
             <th>{t("admin.account.action")}</th>
           </tr>
         </thead>
@@ -149,6 +164,7 @@ function Accounts() {
                 account={acc}
                 email={acc.email}
                 deleteaccount={handleDeleteAccount}
+                toggleStatus={handleToggleStatus}
               />
             ))}
           </tbody>
@@ -158,14 +174,16 @@ function Accounts() {
               <td colSpan="5" className="text-center">
                 {noResults ? (
                   <>
-                    <img
-                      src="/assets/images/notFound.png"
-                      alt="No Results"
-                      className="no-results-image"
-                    />
-                    <p className="no-results-message">
-                      {t("interviewer.interviewList.notFound")}
-                    </p>
+                    <div className="no-results-container">
+                      <img
+                        src="/assets/images/notFound.png"
+                        alt="No Results"
+                        className="no-results-image"
+                      />
+                      <p className="no-results-message">
+                        {t("interviewer.interviewList.notFound")}
+                      </p>
+                    </div>
                   </>
                 ) : (
                   <h2>{t("admin.account.noAccounts")}</h2>

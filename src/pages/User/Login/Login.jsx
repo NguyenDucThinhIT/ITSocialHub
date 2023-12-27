@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -23,7 +23,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const userRole = useSelector((state) => state.auth.role);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || "/";
@@ -60,12 +59,27 @@ const Login = () => {
           });
         },
         onError: (error) => {
-          Swal.fire({
-            icon: "error",
-            title: t("jobPage.failed"),
-            text: t("login.loginFail"),
-          });
-          console.log("Error during login:", error);
+          if (error.response.status === 451) {
+            Swal.fire({
+              icon: "error",
+              title: t("jobPage.failed"),
+              text: t("login.block"),
+            });
+          } else if (error.response.status === 403)
+          {
+            Swal.fire({
+              icon: "error",
+              title: t("jobPage.failed"),
+              text: t("login.deactivate"),
+            });
+            //navigate("/active-account")
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: t("jobPage.failed"),
+              text: t("login.loginFail"),
+            });
+          }
         },
       }
     );

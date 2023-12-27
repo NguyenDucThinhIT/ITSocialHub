@@ -112,11 +112,9 @@ const EditProfile = () => {
       phonenumber: phone,
       image_url: imageUrl.url, 
     };
-    console.log(updatedUser);
     editProfile(updatedUser)
       .then((res) => {
         dispatch(editSlice(res.data));
-        console.log(res.data);
       })
       .catch((error) => {
         console.log(error.response.data);

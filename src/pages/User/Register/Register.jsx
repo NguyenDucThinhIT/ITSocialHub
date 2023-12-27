@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSlice } from "@/redux/auth.slice";
 import { registerAccount } from "@/services/auth.api";
 import { validateEmail } from "@/components/Validated/Validated";
 import Swal from "sweetalert2";
@@ -29,7 +27,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(true);
-  const [role, setRole] = useState("1");
+  const [role, setRole] = useState(1);
 
   const togglePassword1 = () => {
     setShowPassword1(!showPassword1);
@@ -38,7 +36,6 @@ const Register = () => {
     setShowPassword2(!showPassword2);
   };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const registerAccountMutation = useMutation({
     mutationFn: (body) => registerAccount(body),
@@ -226,7 +223,7 @@ const Register = () => {
                 type="radio"
                 name="exampleRadios"
                 id="exampleRadios1"
-                value={"1"}
+                value={1}
                 defaultChecked
                 onChange={() => {
                   setRole(1);
@@ -242,7 +239,7 @@ const Register = () => {
                 type="radio"
                 name="exampleRadios"
                 id="exampleRadios2"
-                value={"2"}
+                value={2}
                 onChange={() => {
                   setRole(2);
                 }}

@@ -11,7 +11,7 @@ import RichTextEditor from "../RichTextEditor/RichTextEditor";
 import "./modal.css";
 import { getResume } from "@/services/resumes.api";
 
-const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
+const UploadCVModal = ({ show, handleClose, postId, title, userCVs }) => {
   const { t } = useTranslation("common");
   const user = useSelector((state) => state.auth.user);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -25,7 +25,7 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
       const cvData = res.data.items.map((cv) => ({
         id: cv.id,
         name: cv.name,
-        file_url: cv.file_url, 
+        file_url: cv.file_url,
       }));
       setCvList(cvData);
     });
@@ -50,33 +50,29 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
 
   const handleUpload = async () => {
     if (uploadOption === "online" && !selectedCV) {
-      // Nếu đang chọn CV online mà chưa chọn CV thì thông báo lỗi
-      console.log("Vui lòng chọn một CV.");
       Swal.fire({
         icon: "error",
-        title: "Lỗi",
-        text: "Vui lòng chọn một CV.",
+        title: t("candidate.modal.error"),
+        text: t("candidate.notice.chooseCv"),
       });
       return false;
     }
-  
+
     if (uploadOption === "local" && !selectedFile) {
-      console.log("Vui lòng chọn một tệp để tải lên.");
       Swal.fire({
         icon: "error",
-        title: "Lỗi",
-        text: "Vui lòng chọn một tệp để tải lên.",
+        title: t("candidate.modal.error"),
+        text: t("candidate.notice.chooseCvv"),
       });
       return false;
     }
     if (selectedFile) {
       const urlCV = await upload(selectedFile)
         .then((response) => {
-          console.log("Tải lên thành công:", response);
           Swal.fire({
             icon: "success",
-            title: "Ứng tuyển thành công!",
-            text: "Cảm ơn bạn đã ứng tuyển.",
+            title: t("candidate.notice.apply"),
+            text: t("candidate.notice.applyy"),
           });
 
           return response.url;
@@ -87,7 +83,6 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
         });
       return urlCV;
     } else if (uploadOption === "online" && selectedCV) {
-      // Lấy URL của CV khi chọn CV online
       const selectedCvData = cvList.find((cv) => cv.id === selectedCV);
       return selectedCvData ? selectedCvData.file_url : false;
     }
@@ -107,7 +102,7 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
         name: user.last_name + " " + user.first_name,
         file_url: uploadCV,
         recruitment_post_id: postId,
-        status: "NEW",
+        status: 0,
       },
       {
         onSuccess: () => {
@@ -135,7 +130,6 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
     );
   };
   useEffect(() => {
-    // Kiểm tra nếu selectedCV rỗng và cvList không rỗng thì chọn CV đầu tiên
     if (!selectedCV && cvList.length > 0) {
       setSelectedCV(cvList[0].id);
     }
@@ -143,39 +137,41 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Ứng tuyển {title}</Modal.Title>
+        <Modal.Title>
+          {t("candidate.notice.applyJob")} {title}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <div className="text-infor">
+        <div className="text-infor">
           <RichTextEditor
             className="text-edit"
             value={textInfor}
             handleChange={handleTextChange}
-            placeholder="Giới thiệu ngắn gọn về bản thân"
+            placeholder={t("candidate.appliedJob.introduction")}
           />
         </div>
         <div className="line-text"></div>
         <div>
-          <label className="mb-2 mr-2">Chọn phương thức tải CV:</label>
+          <label className="mb-2 mr-2">{t("candidate.notice.apply1")}</label>
           <select
             className="bg-white"
             value={uploadOption}
             onChange={(e) => setUploadOption(e.target.value)}
           >
-            <option value="online">Dùng CV Online</option>
-            <option value="local">Tải lên CV từ máy tính</option>
+            <option value="online">{t("candidate.notice.apply2")}</option>
+            <option value="local">{t("candidate.notice.apply3")}</option>
           </select>
         </div>
         {uploadOption === "online" && (
           <div>
-            <label className="mr-2">Chọn CV:</label>
+            <label className="mr-2">{t("candidate.notice.apply4")}</label>
             <select
-            className="bg-white"
+              className="bg-white"
               value={selectedCV}
               onChange={(e) => setSelectedCV(e.target.value)}
             >
               <option value="" disabled>
-                Chọn một CV
+                {t("candidate.notice.apply5")}
               </option>
               {cvList.map((cv) => (
                 <option key={cv.id} value={cv.id}>
@@ -189,7 +185,7 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
           <div>
             <div {...getRootProps()} className="dropzone">
               <input {...getInputProps({ accept: "application/pdf" })} />
-              <p>Kéo và thả tệp PDF của bạn hoặc nhấp để chọn tệp.</p>
+              <p>{t("candidate.notice.apply6")}</p>
             </div>
             {selectedFile && (
               <div className="uploaded-file">
@@ -198,20 +194,19 @@ const UploadCVModal = ({ show, handleClose, postId,title, userCVs }) => {
                   className="uploaded-file-delete"
                   onClick={() => setSelectedFile(null)}
                 >
-                  Xóa
+                  {t("candidate.notice.del")}
                 </span>
               </div>
             )}
           </div>
         )}
-        
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Đóng
+          {t("candidate.notice.close")}
         </Button>
         <Button variant="primary" onClick={handlePostApplications}>
-          Hoàn tất
+          {t("candidate.notice.done")}
         </Button>
       </Modal.Footer>
     </Modal>
