@@ -7,7 +7,7 @@ import ManageLayout from "./layouts/ManageLayout/ManageLayout.jsx";
 import Login from "./pages/User/Login/Login.jsx";
 import Register from "./pages/User/Register/Register.jsx";
 import ResetPassword from "./pages/User/ResetPassword/ResetPassword.jsx";
-import FindAccount from "./pages/User/FindAccount/findAccount.jsx";
+import FindAccount from "./pages/User/FindAccount/FindAccount.jsx";
 import TemplateCV from "./pages/User/CreateCV/Template/TemplateCV.jsx";
 import TemplateCV01 from "./pages/User/CreateCV/TemplateCV01/TemplateCV01.jsx";
 import TemplateCV02 from "./pages/User/CreateCV/TemplateCV02/TemplateCV02.jsx";

@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -18,6 +18,7 @@ import "./index.css";
 
 const Login = () => {
   const { t } = useTranslation("common");
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -72,7 +73,7 @@ const Login = () => {
               title: t("jobPage.failed"),
               text: t("login.deactivate"),
             });
-            //navigate("/active-account")
+            navigate("/active-account")
           } else {
             Swal.fire({
               icon: "error",
